@@ -399,7 +399,8 @@ onInstitutionChange(event: any) {
           closable: true,
           data: {
             actUser,
-            codigoActo: this.selectedAct.CodigoActo
+            codigoActo: this.selectedAct.CodigoActo,
+            MnCosto: this.MnCosto,
            },
           breakpoints: {
             '960px': '90%',

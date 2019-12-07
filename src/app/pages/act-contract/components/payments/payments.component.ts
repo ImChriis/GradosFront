@@ -32,7 +32,7 @@ export class PaymentsComponent implements OnInit{
   private fb = inject(FormBuilder);
   actUser = this.dialogConfig.data.actUser;
   codigoActo = this.dialogConfig.data.codigoActo;
-  totalPerStudent = this.dialogConfig.data.totalPerStudent;
+  totalPerStudent = this.dialogConfig.data.MnCosto;
   NuCedula!: number;
   NoContrato!: number;
   recibos$!: Observable<any>;
@@ -90,6 +90,8 @@ export class PaymentsComponent implements OnInit{
     console.log(this.codigoActo, this.NoContrato, this.NuCedula);
 
     console.log("data", this.actUser);
+
+    console.log("MnCosto", this.totalPerStudent);
     
     this.actContractService.getPaymentDataByUser(
       this.codigoActo,
