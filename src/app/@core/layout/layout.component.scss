@@ -19,7 +19,6 @@ footer{
     flex-direction: row;
     justify-content: start;
     align-items: center;
-    height: 3vh;
 }
 
 .info{
@@ -69,5 +68,10 @@ footer{
     .p-menuitem-active{
         background-color: #e5e5e5 !important;
         color: black !important;
+    }
+
+    .p-menubar-submenu{
+        border: none !important;
+        background-color: transparent !important;
     }
 }

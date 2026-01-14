@@ -1,6 +1,13 @@
+/* PrimeNG theme & icons */
+@import "primeicons/primeicons.css";
+
 /* You can add global styles to this file, and also import other style files */
 body{
-    background-color: #ababab;
+    background-color: #727171;
+}
+
+body.login-bg{
+    background-color: black;
 }
 
 html, body{

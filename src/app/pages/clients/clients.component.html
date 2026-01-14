@@ -1,0 +1,143 @@
+<div class="container">
+    <div class="clientsList">
+      <div class="title">
+        <h2>Lista de Clientes</h2>
+      </div>
+
+      <div class="body"> 
+        @if(
+      clients$ | async
+      ; as state) {
+      <p-table
+        #dt1
+        dataKey="idEvento"
+        [value]='state'
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [paginator]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+        [globalFilterFields]="['txnombre', 'lugar', 'tipo', 'estatus', 'destacado']"
+        styleClass="ml-3 mr-3"
+        >
+        <ng-template pTemplate="caption" let-event>
+          <div class="flex-row">
+            <div class="p-toolbar-group-end">
+              <span class="p-input-icon-left ml-auto">
+                <i class=""></i>
+                <input
+                class="search"
+                #searchInput
+                pInputText
+                type="text"
+                placeholder="BUSCAR"
+                (input)="dt1.filterGlobal(searchInput.value, 'contains')"
+              />
+                </span>
+            </div>
+          </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="min-width: 1rem" class="border">
+                <div class="flex thstyles">CÉDULA</div>
+              </th>
+              <th style="min-width: 8rem">
+                <div class="flex thstyles">CLIENTE</div>
+              </th>
+              <th style="min-width: 8rem">
+                <div class="flex thstyles">TELÉFONO</div>
+              </th>
+              <th style="min-width: 10rem">
+                <div class="flex thstyles">DIRECCIÓN</div>
+              </th>
+              <th style="min-width: 15rem">
+                <div class="flex thstyles">CORREO ELECTRÓNICO</div>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-client class="p-table">
+            <tr class="table-content" 
+            (click)=" onSelectClient(client)" 
+            [class.disabled]="isEnabled" 
+            [class.selected]="selectedClient?.nucedula === client.nucedula" >
+              <td class="select">
+                {{ client.nucedula}}
+              </td>
+              <td class="name">
+                {{ client.txnombre }}
+              </td>
+              <td>
+                {{ client.txcelular}}
+              </td>
+              <td>
+                {{ client.txdireccion }}
+              </td>
+              <td class="email">
+                {{ client.txemail }}
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">No elementos encontrados.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      }
+    </div>
+    </div>
+
+    <div class="clientForm">
+        <form [formGroup]="clientsForm" autocomplete="off">
+            <div class="inputGroup">
+                <label for="identification">CÉDULA</label>
+                <input type="text" id="identification" name="identification" formControlName="nucedula">
+            </div>
+
+            <div class="inputGroup">
+                <label for="name">NOMBRE</label>
+                <input type="text" id="name" name="name" formControlName="txnombre">
+            </div>
+
+            <div class="inputGroup">
+                <label for="address">DIRECCIÓN</label>
+                <textarea id="address" name="address" formControlName="txdireccion"></textarea>
+            </div>
+
+            <div class="inputGroup">
+                <label for="phone">TELÉFONO</label>
+                <input type="text" id="phone" name="phone" formControlName="txcelular">
+            </div>
+
+            <div class="inputGroup">
+                <label for="email">CORREO ELECTRÓNICO</label>
+                <input type="email" id="email" name="email" formControlName="txemail">
+            </div>
+        </form>
+
+        <div class="buttons">
+          <!-- <div class="icon" title="Buscar">
+            <i class="pi pi-search searchIcon"></i>
+          </div> -->
+
+          <div class="icons">
+            <div class="icon" title="Agregar" (click)="onAdd()" [class.disabled]="isAdding">
+              <i class="pi pi-plus add"></i>
+            </div>
+
+            <div class="icon" title="Guardar">
+              <i class="pi pi-save save"></i>
+            </div>
+
+            <div class="icon" title="Eliminar" (click)="onDelete()"  [class.disabled]="!selectedClient" >
+              <i class="pi pi-trash delete"></i>
+            </div>
+          </div>
+
+          <div class="icon" title="Cancelar" (click)="onCancel()">
+            <i class="pi pi-times cancel"></i>
+          </div>
+        </div>
+    </div>
+</div>

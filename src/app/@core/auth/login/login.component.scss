@@ -1,3 +1,6 @@
+//fondo de body solo para esta pantalla
+
+
 .content{
     width: 100%;
     height: 90vh;
@@ -14,7 +17,7 @@ form{
     gap: 20px;
     width: 40%;
     height: 70%;
-    background-color: #e5e5e5;
+    background-color: #727171;
     border-radius: 20px;
 }
 
@@ -37,6 +40,25 @@ img{
     width: 70%;
 }
 
+.inputs label{
+    color: black;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+}
+
+.inputs input{
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+    padding-left: 10px;
+    border: none;
+}
+
+.user{
+    text-transform: uppercase;
+}
+
 :host ::ng-deep .p-inputtext:focus {
   box-shadow: none !important;
   border-color: transparent !important;
@@ -47,11 +69,61 @@ label{
     color: black;
 }
 
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-wrapper input{
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 3rem;
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+    padding-left: 10px;
+    border: none;
+    height: 4vh;
+}
+
+.password-wrapper .btn-Pass {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 2rem;
+  width: 2.2rem;
+  border: none;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* opcional: ajustar tamaño del icono */
+.password-wrapper .btn-Pass .pi {
+  font-size: 1.1rem;
+  color: black !important;
+}
+
+
+.buttons{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .btn{
-    background-color: #00a1d6 !important;
+    background-color: #133f94 !important;
     border: none !important;
     color: white !important;
+    text-transform: uppercase;
+    height: 5vh;
+    width: 30%;
 }
  .btn:hover{
-    opacity: 0.8;
+    opacity: 0.9;
  }

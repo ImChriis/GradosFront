@@ -1,0 +1,25 @@
+::ng-deep .p-toast-message-content {
+  backdrop-filter: none !important;
+  filter: none !important;
+  background: unset !important;
+}
+
+::ng-deep .p-toast-message-success {
+  background: #4caf50 !important; // verde
+  color: #fff !important;
+}
+
+::ng-deep .p-toast-message-info {
+  background: #2196f3 !important; // azul
+  color: #fff !important;
+}
+
+::ng-deep .p-toast-message-warn {
+  background: #ff9800 !important; // naranja
+  color: #fff !important;
+}
+
+::ng-deep .p-toast-message-error {
+  background: #f44336 !important; // rojo
+  color: #fff !important;
+}
