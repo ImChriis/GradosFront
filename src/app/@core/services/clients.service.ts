@@ -22,13 +22,12 @@ export class ClientsService {
     );
   }
 
-  //   findAllClients(){
-  //   return this.http.get<Client[]>(`${this.api}/clients`).pipe(
-  //     map((res: Client[] = []) => {
-  //       const items = res ?? [];
-  //       const sorted = items.slice().sort((a: any, b: any) => (b.id ?? 0) - (a.id ?? 0));
-  //       return sorted.map((client: any) => ({ ...client }));
-  //     })
-  //   );
-  // }
+  addClient(body: Partial<Client>) {
+    return this.http.post<Client>(`${this.api}/clients/add`, body);
+  }
+
+  updateClient(id: number, body: Partial<Client>) {
+    return this.http.put<Client>(`${this.api}/clients/update/${id}`, body);
+  }
+  
 }

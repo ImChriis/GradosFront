@@ -92,22 +92,22 @@
         <form [formGroup]="clientsForm" autocomplete="off">
             <div class="inputGroup">
                 <label for="identification">CÉDULA</label>
-                <input type="text" id="identification" name="identification" formControlName="nucedula">
+                <input type="text" id="identification" name="identification" formControlName="nucedula" appUppercase>
             </div>
 
             <div class="inputGroup">
                 <label for="name">NOMBRE</label>
-                <input type="text" id="name" name="name" formControlName="txnombre">
+                <input type="text" id="name" name="name" formControlName="txnombre" appUppercase>
             </div>
 
             <div class="inputGroup">
                 <label for="address">DIRECCIÓN</label>
-                <textarea id="address" name="address" formControlName="txdireccion"></textarea>
+                <textarea id="address" name="address" formControlName="txdireccion" appUppercase></textarea>
             </div>
 
             <div class="inputGroup">
                 <label for="phone">TELÉFONO</label>
-                <input type="text" id="phone" name="phone" formControlName="txcelular">
+                <input type="text" id="phone" name="phone" formControlName="txcelular" appUppercase>
             </div>
 
             <div class="inputGroup">
@@ -126,7 +126,7 @@
               <i class="pi pi-plus add"></i>
             </div>
 
-            <div class="icon" title="Guardar">
+            <div class="icon" title="Guardar" (click)="onSave()" >
               <i class="pi pi-save save"></i>
             </div>
 

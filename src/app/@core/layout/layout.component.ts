@@ -22,8 +22,8 @@ export class LayoutComponent implements OnInit{
     const user = localStorage.getItem('User');
     if(user){
       const parsedUser = JSON.parse(user);
-      this.user = parsedUser.usuario;
-      this.role = parsedUser.maTipoUsr;
+      this.user = parsedUser.user.usuario;
+      this.role = parsedUser.user.maTipoUsr;
     }
 
     this.items = [

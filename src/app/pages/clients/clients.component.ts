@@ -7,6 +7,8 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { InputText } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ClientForm } from '../../@core/models/forms/client-form';
+import { MessageService } from 'primeng/api';
+import { UppercaseDirective } from '../../@core/directives/uppercase.directive';
 
 @Component({
   selector: 'app-clients',
@@ -15,7 +17,8 @@ import { ClientForm } from '../../@core/models/forms/client-form';
     AsyncPipe,
     TableModule,
     InputText,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    UppercaseDirective
   ],
   templateUrl: './clients.component.html',
   styleUrl: './clients.component.scss'
@@ -23,11 +26,13 @@ import { ClientForm } from '../../@core/models/forms/client-form';
 export class ClientsComponent implements OnInit{
   private clientsService = inject(ClientsService);
   private fb = inject(FormBuilder);
+  private messageService = inject(MessageService);
   isModalOpen = false;
   clients$!: Observable<Client[]>;
   selectedClient: Client | null = null;
   isEnabled: boolean = false;
   isAdding: boolean = false;
+  id!: number;
 
 
   clientsForm: FormGroup<ClientForm> = this.fb.group({
@@ -63,6 +68,10 @@ export class ClientsComponent implements OnInit{
       feingreso: client.feingreso,
       codUser: client.codUser,
     });
+
+    this.id = client.id;
+
+    console.log(this.id + ' selected');
   }
 
   onAdd(){
@@ -80,7 +89,29 @@ export class ClientsComponent implements OnInit{
   }
 
   onSave(){
-    
+    if(this.selectedClient){
+      console.log(this.id + ' updating');
+      this.clientsService.updateClient(this.id, this.clientsForm.value as Client).subscribe({
+        next: (client) => {
+          this.messageService.add({severity:'success', summary: 'Success', detail: 'Client updated successfully'});
+          window.location.reload();
+        },
+        error: (err) => {
+          this.messageService.add({severity:'error', summary: 'Error', detail: 'Error updating client'});
+        }
+      });
+
+    }else{
+         this.clientsService.addClient(this.clientsForm.value as Client).subscribe({
+      next: (client) => {
+        this.messageService.add({severity:'success', summary: 'Success', detail: 'Client added successfully'});
+        window.location.reload();
+      },
+      error: (err) => {
+        this.messageService.add({severity:'error', summary: 'Error', detail: 'Error adding client'});
+      }
+    })
+    }
   }
 
   onCancel(){
