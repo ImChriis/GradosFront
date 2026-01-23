@@ -94,7 +94,9 @@ export class ClientsComponent implements OnInit{
       this.clientsService.updateClient(this.id, this.clientsForm.value as Client).subscribe({
         next: (client) => {
           this.messageService.add({severity:'success', summary: 'Success', detail: 'Client updated successfully'});
-          window.location.reload();
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
         },
         error: (err) => {
           this.messageService.add({severity:'error', summary: 'Error', detail: 'Error updating client'});
@@ -105,7 +107,9 @@ export class ClientsComponent implements OnInit{
          this.clientsService.addClient(this.clientsForm.value as Client).subscribe({
       next: (client) => {
         this.messageService.add({severity:'success', summary: 'Success', detail: 'Client added successfully'});
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
       },
       error: (err) => {
         this.messageService.add({severity:'error', summary: 'Error', detail: 'Error adding client'});

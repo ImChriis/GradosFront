@@ -6,15 +6,18 @@ import { AuthService } from '../../services/auth.service';
 import { LoginForm } from '../../models/forms/login-form';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, UpperCasePipe } from '@angular/common';
+import { UppercaseDirective } from "../../directives/uppercase.directive";
+import { User } from '../../models/user.mode';
 
 @Component({
   selector: 'app-login',
   imports: [
     InputTextModule,
     ButtonModule,
-    ReactiveFormsModule
-  ],
+    ReactiveFormsModule,
+    UppercaseDirective
+],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -57,7 +60,7 @@ export class LoginComponent implements OnInit, OnDestroy{
 
   onSubmit(){
     if(this.LoginForm.valid){
-      this.authService.login(this.LoginForm.value).subscribe({
+      this.authService.login(this.LoginForm.value as User).subscribe({
         next: (res) => {
           this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Inicio de sesión exitoso'});
           // console.log(res);
