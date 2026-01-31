@@ -74,39 +74,39 @@
         <form  autocomplete="off">
             <div class="inputGroup">
                 <label for="name">DESCRIPCIÓN</label>
-                <textarea id="name" name="name" formControlName="Descripcion" appUppercase></textarea>
+                <textarea id="name" name="name"  appUppercase></textarea>
             </div>
 
             <div class="inputGroup">
                 <label for="identification">SIGLAS</label>
-                <input type="text" id="identification" name="identification" formControlName="Titulo" appUppercase>
+                <input type="text" id="identification" name="identification"  appUppercase>
             </div>
 
             <div class="inputGroup2">
                 <label for="identification">TIPO</label>
                 <div class="select">
-                    <input type="checkbox" name="" class="checkbox">
-                    <label for="">UNIVERSIDAD</label>
+                    <input type="checkbox" id="university" class="checkbox">
+                    <label for="university">UNIVERSIDAD</label>
                 </div>
 
                 <div class="select">
-                    <input type="checkbox" name="" class="checkbox">
-                    <label for="">TECNOLÓGICO</label>
+                    <input type="checkbox" id="tecnologico" class="checkbox">
+                    <label for="tecnologico">TECNOLÓGICO</label>
                 </div>
 
                 <div class="select">
-                    <input type="checkbox" name="" class="checkbox">
-                    <label for="">COLEGIO</label>
+                    <input type="checkbox" id="school" class="checkbox">
+                    <label for="school">COLEGIO</label>
+                </div>  
+
+                <div class="select">
+                    <input type="checkbox" id="enterprise" class="checkbox">
+                    <label for="enterprise">EMPRESA</label>
                 </div>
 
                 <div class="select">
-                    <input type="checkbox" name="" class="checkbox">
-                    <label for="">EMPRESA</label>
-                </div>
-
-                <div class="select">
-                    <input type="checkbox" name="" class="checkbox">
-                    <label for="">PARTICULAR</label>
+                    <input type="checkbox" id="particular" class="checkbox">
+                    <label for="particular">PARTICULAR</label>
                 </div>
             </div>
         </form>

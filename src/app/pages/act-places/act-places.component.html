@@ -1,1 +1,153 @@
-<p>act-places works!</p>
+<div class="container">
+    <div class="clientsList">
+      <div class="title">
+        <h2>Lista de Especialidades</h2>
+      </div>
+
+      <div class="body"> 
+        @if(
+      acts$ | async
+      ; as state) {
+      <p-table
+        #dt1
+        dataKey="idEvento"
+        [value]='state'
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [paginator]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+        [globalFilterFields]="['txnombre', 'lugar', 'tipo', 'estatus', 'destacado']"
+        styleClass="ml-3 mr-3"
+        >
+        <ng-template pTemplate="caption" let-event>
+          <div class="flex-row">
+            <div class="p-toolbar-group-end">
+              <span class="p-input-icon-left ml-auto">
+                <i class=""></i>
+                <input
+                class="search"
+                #searchInput
+                pInputText
+                type="text"
+                placeholder="BUSCAR"
+                (input)="dt1.filterGlobal(searchInput.value, 'contains')"
+              />
+                </span>
+            </div>
+          </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="min-width: 1rem" class="border">
+                <div class="flex thstyles">TITULO</div>
+              </th>
+              <th style="min-width: 8rem">
+                <div class="flex thstyles">ESPECIALIDAD</div>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-speciality class="p-table">
+            <!-- <tr class="table-content" 
+            (click)=" onSelectedSpeciality(speciality)" 
+            [class.disabled]="isEnabled" 
+            [class.selected]="selectedSpeciality === speciality" > -->
+              <td>
+                {{ speciality.Titulo }}
+              </td>
+              <td>
+                {{ speciality.Especialidad }}
+              </td>
+            <!-- </tr> -->
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">No elementos encontrados.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      }
+    </div>
+    </div>
+
+    <div class="clientForm">
+        <form  autocomplete="off">
+            <div class="inputGroup">
+                <label for="name">DESCRIPCIÓN</label>
+                <textarea id="name" name="name"  appUppercase></textarea>
+            </div>
+
+            <div class="inputGroup">
+                <label for="identification">CAPACIDAD   </label>
+                <input type="text" id="identification" name="identification"  appUppercase>
+            </div>
+
+            <div class="inputGroup3">
+                            <div class="inputGroup2">
+                <label for="identification">TIPO</label>
+                <div class="select">
+                    <input type="checkbox" id="university" class="checkbox">
+                    <label for="university">UNIVERSIDAD</label>
+                </div>
+
+                <div class="select">
+                    <input type="checkbox" id="tecnologico" class="checkbox">
+                    <label for="tecnologico">TECNOLÓGICO</label>
+                </div>
+
+                <div class="select">
+                    <input type="checkbox" id="school" class="checkbox">
+                    <label for="school">COLEGIO</label>
+                </div>  
+
+                <div class="select">
+                    <input type="checkbox" id="enterprise" class="checkbox">
+                    <label for="enterprise">EMPRESA</label>
+                </div>
+
+                <div class="select">
+                    <input type="checkbox" id="particular" class="checkbox">
+                    <label for="particular">PARTICULAR</label>
+                </div>
+            </div>
+
+            <div class="inputGroup2">
+                <label for="identification">STATUS</label>
+                <div class="select">
+                    <input type="checkbox" id="active" class="checkbox">
+                    <label for="active">ACTIVO</label>
+                </div>
+
+                <div class="select">
+                    <input type="checkbox" id="inactive" class="checkbox">
+                    <label for="inactive">INACTIVO</label>
+                </div>
+            </div>
+            </div>
+        </form>
+
+        <div class="buttons">
+          <!-- <div class="icon" title="Buscar">
+            <i class="pi pi-search searchIcon"></i>
+          </div> -->
+
+          <div class="icons">
+            <div class="icon" title="Agregar" (click)="onAdd()" [class.disabled]="isAdding">
+              <i class="pi pi-plus add"></i>
+            </div>
+
+            <div class="icon" title="Guardar" (click)="onSave()" >
+              <i class="pi pi-save save"></i>
+            </div>
+
+            <div class="icon" title="Eliminar" (click)="onDelete()"  [class.disabled]="!selectedAct" >
+              <i class="pi pi-trash delete"></i>
+            </div>
+          </div>
+
+          <div class="icon" title="Cancelar" (click)="onCancel()">
+            <i class="pi pi-times cancel"></i>
+          </div>
+        </div>
+    </div>
+</div>
