@@ -36,6 +36,7 @@ export class ClientsComponent implements OnInit{
 
 
   clientsForm: FormGroup<ClientForm> = this.fb.group({
+    id: this.fb.control<number | null>(null),
     nucedula: this.fb.control<string | null>(null),
     txnombre: this.fb.control<string | null>(null),
     txdireccion: this.fb.control<string | null>(null),
@@ -59,6 +60,7 @@ export class ClientsComponent implements OnInit{
     this.selectedClient = client;
     this.clientsForm.enable();
     this.clientsForm.patchValue({
+      id: client.id,
       nucedula: client.nucedula,
       txnombre: client.txnombre,
       txdireccion: client.txdireccion,

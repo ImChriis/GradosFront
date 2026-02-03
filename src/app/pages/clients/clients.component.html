@@ -60,7 +60,7 @@
             <tr class="table-content" 
             (click)=" onSelectClient(client)" 
             [class.disabled]="isEnabled" 
-            [class.selected]="selectedClient?.nucedula === client.nucedula" >
+            [class.selected]="selectedClient?.id === client.id" >
               <td class="select">
                 {{ client.nucedula}}
               </td>

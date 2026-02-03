@@ -30,7 +30,7 @@ export class SpecialitiesComponent implements OnInit{
   specialities$!: Observable<Specility[]>;
 
   specialititesForm: FormGroup<SpecilitiesForm> = this.fb.group({
-    id: new FormControl<number | null>(null),
+    CodigoEsp: new FormControl<number | null>(null),
     Titulo: new FormControl('', { nonNullable: true }),
     Descripcion: new FormControl('', { nonNullable: true }),
   })
@@ -44,7 +44,7 @@ export class SpecialitiesComponent implements OnInit{
     this.selectedSpeciality = true;
     this.specialititesForm.enable();
     this.specialititesForm.patchValue({
-      id: speciality.id,
+      CodigoEsp: speciality.CodigoEsp,
       Titulo: speciality?.Titulo,
       Descripcion: speciality?.Descripcion
     });

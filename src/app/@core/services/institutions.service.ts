@@ -16,8 +16,8 @@ export class InstitutionsService {
       map((res: Institution[] = []) => {
         console.log("Raw Response: ", res);
         const items = res ?? [];
-        const sorted = items.slice().sort((a: any, b: any) => (b.id ?? 0) - (a.id ?? 0));
-        return sorted.map((institution: any) => ({ ...institution }));
+        const sorted = items.slice().sort((a: Institution, b: Institution) => (b.CodigoInst ?? 0) - (a.CodigoInst ?? 0));
+        return sorted.map((institution: Institution) => ({ ...institution }));
       })
     )
   }

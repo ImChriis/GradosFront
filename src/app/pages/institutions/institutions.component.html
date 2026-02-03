@@ -1,7 +1,7 @@
 <div class="container">
     <div class="clientsList">
       <div class="title">
-        <h2>Lista de Especialidades</h2>
+        <h2>Lista de Instituciones</h2>
       </div>
 
       <div class="body"> 
@@ -40,25 +40,40 @@
           <ng-template pTemplate="header">
             <tr>
               <th style="min-width: 1rem" class="border">
-                <div class="flex thstyles">TITULO</div>
+                <div class="flex thstyles">SIGLAS</div>
               </th>
               <th style="min-width: 8rem">
-                <div class="flex thstyles">ESPECIALIDAD</div>
+                <div class="flex thstyles">NOMBRE</div>
+              </th>
+              <th style="min-width: 8rem">
+                <div class="flex thstyles">TIPO</div>
               </th>
             </tr>
           </ng-template>
-          <ng-template pTemplate="body" let-speciality class="p-table">
-            <!-- <tr class="table-content" 
-            (click)=" onSelectedSpeciality(speciality)" 
-            [class.disabled]="isEnabled" 
-            [class.selected]="selectedSpeciality === speciality" > -->
+          <ng-template pTemplate="body" let-institution class="p-table">
+             <tr class="table-content" 
+              (click)=" onSelectedInstitution(institution)" 
+              [class.disabled]="isEnabled" 
+              [class.selected]="selectedInstitution === institution" >
               <td>
-                {{ speciality.Titulo }}
+                {{ institution.siglas }}
               </td>
               <td>
-                {{ speciality.Especialidad }}
+                {{ institution.nbinstitucion }}
               </td>
-            <!-- </tr> -->
+              <td>
+                @if(institution.tpinstitucion === 'Col') {
+                  COLEGIO
+                } @else if(institution.tpinstitucion === 'Uni') {
+                  UNIVERSIDAD
+                } @else if(institution.tpinstitucion === 'Tec') {
+                  TECNOLÓGICO
+                } @else if(institution.tpinstitucion === 'Emp') {
+                  EMPRESA
+                } @else if(institution.tpinstitucion === 'Par') {
+                  PARTICULAR
+                }
+            </tr>
           </ng-template>
           <ng-template pTemplate="emptymessage">
             <tr>
@@ -71,43 +86,44 @@
     </div>
 
     <div class="clientForm">
-        <form  autocomplete="off">
+        <form [formGroup]="institutionsForm" autocomplete="off">
             <div class="inputGroup">
-                <label for="name">DESCRIPCIÓN</label>
-                <textarea id="name" name="name"  appUppercase></textarea>
+                <label for="name">NOMBRE INSITITUCIÓN</label>
+                <textarea id="name" name="name" formControlName="nbinstitucion" appUppercase></textarea>
             </div>
 
             <div class="inputGroup">
                 <label for="identification">SIGLAS</label>
-                <input type="text" id="identification" name="identification"  appUppercase>
+                <input type="text" id="identification" name="identification" formControlName="siglas" appUppercase>
             </div>
 
             <div class="inputGroup2">
-                <label for="identification">TIPO</label>
-                <div class="select">
-                    <input type="checkbox" id="university" class="checkbox">
-                    <label for="university">UNIVERSIDAD</label>
-                </div>
+              <label for="identification">TIPO</label>
 
-                <div class="select">
-                    <input type="checkbox" id="tecnologico" class="checkbox">
-                    <label for="tecnologico">TECNOLÓGICO</label>
-                </div>
+              <div class="select">
+                <input type="radio" id="university" name="tpinstitucion" value="Uni" formControlName="tpinstitucion">
+                <label for="university">UNIVERSIDAD</label>
+              </div>
 
-                <div class="select">
-                    <input type="checkbox" id="school" class="checkbox">
-                    <label for="school">COLEGIO</label>
-                </div>  
+              <div class="select">
+                <input type="radio" id="tecnologico" name="tpinstitucion" value="Tec" formControlName="tpinstitucion">
+                <label for="tecnologico">TECNOLÓGICO</label>
+              </div>
 
-                <div class="select">
-                    <input type="checkbox" id="enterprise" class="checkbox">
-                    <label for="enterprise">EMPRESA</label>
-                </div>
+              <div class="select">
+                <input type="radio" id="school" name="tpinstitucion" value="Col" formControlName="tpinstitucion">
+                <label for="school">COLEGIO</label>
+              </div>
 
-                <div class="select">
-                    <input type="checkbox" id="particular" class="checkbox">
-                    <label for="particular">PARTICULAR</label>
-                </div>
+              <div class="select">
+                <input type="radio" id="enterprise" name="tpinstitucion" value="Emp" formControlName="tpinstitucion">
+                <label for="enterprise">EMPRESA</label>
+              </div>
+
+              <div class="select">
+                <input type="radio" id="particular" name="tpinstitucion" value="Par" formControlName="tpinstitucion">
+                <label for="particular">PARTICULAR</label>
+              </div>
             </div>
         </form>
 

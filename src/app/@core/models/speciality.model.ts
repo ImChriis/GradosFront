@@ -1,5 +1,5 @@
 export interface Specility{
-    id: number | null;
+    CodigoEsp: number | null;
     Titulo: string;
     Descripcion: string;
 }
