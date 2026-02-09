@@ -1,5 +1,5 @@
-export interface Specility{
+export interface Speciality{
     CodigoEsp: number | null;
     Titulo: string;
-    Descripcion: string;
+    Especialidad: string;
 }

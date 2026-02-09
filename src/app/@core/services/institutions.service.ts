@@ -21,4 +21,12 @@ export class InstitutionsService {
       })
     )
   }
+
+  addInstitution(body: Partial<Institution>){
+    return this.http.post<Institution>(`${this.api}/institutions/add`, body);
+  }
+
+  updateInstitution(CoodigoInst: number, body: Partial<Institution>){
+    return this.http.put<Institution>(`${this.api}/institutions/update/${CoodigoInst}`, body);
+  }
 }

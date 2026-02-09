@@ -17,7 +17,7 @@
         [rowsPerPageOptions]="[10, 25, 50]"
         [paginator]="true"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
-        [globalFilterFields]="['txnombre', 'lugar', 'tipo', 'estatus', 'destacado']"
+        [globalFilterFields]="['Titulo', 'Especialidad']"
         styleClass="ml-3 mr-3"
         >
         <ng-template pTemplate="caption" let-event>
@@ -79,7 +79,7 @@
 
             <div class="inputGroup">
                 <label for="name">DESCRIPCIÓN</label>
-                <textarea id="name" name="name" formControlName="Descripcion" appUppercase></textarea>
+                <textarea id="name" name="name" formControlName="Especialidad" appUppercase></textarea>
             </div>
         </form>
 

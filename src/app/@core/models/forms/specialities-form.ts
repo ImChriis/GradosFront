@@ -1,7 +1,7 @@
 import { FormControl } from "@angular/forms";
 
-export interface SpecilitiesForm {
+export interface SpecialitiesForm {
     CodigoEsp: FormControl<number | null>;
     Titulo: FormControl<string>;
-    Descripcion: FormControl<string>;
+    Especialidad: FormControl<string>;
 }
