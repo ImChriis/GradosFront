@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { Client } from '../../@core/models/client.model';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { InputText } from 'primeng/inputtext';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ClientForm } from '../../@core/models/forms/client-form';
 import { MessageService } from 'primeng/api';
 import { UppercaseDirective } from '../../@core/directives/uppercase.directive';
@@ -36,15 +36,15 @@ export class ClientsComponent implements OnInit{
 
 
   clientsForm: FormGroup<ClientForm> = this.fb.group({
-    id: this.fb.control<number | null>(null),
-    nucedula: this.fb.control<string | null>(null),
-    txnombre: this.fb.control<string | null>(null),
-    txdireccion: this.fb.control<string | null>(null),
-    txtelefono: this.fb.control<string | null>(null),
-    txcelular: this.fb.control<string | null>(null),
-    txemail: this.fb.control<string | null>(null),
-    feingreso: this.fb.control<string | null>(null),
-    codUser: this.fb.control<string | null>(null),
+    id: new FormControl<number | null>(null, { nonNullable: true }),
+    nucedula: new FormControl<string | null>('', { nonNullable: true }),
+    txnombre: new FormControl<string | null>('', { nonNullable: true }),
+    txdireccion: new FormControl<string | null>('', { nonNullable: true }),
+    txtelefono: new FormControl<string | null>('', { nonNullable: true }),
+    txcelular: new FormControl<string | null>('', { nonNullable: true }),
+    txemail: new FormControl<string | null>('', { nonNullable: true }),
+    feingreso: new FormControl<string | null>('', { nonNullable: true }),
+    codUser: new FormControl<string | null>('', { nonNullable: true }),
   })
 
   

@@ -40,25 +40,25 @@
           <ng-template pTemplate="header">
             <tr>
               <th style="min-width: 1rem" class="border">
-                <div class="flex thstyles">TITULO</div>
+                <div class="flex thstyles">LUGAR</div>
               </th>
               <th style="min-width: 8rem">
-                <div class="flex thstyles">ESPECIALIDAD</div>
+                <div class="flex thstyles">CAPACIDAD</div>
               </th>
             </tr>
           </ng-template>
-          <ng-template pTemplate="body" let-speciality class="p-table">
-            <!-- <tr class="table-content" 
-            (click)=" onSelectedSpeciality(speciality)" 
+          <ng-template pTemplate="body" let-actPlace class="p-table">
+            <tr class="table-content" 
+            (click)=" onSelect(actPlace)" 
             [class.disabled]="isEnabled" 
-            [class.selected]="selectedSpeciality === speciality" > -->
+            [class.selected]="selectedActPlace === actPlace" > 
               <td>
-                {{ speciality.Titulo }}
+                {{ actPlace.TxLugar }}
               </td>
               <td>
-                {{ speciality.Especialidad }}
+                {{ actPlace.Capacidad }}
               </td>
-            <!-- </tr> -->
+            </tr>
           </ng-template>
           <ng-template pTemplate="emptymessage">
             <tr>
@@ -140,7 +140,7 @@
               <i class="pi pi-save save"></i>
             </div>
 
-            <div class="icon" title="Eliminar" (click)="onDelete()"  [class.disabled]="!selectedAct" >
+            <div class="icon" title="Eliminar" (click)="onDelete()"  [class.disabled]="!selectedActPlace" >
               <i class="pi pi-trash delete"></i>
             </div>
           </div>
