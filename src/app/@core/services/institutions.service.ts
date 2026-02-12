@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
+import { map, Subject, tap } from 'rxjs';
 import { Institution } from '../models/institution.model';
 
 @Injectable({
@@ -10,7 +10,9 @@ import { Institution } from '../models/institution.model';
 export class InstitutionsService {
   private api: string = environment.api;
   private http = inject(HttpClient);
-
+  private refresh$ = new Subject<void>();
+  public refresObservable$ = this.refresh$.asObservable();
+  
   getAllInstitutions(){
     return this.http.get<Institution[]>(`${this.api}/institutions`).pipe(
       map((res: Institution[] = []) => {
@@ -23,10 +25,14 @@ export class InstitutionsService {
   }
 
   addInstitution(body: Partial<Institution>){
-    return this.http.post<Institution>(`${this.api}/institutions/add`, body);
+    return this.http.post<Institution>(`${this.api}/institutions/add`, body).pipe(
+      tap(() => this.refresh$.next())
+    )
   }
 
   updateInstitution(CoodigoInst: number, body: Partial<Institution>){
-    return this.http.put<Institution>(`${this.api}/institutions/update/${CoodigoInst}`, body);
+    return this.http.put<Institution>(`${this.api}/institutions/update/${CoodigoInst}`, body).pipe(
+      tap(() => this.refresh$.next())
+    )
   }
 }

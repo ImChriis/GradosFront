@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { ClientsService } from '../../@core/services/clients.service';
-import { Observable } from 'rxjs';
+import { Observable, startWith, switchMap } from 'rxjs';
 import { Client } from '../../@core/models/client.model';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { InputText } from 'primeng/inputtext';
@@ -34,7 +34,6 @@ export class ClientsComponent implements OnInit{
   isAdding: boolean = false;
   id!: number;
 
-
   clientsForm: FormGroup<ClientForm> = this.fb.group({
     id: new FormControl<number | null>(null, { nonNullable: true }),
     nucedula: new FormControl<string | null>('', { nonNullable: true }),
@@ -46,10 +45,15 @@ export class ClientsComponent implements OnInit{
     feingreso: new FormControl<string | null>('', { nonNullable: true }),
     codUser: new FormControl<string | null>('', { nonNullable: true }),
   })
-
   
   ngOnInit(): void {
-    this.clients$ = this.clientsService.findAllClients();
+    this.clients$ = this.clientsService.refreshObservavble$.pipe(
+      startWith(null),
+      switchMap(() => {
+        return this.clientsService.findAllClients();
+      })
+    )
+
     this.clientsForm.disable();
     this.selectedClient = null;
   }
@@ -72,8 +76,6 @@ export class ClientsComponent implements OnInit{
     });
 
     this.id = client.id;
-
-    console.log(this.id + ' selected');
   }
 
   onAdd(){
@@ -96,22 +98,25 @@ export class ClientsComponent implements OnInit{
       this.clientsService.updateClient(this.id, this.clientsForm.value as Client).subscribe({
         next: (client) => {
           this.messageService.add({severity:'success', summary: 'Success', detail: 'Client updated successfully'});
-          setTimeout(() => {
-            window.location.reload();
-          }, 500);
+          this.clientsForm.reset();
+          this.isAdding = false;
+          this.selectedClient = null;
+          this.isEnabled = false;
+          this.clientsForm.disable();
         },
         error: (err) => {
           this.messageService.add({severity:'error', summary: 'Error', detail: 'Error updating client'});
         }
       });
-
     }else{
          this.clientsService.addClient(this.clientsForm.value as Client).subscribe({
       next: (client) => {
         this.messageService.add({severity:'success', summary: 'Success', detail: 'Client added successfully'});
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
+        this.clientsForm.reset();
+        this.isAdding = false;
+        this.selectedClient = null;
+        this.isEnabled = false;
+        this.clientsForm.disable();
       },
       error: (err) => {
         this.messageService.add({severity:'error', summary: 'Error', detail: 'Error adding client'});

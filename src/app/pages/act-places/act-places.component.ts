@@ -3,19 +3,23 @@ import { Component, inject, OnInit } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { ActsService } from '../../@core/services/acts.service';
-import { Observable } from 'rxjs';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Observable, startWith, switchMap } from 'rxjs';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ɵInternalFormsSharedModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ActPlace } from '../../@core/models/act.model';
 import { ActPlacesForm } from '../../@core/models/forms/act-form';
+import { UppercaseDirective } from '../../@core/directives/uppercase.directive';
 
 @Component({
   selector: 'app-act-places',
   imports: [
     CommonModule,
     TableModule,
-    InputTextModule
-  ],
+    InputTextModule,
+    ɵInternalFormsSharedModule,
+    ReactiveFormsModule,
+    UppercaseDirective
+],
   templateUrl: './act-places.component.html',
   styleUrl: './act-places.component.scss'
 })
@@ -39,25 +43,33 @@ export class ActPlacesComponent implements OnInit{
   })
 
   ngOnInit(): void {
-    this.acts$ = this.actsService.getAllActsPlaces();
-    this.actPlacesForm.disable();
+    this.acts$ = this.actsService.refreshObservable$.pipe(
+      startWith(null),
+      switchMap(() => {
+        return this.actsService.getAllActsPlaces();
+      })
+    )
+    
+    // this.actPlacesForm.disable();
     this.selectedActPlace = null;
   }
 
-  onSelect(actPlce: ActPlace){
-    this.isAdding = true;
-    this.isEnabled = true;
-    this.selectedActPlace = actPlce;
+  onSelect(actPlace: ActPlace){
+    this.isAdding = false;
+    this.isEnabled = false;
+    this.selectedActPlace = actPlace;
+    this.actPlacesForm.enable();
     this.actPlacesForm.patchValue({
-      CoLugar: actPlce.CoLugar,
-      TxLugar: actPlce.TxLugar,
-      Capacidad: actPlce.Capacidad,
-      MaTipoLugar: actPlce.MaTipoLugar,
-      Activo: actPlce.Activo,
-      CodUser: actPlce.CodUser,
+      CoLugar: actPlace.CoLugar,
+      TxLugar: actPlace.TxLugar,
+      Capacidad: actPlace.Capacidad,
+      MaTipoLugar: actPlace.MaTipoLugar,
+      Activo: actPlace.Activo,
+      CodUser: actPlace.CodUser,
     });
 
-    this.CodLugar = actPlce.CoLugar ;
+    this.CodLugar = actPlace.CoLugar;
+    console.log("Selected Act Place: ", actPlace);
   }
 
   onAdd(){
@@ -75,13 +87,17 @@ export class ActPlacesComponent implements OnInit{
 
   onSave(){
     if(this.selectedActPlace){
+      console.log(this.CodLugar)
+      console.log('Updating Act Place:', this.actPlacesForm.value);
+
       this.actsService.updateActPlace(this.CodLugar!, this.actPlacesForm.value as ActPlace).subscribe({
         next:(res) => {
           this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Lugar de Acto actualizado correctamente' });
-           
-          setTimeout(() => {
-            window.location.reload();
-          }, 500);
+          this.actPlacesForm.reset();
+          this.isAdding = false;
+          this.selectedActPlace = null;
+          this.isEnabled = false;
+          this.actPlacesForm.disable();
         },
         error: (err) => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el lugar de acto' });
@@ -91,10 +107,11 @@ export class ActPlacesComponent implements OnInit{
       this.actsService.addActPlace(this.actPlacesForm.value as ActPlace).subscribe({
         next: (res) => {
           this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Lugar de Acto agregado correctamente' });
-          
-          setTimeout(() => {
-            window.location.reload();
-          }, 500);
+          this.actPlacesForm.reset();
+          this.isAdding = false;
+          this.selectedActPlace = null;
+          this.isEnabled = false;
+          this.actPlacesForm.disable();
         },
         error: (err) => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al agregar el lugar de acto' });

@@ -1,7 +1,7 @@
 <div class="container">
     <div class="clientsList">
       <div class="title">
-        <h2>Lista de Especialidades</h2>
+        <h2>Lugares de Acto</h2>
       </div>
 
       <div class="body"> 
@@ -10,14 +10,13 @@
       ; as state) {
       <p-table
         #dt1
-        dataKey="idEvento"
         [value]='state'
         [rows]="10"
         [showCurrentPageReport]="true"
         [rowsPerPageOptions]="[10, 25, 50]"
         [paginator]="true"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
-        [globalFilterFields]="['txnombre', 'lugar', 'tipo', 'estatus', 'destacado']"
+        [globalFilterFields]="['TxLugar', 'Capacidad']"
         styleClass="ml-3 mr-3"
         >
         <ng-template pTemplate="caption" let-event>
@@ -51,7 +50,7 @@
             <tr class="table-content" 
             (click)=" onSelect(actPlace)" 
             [class.disabled]="isEnabled" 
-            [class.selected]="selectedActPlace === actPlace" > 
+            [class.selected]="selectedActPlace?.CoLugar === actPlace.CoLugar" > 
               <td>
                 {{ actPlace.TxLugar }}
               </td>
@@ -71,55 +70,60 @@
     </div>
 
     <div class="clientForm">
-        <form  autocomplete="off">
+        <form  autocomplete="off" [formGroup]="actPlacesForm">
             <div class="inputGroup">
                 <label for="name">DESCRIPCIÓN</label>
-                <textarea id="name" name="name"  appUppercase></textarea>
+                <textarea id="name" name="name"  appUppercase formControlName="TxLugar"></textarea>
             </div>
 
             <div class="inputGroup">
-                <label for="identification">CAPACIDAD   </label>
-                <input type="text" id="identification" name="identification"  appUppercase>
+                <label for="capacity">CAPACIDAD</label>
+                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="Capacidad">
             </div>
 
             <div class="inputGroup3">
-                            <div class="inputGroup2">
+              <div class="inputGroup2">
                 <label for="identification">TIPO</label>
                 <div class="select">
-                    <input type="checkbox" id="university" class="checkbox">
-                    <label for="university">UNIVERSIDAD</label>
+                    <input type="radio" id="university" class="checkbox" name="MaTipoLugar" [value]="1" formControlName="MaTipoLugar" >
+                    <label for="university">TEATRO TECHADO</label>
                 </div>
 
                 <div class="select">
-                    <input type="checkbox" id="tecnologico" class="checkbox">
-                    <label for="tecnologico">TECNOLÓGICO</label>
+                    <input type="radio" id="tecnologico" class="checkbox" name="MaTipoLugar"  [value]="2" formControlName="MaTipoLugar">
+                    <label for="tecnologico">ANFITEATRO </label>
                 </div>
 
                 <div class="select">
-                    <input type="checkbox" id="school" class="checkbox">
-                    <label for="school">COLEGIO</label>
+                    <input type="radio" id="school" class="checkbox" name="MaTipoLugar"  [value]="3" formControlName="MaTipoLugar">
+                    <label for="school">TEATRO SIN TECHADO</label>
                 </div>  
 
                 <div class="select">
-                    <input type="checkbox" id="enterprise" class="checkbox">
-                    <label for="enterprise">EMPRESA</label>
+                    <input type="radio" id="enterprise" class="checkbox" name="MaTipoLugar"  [value]="4" formControlName="MaTipoLugar">
+                    <label for="enterprise">AL AIRE LIBRE</label>
                 </div>
 
                 <div class="select">
-                    <input type="checkbox" id="particular" class="checkbox">
-                    <label for="particular">PARTICULAR</label>
+                    <input type="radio" id="particular" class="checkbox" name="MaTipoLugar"  [value]="5" formControlName="MaTipoLugar">
+                    <label for="particular">TEATRO - CINE</label>
+                </div>
+
+               <div class="select">
+                    <input type="radio" id="particular" class="checkbox" name="MaTipoLugar"  [value]="6" formControlName="MaTipoLugar">
+                    <label for="particular">OTRO</label>
                 </div>
             </div>
 
             <div class="inputGroup2">
                 <label for="identification">STATUS</label>
                 <div class="select">
-                    <input type="checkbox" id="active" class="checkbox">
+                    <input type="radio" id="active" class="checkbox" name="Activo" [value]="1" formControlName="Activo">
                     <label for="active">ACTIVO</label>
                 </div>
 
                 <div class="select">
-                    <input type="checkbox" id="inactive" class="checkbox">
+                    <input type="radio" id="inactive" class="checkbox"  name="Activo" [value]="0" formControlName="Activo">
                     <label for="inactive">INACTIVO</label>
                 </div>
             </div>

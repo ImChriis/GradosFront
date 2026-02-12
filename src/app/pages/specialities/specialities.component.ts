@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angul
 import { TableModule } from 'primeng/table';
 import { SpecialitiesForm } from '../../@core/models/forms/specialities-form';
 import { SpecialitiesService } from '../../@core/services/specialities.service';
-import { Observable } from 'rxjs';
+import { Observable, startWith, switchMap } from 'rxjs';
 import { Speciality } from '../../@core/models/speciality.model';
 import { InputText } from 'primeng/inputtext';
 import { UppercaseDirective } from "../../@core/directives/uppercase.directive";
@@ -39,7 +39,12 @@ export class SpecialitiesComponent implements OnInit{
   })
 
   ngOnInit(): void {
-    this.specialities$ = this.specialitiesService.getAllSpecialities();
+    this.specialities$ = this.specialitiesService.refreshObservable$.pipe(
+      startWith(null),
+      switchMap(() => {
+        return this.specialitiesService.getAllSpecialities();
+      })
+    )
   }
 
   onSelectedSpeciality(speciality: Speciality){
@@ -54,8 +59,6 @@ export class SpecialitiesComponent implements OnInit{
     });
 
     this.CodigoEsp = speciality.CodigoEsp;
-
-    console.log('Selected Speciality:', speciality);
   }
 
   onAdd(){
@@ -81,10 +84,11 @@ export class SpecialitiesComponent implements OnInit{
             summary: 'Success',
             detail: 'Speciality updated successfully'
           });
-
-          setTimeout(() => {
-            window.location.reload();
-          }, 500);
+          this.specialititesForm.reset();
+          this.isAdding = false;
+          this.selectedSpeciality = null;
+          this.isEnabled = false;
+          this.specialititesForm.disable();
         },
         error: (err) => {
           this.messageService.add({
@@ -102,9 +106,11 @@ export class SpecialitiesComponent implements OnInit{
             summary: 'Success',
             detail: 'Speciality added successfully'
           });
-          setTimeout(() => {
-            window.location.reload();
-          }, 500);
+          this.specialititesForm.reset();
+          this.isAdding = false;
+          this.selectedSpeciality = null;
+          this.isEnabled = false;
+          this.specialititesForm.disable();
         },
         error: (err) => {
           this.messageService.add({

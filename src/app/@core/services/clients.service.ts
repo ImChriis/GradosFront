@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
-import { map } from 'rxjs';
+import { map, Subject, tap } from 'rxjs';
 import { Client } from '../models/client.model';
 
 @Injectable({
@@ -10,6 +10,8 @@ import { Client } from '../models/client.model';
 export class ClientsService {
   private http = inject(HttpClient);
   private api: string = environment.api;
+  private refresh$ = new Subject<void>();
+  public refreshObservavble$ = this.refresh$.asObservable();
 
   findAllClients(){
     return this.http.get<Client[]>(`${this.api}/clients`).pipe(
@@ -23,11 +25,15 @@ export class ClientsService {
   }
 
   addClient(body: Partial<Client>) {
-    return this.http.post<Client>(`${this.api}/clients/add`, body);
+    return this.http.post<Client>(`${this.api}/clients/add`, body).pipe(
+      tap(() => this.refresh$.next())
+    )
   }
 
   updateClient(id: number, body: Partial<Client>) {
-    return this.http.put<Client>(`${this.api}/clients/update/${id}`, body);
+    return this.http.put<Client>(`${this.api}/clients/update/${id}`, body).pipe(
+      tap(() => this.refresh$.next())
+    )
   }
   
 }

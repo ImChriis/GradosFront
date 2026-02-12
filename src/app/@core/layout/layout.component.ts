@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
 import { last } from 'rxjs';
@@ -14,6 +14,8 @@ import { last } from 'rxjs';
   styleUrl: './layout.component.scss'
 })
 export class LayoutComponent implements OnInit{
+  private router = inject(Router);
+
   items: MenuItem[]| undefined;
   user!: string;
   role!: string;
@@ -52,6 +54,7 @@ export class LayoutComponent implements OnInit{
           },
           {
             label: 'Cerrar Sesión',
+            command: () => this.logout()
           }
         ]
       },
@@ -139,5 +142,10 @@ export class LayoutComponent implements OnInit{
         ]
       }
     ]
+  }
+
+  logout(){
+    localStorage.removeItem('User');
+    this.router.navigateByUrl('/');
   }
 }

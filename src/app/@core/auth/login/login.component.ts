@@ -5,7 +5,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angul
 import { AuthService } from '../../services/auth.service';
 import { LoginForm } from '../../models/forms/login-form';
 import { MessageService } from 'primeng/api';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { DOCUMENT, UpperCasePipe } from '@angular/common';
 import { UppercaseDirective } from "../../directives/uppercase.directive";
 import { User } from '../../models/user.mode';
@@ -16,7 +16,8 @@ import { User } from '../../models/user.mode';
     InputTextModule,
     ButtonModule,
     ReactiveFormsModule,
-    UppercaseDirective
+    UppercaseDirective,
+    RouterLink
 ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
