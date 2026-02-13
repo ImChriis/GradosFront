@@ -68,7 +68,8 @@ export class LayoutComponent implements OnInit{
                 label: 'Anillos',
               },
               {
-                label: 'Actos de Grado'
+                label: 'Actos de Grado',
+                routerLink: '/actContracts'
               }
             ]
           },

@@ -1,1 +1,141 @@
-<p>act-contract works!</p>
+<div class="container">
+    <div class="clientsList">
+      <div class="title">
+        <h2>Actos de grado</h2>
+      </div>
+
+      <div class="body"> 
+        @if(
+      actContracts$ | async
+      ; as state) {
+      <p-table
+        #dt1
+        [value]='state'
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [paginator]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+        [globalFilterFields]="['TxLugar', 'Capacidad']"
+        styleClass="ml-3 mr-3"
+        >
+        <ng-template pTemplate="caption" let-event>
+          <div class="flex-row">
+            <div class="p-toolbar-group-end">
+              <span class="p-input-icon-left ml-auto">
+                <i class=""></i>
+                <input
+                class="search"
+                #searchInput
+                pInputText
+                type="text"
+                placeholder="BUSCAR"
+                (input)="dt1.filterGlobal(searchInput.value, 'contains')"
+              />
+                </span>
+            </div>
+          </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="min-width: 1rem" class="border">
+                <div class="flex thstyles">LUGAR</div>
+              </th>
+              <th style="min-width: 8rem">
+                <div class="flex thstyles">CAPACIDAD</div>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-actPlace class="p-table">
+            <tr class="table-content" 
+            (click)=" onSelectActContract(actPlace)" 
+            [class.disabled]="isEnabled" 
+            [class.selected]="selectedActContract?.CoLugar === actPlace.CoLugar" > 
+              <td>
+                {{ actPlace.TxLugar }}
+              </td>
+              <td>
+                {{ actPlace.Capacidad }}
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">No elementos encontrados.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      }
+    </div>
+    </div>
+
+    <div class="clientForm">
+        <form  autocomplete="off">
+            <div class="inputGroup4">
+                <div class="inputGroup">
+                    <label for="identification">CÓDIGO</label>
+                    <input type="text" id="identification" name="identification" appUppercase formControlName="TxLugar">
+                </div>
+
+                <div class="inputGroup">
+                    <label for="identification">FECHA</label>
+                    <input type="text" id="identification" name="identification" appUppercase formControlName="TxLugar">
+                </div>
+
+                <div class="inputGroup">
+                    <label for="identification">HORA</label>
+                    <input type="text" id="identification" name="identification" appUppercase formControlName="TxLugar">
+                </div>
+            </div>
+
+            <div class="inputGroup">
+                <label for="capacity">LUGAR</label>
+                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="Capacidad">
+            </div>
+
+            <div class="inputGroup">
+                <label for="capacity">INSTITUTO</label>
+                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="Capacidad">
+            </div>
+
+            <div class="inputGroup">
+                <label for="capacity">ESPECIALIDAD</label>
+                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="Capacidad">
+            </div>
+
+            <div class="inputGroup">
+                <label for="capacity">TITULO</label>
+                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="Capacidad">
+            </div>
+
+
+           <div class="inputGroup">
+            
+           </div>
+        </form>
+
+        <div class="buttons">
+          <!-- <div class="icon" title="Buscar">
+            <i class="pi pi-search searchIcon"></i>
+          </div> -->
+
+          <div class="icons">
+            <div class="icon" title="Agregar" (click)="onAdd()" [class.disabled]="isAdding">
+              <i class="pi pi-plus add"></i>
+            </div>
+
+            <div class="icon" title="Guardar" (click)="onSave()" >
+              <i class="pi pi-save save"></i>
+            </div>
+
+            <div class="icon" title="Eliminar" (click)="onDelete()"  [class.disabled]="!selectedActContract" >
+              <i class="pi pi-trash delete"></i>
+            </div>
+          </div>
+
+          <div class="icon" title="Cancelar" (click)="onCancel()">
+            <i class="pi pi-times cancel"></i>
+          </div>
+        </div>
+    </div>
+</div>

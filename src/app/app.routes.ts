@@ -40,6 +40,11 @@ export const routes: Routes = [
                 path: 'banks',
                 loadComponent: () => import('./pages/banks/banks.component').then(m => m.BanksComponent),
                 title: 'Grados - Bancos',
+            },
+            {
+                path: 'actContracts',
+                loadComponent: () => import('./pages/act-contract/act-contract.component').then(m => m.ActContractComponent),
+                title: 'Grados - Contratos de Actos',
             }
 
         ]
