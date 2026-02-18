@@ -12,7 +12,7 @@
 .clientsList{
     background-color: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    width: 60%;
+    width: 50%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -27,7 +27,7 @@
 }
 
 .clientForm{
-    width: 30%;
+    width: 40%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -90,12 +90,14 @@ form{
 .select{
     width: 100%;
     display: flex;
-    align-items: center;
+    align-items: end;
+    margin-bottom: 5px;
 }
 
 .inputGroup3{
     width: 100%;
     display: flex;
+    gap: 20px;
 }
 
 .inputGroup4{
@@ -103,6 +105,10 @@ form{
     flex-direction: row;
     gap: 10px;
     width: 100%;
+}
+
+.inputGroup4 p-table{
+    width: 100% !important;
 }
 
 .inputGroup4 input{

@@ -109,9 +109,110 @@
             </div>
 
 
-           <div class="inputGroup">
-            
-           </div>
+           <div class="inputGroup4">
+                            <!-- @if(
+                actContracts$ | async
+                ; as state) { -->
+                <p-table
+                  #dt1
+                
+                  [rows]="10"
+                  [showCurrentPageReport]="true"
+                  [rowsPerPageOptions]="[10, 25, 50]"
+                  [paginator]="true"
+                  styleClass="ml-3 mr-3"
+                  >
+                    <ng-template pTemplate="header">
+                      <tr>
+                        <th style="min-width: 1rem" class="border">
+                          <div class="flex thstyles">LUGAR</div>
+                        </th>
+                        <th style="min-width: 8rem">
+                          <div class="flex thstyles">CAPACIDAD</div>
+                        </th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-actPlace class="p-table">
+                      <tr class="table-content" 
+                      (click)=" onSelectActContract(actPlace)" 
+                      [class.disabled]="isEnabled" 
+                      [class.selected]="selectedActContract?.CoLugar === actPlace.CoLugar" > 
+                        <td>
+                          {{ actPlace.TxLugar }}
+                        </td>
+                        <td>
+                          {{ actPlace.Capacidad }}
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                      <tr>
+                        <td colspan="7">No elementos encontrados.</td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                <!-- } -->
+          </div>
+      
+          <div class="inputGroup4">
+            <div class="inputGroup">
+              <label for="capacity">TOTAL</label>
+              <input type="text" id="capacity" name="capacity"  appUppercase formControlName="Capacidad">
+            </div>
+
+            <div class="inputGroup">
+              <label for="capacity">POR GRADUANDO</label>
+              <input type="text" id="capacity" name="capacity"  appUppercase formControlName="Capacidad">
+            </div>
+
+            <div class="icon" title="Cancelar" (click)="onCancel()">
+              <i class="pi pi-calculator cancel"></i>
+            </div>
+
+            <div class="icon" title="Cancelar" (click)="onCancel()">
+              <i class="pi pi-times cancel"></i>
+            </div>
+          </div>
+
+            <div class="inputGroup4">
+            <div class="inputGroup">
+              <label for="capacity">PAGADO</label>
+              <input type="text" id="capacity" name="capacity"  appUppercase formControlName="Capacidad">
+            </div>
+
+            <div class="inputGroup">
+              <label for="capacity">CANTIDAD</label>
+              <input type="text" id="capacity" name="capacity"  appUppercase formControlName="Capacidad">
+            </div>
+
+            <div class="icon" title="Cancelar" (click)="onCancel()">
+              <i class="pi pi-calculator cancel"></i>
+            </div>
+
+            <div class="icon" title="Cancelar" (click)="onCancel()">
+              <i class="pi pi-times cancel"></i>
+            </div>
+
+            <div class="icon" title="Cancelar" (click)="onCancel()">
+              <i class="pi pi-times cancel"></i>
+            </div>
+
+            <div class="icon" title="Cancelar" (click)="onCancel()">
+              <i class="pi pi-times cancel"></i>
+            </div>
+          </div>
+
+          <div class="inputGroup3">
+            <div class="inputGroup">
+              <label for="capacity">SALDO</label>
+              <input type="text" id="capacity" name="capacity"  appUppercase formControlName="Capacidad">
+            </div>
+
+            <div class="select">
+              <input type="radio" id="capacity" name="capacity"  appUppercase formControlName="Capacidad">
+              <label for="capacity">CULMINADA</label>
+            </div>
+          </div>
         </form>
 
         <div class="buttons">
