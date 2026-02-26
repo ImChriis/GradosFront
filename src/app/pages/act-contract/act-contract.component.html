@@ -1,4 +1,4 @@
-<div class="container">
+  <div class="container">
     <div class="clientsList">
       <div class="title">
         <h2>Actos de grado</h2>
@@ -6,7 +6,7 @@
 
       <div class="body"> 
         @if(
-      actContracts$ | async
+      acts$ | async
       ; as state) {
       <p-table
         #dt1
@@ -39,23 +39,47 @@
           <ng-template pTemplate="header">
             <tr>
               <th style="min-width: 1rem" class="border">
-                <div class="flex thstyles">LUGAR</div>
+                <div class="flex thstyles">CÓDIGO</div>
+              </th>
+              <th style="min-width: 1rem">
+                <div class="flex thstyles">FECHA</div>
+              </th>
+              <th style="min-width: 1rem">
+                <div class="flex thstyles">HORA</div>
+              </th>
+              <th style="min-width: 1rem">
+                <div class="flex thstyles">SIGLAS</div>
+              </th>
+              <th style="min-width: 2rem">
+                <div class="flex thstyles">ESPECIALIDAD</div>
               </th>
               <th style="min-width: 8rem">
-                <div class="flex thstyles">CAPACIDAD</div>
+                <div class="flex thstyles">LUGAR</div>
               </th>
             </tr>
           </ng-template>
-          <ng-template pTemplate="body" let-actPlace class="p-table">
+          <ng-template pTemplate="body" let-act class="p-table">
             <tr class="table-content" 
-            (click)=" onSelectActContract(actPlace)" 
+            (click)=" onSelectActContract(act)" 
             [class.disabled]="isEnabled" 
-            [class.selected]="selectedActContract?.CoLugar === actPlace.CoLugar" > 
+            [class.selected]="selectedAct?.CoLugar === act.CoLugar" > 
               <td>
-                {{ actPlace.TxLugar }}
+                {{ act.CodigoActo }}
               </td>
               <td>
-                {{ actPlace.Capacidad }}
+                {{ act.Fecha }}
+              </td>
+              <td>
+                {{ act.Hora }}
+              </td>
+              <td>
+                {{ act.siglas }}
+              </td>
+              <td>
+                {{ act.especialidad }}
+              </td>
+              <td>
+                {{ act.TxLugar }}
               </td>
             </tr>
           </ng-template>
@@ -136,7 +160,7 @@
                       <tr class="table-content" 
                       (click)=" onSelectActContract(actPlace)" 
                       [class.disabled]="isEnabled" 
-                      [class.selected]="selectedActContract?.CoLugar === actPlace.CoLugar" > 
+                      [class.selected]="selectedAct?.CoLugar === actPlace.CoLugar" > 
                         <td>
                           {{ actPlace.TxLugar }}
                         </td>
@@ -170,7 +194,7 @@
             </div>
 
             <div class="icon" title="Cancelar" (click)="onCancel()">
-              <i class="pi pi-times cancel"></i>
+              <i class="pi pi-sync cancel"></i>
             </div>
           </div>
 
@@ -186,19 +210,19 @@
             </div>
 
             <div class="icon" title="Cancelar" (click)="onCancel()">
-              <i class="pi pi-calculator cancel"></i>
+              <i class="pi pi-plus cancel"></i>
             </div>
 
             <div class="icon" title="Cancelar" (click)="onCancel()">
-              <i class="pi pi-times cancel"></i>
+              <i class="pi pi-minus cancel"></i>
             </div>
 
             <div class="icon" title="Cancelar" (click)="onCancel()">
-              <i class="pi pi-times cancel"></i>
+              <i class="pi pi-credit-card cancel"></i>
             </div>
 
             <div class="icon" title="Cancelar" (click)="onCancel()">
-              <i class="pi pi-times cancel"></i>
+              <i class="pi pi-print cancel"></i>
             </div>
           </div>
 
@@ -229,7 +253,7 @@
               <i class="pi pi-save save"></i>
             </div>
 
-            <div class="icon" title="Eliminar" (click)="onDelete()"  [class.disabled]="!selectedActContract" >
+            <div class="icon" title="Eliminar" (click)="onDelete()"  [class.disabled]="!selectedAct" >
               <i class="pi pi-trash delete"></i>
             </div>
           </div>

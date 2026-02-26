@@ -10,6 +10,6 @@ export class ActContractService {
   private http = inject(HttpClient);
 
   getActs(){
-    return this.http.get(`${this.api}/actContracts`);
+    return this.http.get<any>(`${this.api}/actContracts`);
   }
 }

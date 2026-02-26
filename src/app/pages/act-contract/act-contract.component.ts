@@ -4,6 +4,17 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { Observable } from 'rxjs';
 import { ActContractService } from '../../@core/services/act-contract.service';
+import { FormBuilder } from '@angular/forms';
+
+//temporal
+interface Act {
+  CodigoActo: number | null;
+  Fecha: string;
+  Hora: string;
+  TxLugar: string;
+  especialidadd: string;
+  siglas: string;
+}
 
 @Component({
   selector: 'app-act-contract',
@@ -17,19 +28,36 @@ import { ActContractService } from '../../@core/services/act-contract.service';
 })
 export class ActContractComponent implements OnInit{
   private actContractService =  inject(ActContractService);
-  actContracts$: Observable<any[]> | null = null;
+  private fb = inject(FormBuilder);
+  acts$: Observable<Act[]> | null = null;
   isAdding = true;
   isEnabled = false;
-  selectedActContract: any | null = null;
+  selectedAct: any | null = null;
+  selectActUser: any | null = null;
+
+  actForm = this.fb.group({
+    CodigoActo: [null],
+    Fecha: [''],
+    Hora: [''],
+    TxLugar: [''],
+    especialidadd: [''],
+    siglas: ['']
+  })
 
   ngOnInit() {
-    this.actContractService.getActs().subscribe((data: any) => {
-      console.log(data);
-    });
+    this.acts$ = this.actContractService.getActs();
   }
 
-  onSelectActContract(any: any){
-
+  onSelectActContract(act: Act){  
+    this.selectedAct  = act;
+    // this.actForm.patchValue({
+    //   CodigoActo: ,
+    //   Fecha: act.Fecha,
+    //   Hora: act.Hora,
+    //   TxLugar: act.TxLugar,
+    //   especialidadd: act.especialidadd,
+    //   siglas: act.siglas
+    // })
   }
 
   onAdd(){
