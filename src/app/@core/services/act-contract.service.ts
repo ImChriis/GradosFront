@@ -12,4 +12,8 @@ export class ActContractService {
   getActs(){
     return this.http.get<any>(`${this.api}/actContracts`);
   }
+
+  getActUsersByCodigoActo(codigoActo: number){
+    return this.http.get<any>(`${this.api}/actContracts/${codigoActo}/users`);
+  }
 }

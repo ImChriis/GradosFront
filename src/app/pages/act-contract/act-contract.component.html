@@ -94,78 +94,90 @@
     </div>
 
     <div class="clientForm">
-        <form  autocomplete="off">
+        <form  autocomplete="off" [formGroup]="actForm">
             <div class="inputGroup4">
                 <div class="inputGroup">
                     <label for="identification">CÓDIGO</label>
-                    <input type="text" id="identification" name="identification" appUppercase formControlName="TxLugar">
+                    <input type="text" id="identification" name="identification" appUppercase formControlName="CodigoActo">
                 </div>
 
                 <div class="inputGroup">
                     <label for="identification">FECHA</label>
-                    <input type="text" id="identification" name="identification" appUppercase formControlName="TxLugar">
+                    <input type="text" id="identification" name="identification" appUppercase formControlName="Fecha">
                 </div>
 
                 <div class="inputGroup">
                     <label for="identification">HORA</label>
-                    <input type="text" id="identification" name="identification" appUppercase formControlName="TxLugar">
+                    <input type="text" id="identification" name="identification" appUppercase formControlName="Hora">
                 </div>
             </div>
 
             <div class="inputGroup">
                 <label for="capacity">LUGAR</label>
-                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="Capacidad">
+                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="TxLugar">
             </div>
 
             <div class="inputGroup">
                 <label for="capacity">INSTITUTO</label>
-                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="Capacidad">
+                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="nbInstitucion">
             </div>
 
             <div class="inputGroup">
                 <label for="capacity">ESPECIALIDAD</label>
-                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="Capacidad">
+                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="especialidad">
             </div>
 
             <div class="inputGroup">
                 <label for="capacity">TITULO</label>
-                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="Capacidad">
+                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="titulo">
             </div>
 
 
            <div class="inputGroup4">
-                            <!-- @if(
-                actContracts$ | async
+                <!-- @if(
+                actUsers$ | async
                 ; as state) { -->
                 <p-table
                   #dt1
-                
-                  [rows]="10"
-                  [showCurrentPageReport]="true"
-                  [rowsPerPageOptions]="[10, 25, 50]"
-                  [paginator]="true"
-                  styleClass="ml-3 mr-3"
+                  [value]="actUsers$ | async"
+                  [rows]="5"
+                  [scrollable]="true"
+                  scrollHeight="flex"
+                  scrollHeight="200px"
+                  styles="mr-2"
                   >
                     <ng-template pTemplate="header">
                       <tr>
                         <th style="min-width: 1rem" class="border">
-                          <div class="flex thstyles">LUGAR</div>
+                          <div class="flex thstyles">NO CONTRATO</div>
                         </th>
-                        <th style="min-width: 8rem">
-                          <div class="flex thstyles">CAPACIDAD</div>
+                        <th style="min-width: 1rem">
+                          <div class="flex thstyles">NOMBRE</div>
+                        </th>
+                        <th style="min-width: 1rem">
+                          <div class="flex thstyles">PAGADO</div>
+                        </th>
+                        <th style="min-width: 1rem;">
+                          <div class="flex thstyles">SALDO</div>
                         </th>
                       </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-actPlace class="p-table">
+                    <ng-template pTemplate="body" let-user class="p-table">
                       <tr class="table-content" 
-                      (click)=" onSelectActContract(actPlace)" 
+                      (click)=" selectedUser(user)" 
                       [class.disabled]="isEnabled" 
-                      [class.selected]="selectedAct?.CoLugar === actPlace.CoLugar" > 
+                      [class.selected]="selectedAct?.CoLugar === user.CoLugar" > 
                         <td>
-                          {{ actPlace.TxLugar }}
+                          {{ user.NoContrato }}
                         </td>
                         <td>
-                          {{ actPlace.Capacidad }}
+                          {{ user.Nombre }}
+                        </td>
+                        <td>
+                          {{ user.MnPagado }}
+                        </td>
+                        <td>
+                          {{ user.MnSaldo }}
                         </td>
                       </tr>
                     </ng-template>
@@ -181,12 +193,12 @@
           <div class="inputGroup4">
             <div class="inputGroup">
               <label for="capacity">TOTAL</label>
-              <input type="text" id="capacity" name="capacity"  appUppercase formControlName="Capacidad">
+              <input type="text" id="capacity" name="capacity"  appUppercase >
             </div>
 
             <div class="inputGroup">
               <label for="capacity">POR GRADUANDO</label>
-              <input type="text" id="capacity" name="capacity"  appUppercase formControlName="Capacidad">
+              <input type="text" id="capacity" name="capacity"  appUppercase >
             </div>
 
             <div class="icon" title="Cancelar" (click)="onCancel()">
@@ -201,12 +213,12 @@
             <div class="inputGroup4">
             <div class="inputGroup">
               <label for="capacity">PAGADO</label>
-              <input type="text" id="capacity" name="capacity"  appUppercase formControlName="Capacidad">
+              <input type="text" id="capacity" name="capacity"  appUppercase >
             </div>
 
             <div class="inputGroup">
               <label for="capacity">CANTIDAD</label>
-              <input type="text" id="capacity" name="capacity"  appUppercase formControlName="Capacidad">
+              <input type="text" id="capacity" name="capacity"  appUppercase >
             </div>
 
             <div class="icon" title="Cancelar" (click)="onCancel()">
@@ -229,11 +241,11 @@
           <div class="inputGroup3">
             <div class="inputGroup">
               <label for="capacity">SALDO</label>
-              <input type="text" id="capacity" name="capacity"  appUppercase formControlName="Capacidad">
+              <input type="text" id="capacity" name="capacity"  appUppercase >
             </div>
 
             <div class="select">
-              <input type="radio" id="capacity" name="capacity"  appUppercase formControlName="Capacidad">
+              <input type="radio" id="capacity" name="capacity"  appUppercase >
               <label for="capacity">CULMINADA</label>
             </div>
           </div>
