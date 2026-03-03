@@ -5,6 +5,8 @@ import { TableModule } from 'primeng/table';
 import { Observable } from 'rxjs';
 import { ActContractService } from '../../@core/services/act-contract.service';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { RecalculateModalComponent } from './components/recalculate-modal/recalculate-modal.component';
 
 //temporal
 interface Act {
@@ -38,6 +40,7 @@ interface Act {
 export class ActContractComponent implements OnInit{
   private actContractService =  inject(ActContractService);
   private fb = inject(FormBuilder);
+  private dialogSerivice = inject(DialogService);
   acts$: Observable<Act[]> | null = null;
   actUsers$: Observable<any> | null = null;
   isAdding = true;
@@ -45,6 +48,12 @@ export class ActContractComponent implements OnInit{
   selectedAct: any | null = null;
   selectActUser: any | null = null;
   codigoActo: number | null = null;
+  total: number | null = null;
+  totalPaid: number | null = null;
+  saldo: number | null = null;
+  usersAmount: number | null = null;
+  totalPerStudent: number | null = null;
+  ref: DynamicDialogRef | undefined;
 
   actForm = this.fb.group({
     CodigoActo: this.fb.control<number | null>(null),
@@ -69,6 +78,11 @@ export class ActContractComponent implements OnInit{
     });
 
     this.acts$ = this.actContractService.getActs();
+  
+    this.total = null;
+    this.totalPaid = null;
+    this.saldo = null;
+    this.usersAmount = null;
   }
 
   onSelectActContract(act: Act){  
@@ -89,6 +103,27 @@ export class ActContractComponent implements OnInit{
     this.codigoActo = act.CodigoActo;
 
     this.actUsers$ = this.actContractService.getActUsersByCodigoActo(act.CodigoActo!);
+
+    this.actContractService.getActTotal(this.codigoActo!).subscribe(total => {
+      console.log("total: ", total);
+      this.total = total.MontoTotal;
+    });
+
+    this.actContractService.getTotalPaid(this.codigoActo!).subscribe(totalPaid => {
+      console.log("total paid: ", totalPaid);
+      this.totalPaid = totalPaid.TotalPagado;
+    });
+
+    this.actContractService.getSaldo(this.codigoActo!).subscribe(saldo => {
+      console.log("saldo: ", saldo);
+      this.saldo = saldo.saldo;
+    });
+
+    this.actContractService.getActUsersAmount(this.codigoActo!).subscribe(usersAmount => {
+      console.log("users amount: ", usersAmount);
+      this.usersAmount = usersAmount.cantidadEstudiantes;
+      this.totalPerStudent = this.total! / this.usersAmount!;
+    });
   }
 
   selectedUser(user: any){
@@ -116,5 +151,17 @@ export class ActContractComponent implements OnInit{
 
   onCancel(){
 
+  }
+
+  recalculateModal(){
+    this.ref = this.dialogSerivice.open(RecalculateModalComponent, {
+      header: 'Estas seguro de recalcular el monto del acto por estudiante?',
+      width: '50vw',
+      modal: true,
+      breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw'
+      },
+    })
   }
 }

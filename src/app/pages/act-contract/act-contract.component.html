@@ -193,12 +193,12 @@
           <div class="inputGroup4">
             <div class="inputGroup">
               <label for="capacity">TOTAL</label>
-              <input type="text" id="capacity" name="capacity"  appUppercase >
+              <input type="text" id="capacity" name="capacity"  appUppercase [value]="total | currency:'Bs. ':'symbol':'1.2-2'" >
             </div>
 
             <div class="inputGroup">
               <label for="capacity">POR GRADUANDO</label>
-              <input type="text" id="capacity" name="capacity"  appUppercase >
+              <input type="text" id="capacity" name="capacity"  appUppercase [value]="totalPerStudent | currency:'Bs. ':'symbol':'1.2-2'">
             </div>
 
             <div class="icon" title="Cancelar" (click)="onCancel()">
@@ -213,12 +213,12 @@
             <div class="inputGroup4">
             <div class="inputGroup">
               <label for="capacity">PAGADO</label>
-              <input type="text" id="capacity" name="capacity"  appUppercase >
+              <input type="text" id="capacity" name="capacity"  appUppercase [value]="totalPaid | currency: 'Bs. ': 'symbol':'1.2-2' " >
             </div>
 
             <div class="inputGroup">
               <label for="capacity">CANTIDAD</label>
-              <input type="text" id="capacity" name="capacity"  appUppercase >
+              <input type="text" id="capacity" name="capacity"  appUppercase [value]="usersAmount" >
             </div>
 
             <div class="icon" title="Cancelar" (click)="onCancel()">
@@ -241,7 +241,7 @@
           <div class="inputGroup3">
             <div class="inputGroup">
               <label for="capacity">SALDO</label>
-              <input type="text" id="capacity" name="capacity"  appUppercase >
+              <input type="text" id="capacity" name="capacity"  appUppercase [value]="saldo | currency:'Bs. ':'symbol':'1.2-2'" >
             </div>
 
             <div class="select">

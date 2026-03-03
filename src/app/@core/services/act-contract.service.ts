@@ -16,4 +16,24 @@ export class ActContractService {
   getActUsersByCodigoActo(codigoActo: number){
     return this.http.get<any>(`${this.api}/actContracts/${codigoActo}/users`);
   }
+
+  getActTotal(CodigoActo: number){
+    return this.http.get<any>(`${this.api}/actContracts/${CodigoActo}/total`);
+  }
+
+  recalculateTotal(CodigoActo: number){
+    return this.http.post<any>(`${this.api}/actContracts/${CodigoActo}/recalculate`, {});
+  }
+
+  getTotalPaid(CodigoActo: number){
+    return this.http.get<any>(`${this.api}/actContracts/${CodigoActo}/totalPaid`);
+  }
+
+  getSaldo(CodigoActo: number){
+    return this.http.get<any>(`${this.api}/actContracts/${CodigoActo}/saldo`);
+  }
+
+  getActUsersAmount(CodigoActo: number){
+    return this.http.get<any>(`${this.api}/actContracts/${CodigoActo}/usersAmount`);
+  }
 }
