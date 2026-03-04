@@ -7,6 +7,8 @@ import { ActContractService } from '../../@core/services/act-contract.service';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { RecalculateModalComponent } from './components/recalculate-modal/recalculate-modal.component';
+import { MessageService } from 'primeng/api';
+import { AddContractComponent } from './components/add-contract/add-contract.component';
 
 //temporal
 interface Act {
@@ -40,7 +42,8 @@ interface Act {
 export class ActContractComponent implements OnInit{
   private actContractService =  inject(ActContractService);
   private fb = inject(FormBuilder);
-  private dialogSerivice = inject(DialogService);
+  private dialogService = inject(DialogService);
+  private messageService = inject(MessageService);
   acts$: Observable<Act[]> | null = null;
   actUsers$: Observable<any> | null = null;
   isAdding = true;
@@ -101,29 +104,20 @@ export class ActContractComponent implements OnInit{
     })
 
     this.codigoActo = act.CodigoActo;
-
     this.actUsers$ = this.actContractService.getActUsersByCodigoActo(act.CodigoActo!);
+    this.updateTotals(act.CodigoActo!);
+  }
 
-    this.actContractService.getActTotal(this.codigoActo!).subscribe(total => {
-      console.log("total: ", total);
-      this.total = total.MontoTotal;
+  updateTotals(CodigoActo: number){
+    this.actContractService.getActTotal(CodigoActo).subscribe(res => this.total = res.MontoTotal);
+    this.actContractService.getTotalPaid(CodigoActo).subscribe(res => this.totalPaid = res.TotalPagado);
+    this.actContractService.getSaldo(CodigoActo).subscribe(res => this.saldo = res.saldo);
+    this.actContractService.getActUsersAmount(CodigoActo).subscribe(res => {
+        this.usersAmount = res.cantidadEstudiantes;
+        this.totalPerStudent = this.total! / this.usersAmount!;
     });
-
-    this.actContractService.getTotalPaid(this.codigoActo!).subscribe(totalPaid => {
-      console.log("total paid: ", totalPaid);
-      this.totalPaid = totalPaid.TotalPagado;
-    });
-
-    this.actContractService.getSaldo(this.codigoActo!).subscribe(saldo => {
-      console.log("saldo: ", saldo);
-      this.saldo = saldo.saldo;
-    });
-
-    this.actContractService.getActUsersAmount(this.codigoActo!).subscribe(usersAmount => {
-      console.log("users amount: ", usersAmount);
-      this.usersAmount = usersAmount.cantidadEstudiantes;
-      this.totalPerStudent = this.total! / this.usersAmount!;
-    });
+    // También refrescamos la lista de usuarios/contratos
+    this.actUsers$ = this.actContractService.getActUsersByCodigoActo(CodigoActo);
   }
 
   selectedUser(user: any){
@@ -153,15 +147,39 @@ export class ActContractComponent implements OnInit{
 
   }
 
-  recalculateModal(){
-    this.ref = this.dialogSerivice.open(RecalculateModalComponent, {
+  recalculateModal(codigoActo: number | null){
+    if(codigoActo){
+          this.ref = this.dialogService.open(RecalculateModalComponent, {
       header: 'Estas seguro de recalcular el monto del acto por estudiante?',
       width: '50vw',
       modal: true,
+      data: { actContractId: codigoActo },
       breakpoints: {
         '960px': '75vw',
         '640px': '90vw'
       },
+    })
+
+    this.ref.onClose.subscribe((res) => {
+      if(res){
+        this.updateTotals(codigoActo!);
+      }
+    })
+    }else{
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'No se ha seleccionado ningún acto para recalcular.' });
+    }
+  }
+
+  addContract(){
+    this.ref = this.dialogService.open(AddContractComponent, {
+      header: 'Incluir Contratos',
+      width: '50vw',
+      modal: true,
+      closable: true,
+      breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw'
+      }    
     })
   }
 }

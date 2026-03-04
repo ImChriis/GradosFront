@@ -190,7 +190,7 @@
                 <!-- } -->
           </div>
       
-          <div class="inputGroup4">
+          <div class="inputGroup4 actData">
             <div class="inputGroup">
               <label for="capacity">TOTAL</label>
               <input type="text" id="capacity" name="capacity"  appUppercase [value]="total | currency:'Bs. ':'symbol':'1.2-2'" >
@@ -201,16 +201,16 @@
               <input type="text" id="capacity" name="capacity"  appUppercase [value]="totalPerStudent | currency:'Bs. ':'symbol':'1.2-2'">
             </div>
 
-            <div class="icon" title="Cancelar" (click)="onCancel()">
+            <div class="icon2 recalculate" title="Recalcular" (click)="recalculateModal(this.codigoActo)">
               <i class="pi pi-calculator cancel"></i>
             </div>
 
-            <div class="icon" title="Cancelar" (click)="onCancel()">
+            <div class="icon2 refresh" title="Refrescar" (click)="onCancel()">
               <i class="pi pi-sync cancel"></i>
             </div>
           </div>
 
-            <div class="inputGroup4">
+            <div class="inputGroup4 actData">
             <div class="inputGroup">
               <label for="capacity">PAGADO</label>
               <input type="text" id="capacity" name="capacity"  appUppercase [value]="totalPaid | currency: 'Bs. ': 'symbol':'1.2-2' " >
@@ -221,20 +221,20 @@
               <input type="text" id="capacity" name="capacity"  appUppercase [value]="usersAmount" >
             </div>
 
-            <div class="icon" title="Cancelar" (click)="onCancel()">
-              <i class="pi pi-plus cancel"></i>
+            <div class="icon2 add2" title="Cancelar" (click)="addContract()">
+              <i class="pi pi-plus"></i>
             </div>
 
-            <div class="icon" title="Cancelar" (click)="onCancel()">
-              <i class="pi pi-minus cancel"></i>
+            <div class="icon2 delete2" title="Cancelar" (click)="onCancel()">
+              <i class="pi pi-minus"></i>
             </div>
 
-            <div class="icon" title="Cancelar" (click)="onCancel()">
-              <i class="pi pi-credit-card cancel"></i>
+            <div class="icon2 pay" title="Cancelar" (click)="onCancel()">
+              <i class="pi pi-credit-card"></i>
             </div>
 
-            <div class="icon" title="Cancelar" (click)="onCancel()">
-              <i class="pi pi-print cancel"></i>
+            <div class="icon2 print" title="Cancelar" (click)="onCancel()">
+              <i class="pi pi-print"></i>
             </div>
           </div>
 

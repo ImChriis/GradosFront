@@ -66,7 +66,7 @@ form{
     color: black;
     border-radius: 10px;
     padding-left: 10px;
-    text-transform: uppercase
+    text-transform: uppercase;
 }
 
 .inputGroup textarea{
@@ -189,6 +189,16 @@ form{
     transform: translateY(-2px);
 }
 
+.icon2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    background-color: darkgray;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
 .icon.disabled{
     pointer-events: none;
     opacity: 0.5;
@@ -198,6 +208,40 @@ form{
 .icons{
     display: flex;
     gap: 20px;
+}
+
+.icon2 i{
+    font-size: 30px;
+}
+
+.icon2:hover{
+    cursor: pointer;
+    background-color: gray;
+    transform: translateY(-2px);
+}
+
+.recalculate{
+    color: blue;
+}
+
+.refresh{
+    color: orangered;
+}
+
+.add2{
+    color: green;
+}
+
+.delete2{
+    color: red;
+}
+
+.pay{
+    color: greenyellow;
+}
+
+.print{
+    color: cyan;
 }
 
 th{

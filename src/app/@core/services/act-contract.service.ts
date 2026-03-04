@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,9 @@ import { HttpClient } from '@angular/common/http';
 export class ActContractService {
   private api: string = environment.api;
   private http = inject(HttpClient);
-
+  private refresh$ = new Subject<void>();
+  public refreshObservable$ = this.refresh$.asObservable();
+ 
   getActs(){
     return this.http.get<any>(`${this.api}/actContracts`);
   }
@@ -22,7 +25,7 @@ export class ActContractService {
   }
 
   recalculateTotal(CodigoActo: number){
-    return this.http.post<any>(`${this.api}/actContracts/${CodigoActo}/recalculate`, {});
+    return this.http.post<any>(`${this.api}/actContracts/recalculateTotal`, { CodigoActo });
   }
 
   getTotalPaid(CodigoActo: number){

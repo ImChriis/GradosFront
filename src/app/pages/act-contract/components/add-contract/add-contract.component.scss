@@ -1,0 +1,121 @@
+.inputGroup1{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.group{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.inputGroup2{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 3px;
+}
+
+.inputGroup2 label{
+    color: white;
+    font-weight: bold;
+}
+
+.inputGroup2 input{
+    height: 3vh;
+    background-color: white;
+    border: none;
+    color: black;
+    border-radius: 10px;
+    padding-left: 10px;
+    text-transform: uppercase;
+}
+
+.inputGroup3 label{
+    color: white;
+    font-weight: bold;
+}
+
+.inputGroup3 input{
+    height: 3vh;
+    background-color: white;
+    border: none;
+    color: black;
+    border-radius: 10px;
+    padding-left: 10px;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+h2{
+    color: white;
+}
+
+.inputGroup4{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.chemise{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.icons{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    gap: 20px;
+}
+
+.icon2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    background-color: darkgray;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(255, 255, 255, 0.19);
+}
+
+.icon2 i{
+    font-size: 30px;
+}
+
+.icon2:hover{
+    cursor: pointer;
+    background-color: gray;
+    transform: translateY(-2px);
+}
+.add2{
+    color: green;
+}
+
+.delete2{
+    color: red;
+}
+
+
+.talonarioInput{
+    width: 50%;
+}
+
+.talonarioInput textarea{
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border: none;
+    color: black;
+    border-radius: 10px;
+    padding-left: 10px;
+    text-transform: uppercase;
+    resize: none;
+}
+
+
