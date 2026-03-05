@@ -170,11 +170,12 @@ export class ActContractComponent implements OnInit{
     }
   }
 
-  addContract(){
+  addContract(CodigoActo: number | null, MnTotal: number | null){
     this.ref = this.dialogService.open(AddContractComponent, {
       header: 'Incluir Contratos',
       width: '50vw',
       modal: true,
+      data: { CodigoActo, MnTotal },
       closable: true,
       breakpoints: {
         '960px': '75vw',

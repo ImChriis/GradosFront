@@ -39,4 +39,8 @@ export class ActContractService {
   getActUsersAmount(CodigoActo: number){
     return this.http.get<any>(`${this.api}/actContracts/${CodigoActo}/usersAmount`);
   }
+
+  addUserToAct(body: any){
+    return this.http.post<any>(`${this.api}/actContracts/addUser`, body);
+  }
 }
