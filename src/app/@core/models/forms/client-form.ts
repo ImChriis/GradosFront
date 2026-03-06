@@ -8,6 +8,5 @@ export interface ClientForm{
     txtelefono: FormControl<string | null>;
     txcelular: FormControl<string | null>;
     txemail: FormControl<string | null>;
-    feingreso: FormControl<string | null>;
     codUser: FormControl<string | null>;
 }

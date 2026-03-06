@@ -6,6 +6,5 @@ export interface Client{
     txtelefono: string | null;
     txcelular: string | null;
     txemail: string | null;
-    feingreso: string | null;
     codUser: string | null;
 }

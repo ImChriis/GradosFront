@@ -42,7 +42,6 @@ export class ClientsComponent implements OnInit{
     txtelefono: new FormControl<string | null>('', { nonNullable: true }),
     txcelular: new FormControl<string | null>('', { nonNullable: true }),
     txemail: new FormControl<string | null>('', { nonNullable: true }),
-    feingreso: new FormControl<string | null>('', { nonNullable: true }),
     codUser: new FormControl<string | null>('', { nonNullable: true }),
   })
   
@@ -71,7 +70,6 @@ export class ClientsComponent implements OnInit{
       txtelefono: client.txtelefono,
       txcelular: client.txcelular,
       txemail: client.txemail,
-      feingreso: client.feingreso,
       codUser: client.codUser,
     });
 

@@ -9,6 +9,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { RecalculateModalComponent } from './components/recalculate-modal/recalculate-modal.component';
 import { MessageService } from 'primeng/api';
 import { AddContractComponent } from './components/add-contract/add-contract.component';
+import { RegisterUserComponent } from '../../@core/components/register-user/register-user.component';
 
 //temporal
 interface Act {
@@ -86,6 +87,8 @@ export class ActContractComponent implements OnInit{
     this.totalPaid = null;
     this.saldo = null;
     this.usersAmount = null;
+
+    this.r();
   }
 
   onSelectActContract(act: Act){  
@@ -144,7 +147,7 @@ export class ActContractComponent implements OnInit{
   }
 
   onCancel(){
-
+    this.r();
   }
 
   recalculateModal(codigoActo: number | null){
@@ -171,16 +174,33 @@ export class ActContractComponent implements OnInit{
   }
 
   addContract(CodigoActo: number | null, MnTotal: number | null){
-    this.ref = this.dialogService.open(AddContractComponent, {
-      header: 'Incluir Contratos',
-      width: '50vw',
-      modal: true,
-      data: { CodigoActo, MnTotal },
-      closable: true,
-      breakpoints: {
-        '960px': '75vw',
-        '640px': '90vw'
-      }    
-    })
+    if(!CodigoActo || !MnTotal){
+      this.messageService.add({ severity: 'warn', summary: 'No se ha seleccionado ningún acto para agregar un contrato.' });
+    }else{
+        this.ref = this.dialogService.open(AddContractComponent, {
+        header: 'Incluir Contratos',
+        width: '50vw',
+        modal: true,
+        data: { CodigoActo, MnTotal },
+        closable: true,
+        breakpoints: {
+          '960px': '75vw',
+          '640px': '90vw'
+        }    
+      })
+    }
+  }
+
+  r(){
+      this.ref = this.dialogService.open(RegisterUserComponent, {
+                header: 'Registrar Usuario',
+                width: '50%',
+                modal: true,
+                closable: true,
+                breakpoints: {
+                  '960px': '90%',
+                  '640px': '100%'
+                }
+              })
   }
 }

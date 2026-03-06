@@ -1,0 +1,41 @@
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <div class="inputGroup2">
+        <label for="cedula">CÓDIGO/CEDULA/RIF</label>
+        <input type="text" id="cedula" name="cedula" appUppercase formControlName="nucedula">
+    </div>
+
+    <div class="inputGroup2">
+        <label for="nombre">DESCRIPCIÓN/NOMBRE</label>
+        <input type="text" id="nombre" name="nombre" appUppercase formControlName="txnombre">
+    </div>
+
+    <div class="inputGroup2">
+        <label for="direccion">DIRECCIÓN</label>
+        <textarea name="direccion" id="direccion" formControlName="txdireccion"></textarea>
+    </div>
+
+    <div class="inputGroup2">
+        <label for="hab">TELEF. HAB</label>
+        <input type="text" id="hab" name="hab" appUppercase formControlName="txtelefono">
+    </div>
+
+    <div class="inputGroup2">
+        <label for="movil">TELEF. MOVIL</label>
+        <input type="text" id="movil" name="movil" appUppercase formControlName="txcelular">
+    </div>
+
+    <div class="inputGroup2">
+        <label for="email">E-MAIL</label>
+        <input type="email" id="email" name="email" appUppercase formControlName="txemail">
+    </div>
+
+    <div class="btns">
+        <div class="icon" title="Registrar" (click)="onSubmit()">
+            <i class="pi pi-save"></i>
+        </div>
+
+        <div class="icon" title="Cancelar" (click)="onCancel()">
+            <i class="pi pi-sign-out"></i>
+        </div>
+    </div>
+</form>
