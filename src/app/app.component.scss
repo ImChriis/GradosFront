@@ -23,3 +23,11 @@
   background: #f44336 !important; // rojo
   color: #fff !important;
 }
+
+::ng-deep .p-toast {
+  border: none !important;
+}
+
+::ng-deep .p-toast-detail {
+  color: white !important;
+}
