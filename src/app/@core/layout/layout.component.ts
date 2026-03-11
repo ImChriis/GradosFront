@@ -34,27 +34,36 @@ export class LayoutComponent implements OnInit{
         items: [
           {
             label: 'Clientes',
-            routerLink: '/clients'
+            routerLink: '/clients',
+            icon: 'pi pi-user'
           },
           {
             label: 'Especialidades',
-            routerLink: '/specialties'
+            routerLink: '/specialties',
+            icon: 'pi pi-briefcase'
           },
           {
             label: 'Instituciones',
-            routerLink: '/institutions'
+            routerLink: '/institutions',
+            icon: 'pi pi-building'
           },
           {
             label: 'Lugar de Actos',
-            routerLink: '/actPlaces'
+            routerLink: '/actPlaces',
+            icon: 'pi pi-home'
           },
           {
             label: 'Bancos',
-            routerLink: '/banks'
+            routerLink: '/banks',
+            icon: 'pi pi-money-bill'
+          },
+          {
+            separator: true
           },
           {
             label: 'Cerrar Sesión',
-            command: () => this.logout()
+            command: () => this.logout(),
+            icon: 'pi pi-sign-out',
           }
         ]
       },
@@ -74,6 +83,9 @@ export class LayoutComponent implements OnInit{
             ]
           },
           {
+            separator: true
+          },
+          {
             label: 'Anular Recibos',
             items: [
 
@@ -81,6 +93,9 @@ export class LayoutComponent implements OnInit{
           },
           {
             label: 'Reclamos y Servicios',
+          },
+          {
+            separator: true
           },
           {
             label: 'Generar Cierre'
@@ -100,6 +115,9 @@ export class LayoutComponent implements OnInit{
             label: 'Lugares para Actos'
           },
           {
+            separator: true
+          },
+          {
             label: 'Clientes'
           },
           {
@@ -107,6 +125,9 @@ export class LayoutComponent implements OnInit{
           },
           {
             label: 'Recibos'
+          },
+          {
+            separator: true
           },
           {
             label: 'Cierre Diario'
