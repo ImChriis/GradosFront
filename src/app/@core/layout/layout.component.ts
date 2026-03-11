@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
 import { last } from 'rxjs';
@@ -8,7 +8,8 @@ import { last } from 'rxjs';
   selector: 'app-layout',
   imports: [
     MenubarModule,
-    RouterOutlet
+    RouterOutlet,
+    RouterLink
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'
