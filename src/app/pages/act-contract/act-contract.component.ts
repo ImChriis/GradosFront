@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
@@ -35,7 +35,7 @@ interface Act {
     CommonModule,
     TableModule,
     InputTextModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   templateUrl: './act-contract.component.html',
   styleUrl: './act-contract.component.scss'
@@ -58,6 +58,7 @@ export class ActContractComponent implements OnInit{
   usersAmount: number | null = null;
   totalPerStudent: number | null = null;
   ref: DynamicDialogRef | undefined;
+  time!: string;
 
   actForm = this.fb.group({
     CodigoActo: this.fb.control<number | null>(null),
@@ -88,7 +89,7 @@ export class ActContractComponent implements OnInit{
     this.saldo = null;
     this.usersAmount = null;
 
-    this.r();
+    // this.r();
   }
 
   onSelectActContract(act: Act){  
@@ -202,5 +203,19 @@ export class ActContractComponent implements OnInit{
                   '640px': '100%'
                 }
               })
+  }
+
+  formateTimeString(time: string){
+    const [hours, minutes] = time.split(':');
+    const date = new Date();
+    date.setHours(parseInt(hours, 10));
+    date.setMinutes(parseInt(minutes, 10));
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+
+  formateDateString(dateString: string){
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+    
   }
 }

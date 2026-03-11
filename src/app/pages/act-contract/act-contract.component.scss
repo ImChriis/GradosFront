@@ -6,13 +6,19 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin-top: 2vh;
+    margin-top: 3vh;
+    font-size: 12px !important;
+}
+
+.title{
+    height:40px;
+    margin-top: -5px;
 }
 
 .clientsList{
     background-color: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    width: 60%;
+    width: 50%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -98,6 +104,14 @@ form{
     width: 100%;
     display: flex;
     gap: 20px;
+}
+
+.inputGroup3 .inputGroup{
+    width: 37%;
+}
+
+.inputGroup3 .inputGroup input{
+    width: 100%;
 }
 
 .inputGroup4{
@@ -248,10 +262,12 @@ th{
     background-color: darkgray !important;
     color: black !important;
     border: none !important;
+    font-size: 12px;;
 }
 
 td{
     border: none !important;
+    font-size: 12px;
 }
 
   :host ::ng-deep p-table tr:nth-child(odd) {
@@ -265,6 +281,10 @@ td{
     background-color: rgb(190, 190, 190) !important;
     color: black !important;
     border: none !important;
+  }
+
+  td{
+    border: 1px solid black !important; //bordes negros de prueba
   }
 
 .search{
@@ -307,8 +327,9 @@ td{
     .p-datatable-header{
         background-color: white !important;
         border: none !important;
+        font-size: 12px !important;
     }
-
+    
     .p-paginator{
         background-color: darkgray !important;
         border: none;
@@ -381,4 +402,33 @@ td{
 }
 
 
+.actData{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+}
 
+.actData .actInputs{
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
+.actData .inputGroup{
+    width: 36%;
+}
+
+.actData .inputGroup input{
+    width: 100%;
+}
+
+.btnsInput{
+    display: flex;
+    gap: 10px;
+    width: 20%;
+}
+
+.input{
+    width: 57%;
+}

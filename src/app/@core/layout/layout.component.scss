@@ -7,7 +7,33 @@
 nav{
     width: 100%;
     background-color: #e5e5e5;
+    display: flex;
+    flex-direction: column;
 }
+
+.icons{
+    width: 100%;
+    display: flex;
+    gap: 20px;
+}
+
+.icons button{
+    background-color: transparent;
+    border: none;
+    color: black;
+    cursor: pointer;
+}
+
+.icons button:hover{
+    // background-color: blue;
+    opacity: 0.8;
+}
+
+.icons i{
+    font-size: 1.5rem !important;
+}
+
+
 
 .content{
     flex: 1 0 auto;
@@ -74,4 +100,9 @@ footer{
         border: none !important;
         background-color: #e5e5e5 !important;
     }
+
+    .p-menubar-item-label{
+        font-weight: bold !important;
+    }
 }
+
