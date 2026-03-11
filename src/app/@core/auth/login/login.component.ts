@@ -17,7 +17,7 @@ import { User } from '../../models/user.mode';
     ButtonModule,
     ReactiveFormsModule,
     UppercaseDirective,
-    RouterLink
+    // RouterLink
 ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'

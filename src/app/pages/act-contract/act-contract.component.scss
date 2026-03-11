@@ -111,7 +111,7 @@ form{
 }
 
 .inputGroup3 .inputGroup input{
-    width: 100%;
+   width: 120px;
 }
 
 .inputGroup4{
@@ -184,6 +184,8 @@ form{
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    margin-top: auto;
+    padding-top: 10px;
 }
 
 .buttons i{
@@ -401,18 +403,21 @@ td{
 
 }
 
+.inputGroup4 .inputGroup input{
+    width: 120px;
+}
+
 
 .actData{
     display: flex;
     justify-content: space-between;
-    gap: 20px;
     width: 100%;
 }
 
 .actData .actInputs{
     display: flex;
-    gap: 20px;
-    width: 100%;
+    gap: 10px;
+    width: 70%;
 }
 
 .actData .inputGroup{
@@ -420,13 +425,16 @@ td{
 }
 
 .actData .inputGroup input{
-    width: 100%;
+    width: 120px;
 }
 
 .btnsInput{
     display: flex;
+    justify-content: end;
+    align-items: center;
     gap: 10px;
-    width: 20%;
+    width: 30%;
+    margin-right: -6px;
 }
 
 .input{
