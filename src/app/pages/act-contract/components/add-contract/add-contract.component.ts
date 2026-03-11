@@ -5,6 +5,7 @@ import { ActContractService } from '../../../../@core/services/act-contract.serv
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { RegisterUserComponent } from '../../../../@core/components/register-user/register-user.component';
+import { ConfirmModalComponent } from '../../../../@core/components/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-add-contract',
@@ -64,8 +65,8 @@ export class AddContractComponent implements OnInit{
           this.messageService.add({ severity: 'warn', summary: err.error.message });
           console.log(err);      
 
-          this.ref = this.dialogService.open(RegisterUserComponent, {
-            header: 'Registrar Usuario',
+          this.ref = this.dialogService.open(ConfirmModalComponent, {
+            header: 'Quieres agregar un nuevo cliente?',
             width: '50%',
             modal: true,
             closable: true,
