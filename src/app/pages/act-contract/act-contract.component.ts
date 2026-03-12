@@ -10,6 +10,7 @@ import { RecalculateModalComponent } from './components/recalculate-modal/recalc
 import { MessageService } from 'primeng/api';
 import { AddContractComponent } from './components/add-contract/add-contract.component';
 import { RegisterUserComponent } from '../../@core/components/register-user/register-user.component';
+import { PaymentsComponent } from './components/payments/payments.component';
 
 //temporal
 interface Act {
@@ -89,7 +90,7 @@ export class ActContractComponent implements OnInit{
     this.saldo = null;
     this.usersAmount = null;
 
-    // this.r();
+    this.payments();
   }
 
   onSelectActContract(act: Act){  
@@ -148,7 +149,7 @@ export class ActContractComponent implements OnInit{
   }
 
   onCancel(){
-    this.r();
+   this.payments();
   }
 
   recalculateModal(codigoActo: number | null){
@@ -192,10 +193,10 @@ export class ActContractComponent implements OnInit{
     }
   }
 
-  r(){
-      this.ref = this.dialogService.open(RegisterUserComponent, {
-                header: 'Registrar Usuario',
-                width: '50%',
+  payments(){
+      this.ref = this.dialogService.open(PaymentsComponent, {
+                header: 'Pagos',
+                width: '70%',
                 modal: true,
                 closable: true,
                 breakpoints: {

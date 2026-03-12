@@ -2,44 +2,44 @@
     <nav>
         <p-menubar [model]="items" />
         <div class="icons">
-            <button routerLink="/clients">
+            <button routerLink="/clients" title="Clientes">
                 <i class="pi pi-user"></i>
             </button>
 
-            <button routerLink="/specialties">
+            <button routerLink="/specialties" title="Especialidades">
                 <i class="pi pi-briefcase"></i>
             </button>
 
-            <button routerLink="/institutions">
+            <button routerLink="/institutions" title="Instituciones">
                 <i class="pi pi-building"></i>
             </button>
 
-            <button routerLink="/actPlaces">
+            <button routerLink="/actPlaces" title="Lugares de Acto">
                 <i class="pi pi-home"></i>
             </button>
 
-            <button class="/">
-                <i class="pi pi-crown"></i>
+            <button routerLink="/banks" title="Bancos">
+                <i class="pi pi-money-bill"></i>
             </button>
 
-            <button routerLink="/actContracts">
+            <button class="/" title="Contratos de anillos">
+                <i class="pi pi-circle"></i>
+            </button>
+
+            <button routerLink="/actContracts" title="Contratos de Acto">
                 <i class="pi pi-graduation-cap"></i>
             </button>
 
-            <button>
-                <i class="pi pi-bell"></i>
+            <button  title="Usuarios">
+                <i class="pi pi-users"></i>
             </button>
 
             <button>
-                <i class="pi pi-bell"></i>
+                <i class="pi pi-cog"></i>
             </button>
 
-            <button>
-                <i class="pi pi-bell"></i>
-            </button>
-
-            <button>
-                <i class="pi pi-bell"></i>
+            <button (click)="logout()" title="Cerrar sesión">
+                <i class="pi pi-sign-out"></i>
             </button>
         </div>
     </nav>

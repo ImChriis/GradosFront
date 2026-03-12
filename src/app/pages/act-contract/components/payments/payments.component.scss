@@ -1,0 +1,81 @@
+.container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+label{
+    font-size: 12px;
+    color: inherit;
+}
+
+.user{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.inputGroup{
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.inputGroup input{
+    height: 3vh;
+    background-color: #a9a9a9;
+    border: none;
+    color: black;
+    border-radius: 10px;
+    padding-left: 10px;
+    text-transform: uppercase
+}
+
+.top{
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.table{
+    width: 60%;
+    background-color: #a9a9a9;
+}
+
+.inputs{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.inputs .inputGroup{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+    gap: 10px;
+}
+
+.inputs .inputGroup input{
+    width: 60%;
+    display: flex;
+    align-items: center;
+}
+
+.selects{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+} 
+
+.selectGroup{
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 5px;
+}
