@@ -116,7 +116,10 @@ export class ActContractComponent implements OnInit{
     this.saldo = null;
     this.usersAmount = null;
 
-    this.payments();
+    // this.payments();
+
+    this.actForm.disable();
+    this.isAdding = false;
   }
 
   onSelectActContract(act: Act){  
@@ -163,7 +166,16 @@ export class ActContractComponent implements OnInit{
   }
 
   onAdd(){
+    this.isEnabled = true;
+    this.actForm.enable();
+    this.isAdding = true;
 
+        setTimeout(() => {
+      const el = document.querySelector<HTMLInputElement>(
+        'input[formcontrolname="CodigoActo"], textarea[formcontrolname="CodigoActo"]'
+      );
+      el?.focus();
+    }, 0);
   }
 
   onSave(){
@@ -175,7 +187,12 @@ export class ActContractComponent implements OnInit{
   }
 
   onCancel(){
-   this.payments();
+    this.isEnabled = false;
+    this.isAdding = false;
+    this.selectedAct = null;
+    this.actForm.reset();
+    this.actForm.disable();
+    this.actUsers$ = null;
   }
 
   recalculateModal(codigoActo: number | null){
