@@ -11,6 +11,9 @@ import { MessageService } from 'primeng/api';
 import { AddContractComponent } from './components/add-contract/add-contract.component';
 import { RegisterUserComponent } from '../../@core/components/register-user/register-user.component';
 import { PaymentsComponent } from './components/payments/payments.component';
+import { ActsService } from '../../@core/services/acts.service';
+import { InstitutionsService } from '../../@core/services/institutions.service';
+import { SpecialitiesService } from '../../@core/services/specialities.service';
 
 //temporal
 interface Act {
@@ -46,6 +49,9 @@ export class ActContractComponent implements OnInit{
   private fb = inject(FormBuilder);
   private dialogService = inject(DialogService);
   private messageService = inject(MessageService);
+  private actsService = inject(ActsService);
+  private institutionsService = inject(InstitutionsService);
+  private specialitiesService = inject(SpecialitiesService);
   acts$: Observable<Act[]> | null = null;
   actUsers$: Observable<any> | null = null;
   isAdding = true;
@@ -60,6 +66,10 @@ export class ActContractComponent implements OnInit{
   totalPerStudent: number | null = null;
   ref: DynamicDialogRef | undefined;
   time!: string;
+  actPlaces: string[] = [];
+  instituctions: string[] = [];
+  specialities: string[] = [];
+  titulo: string[] = [];
 
   actForm = this.fb.group({
     CodigoActo: this.fb.control<number | null>(null),
@@ -84,6 +94,22 @@ export class ActContractComponent implements OnInit{
     });
 
     this.acts$ = this.actContractService.getActs();
+    this.actsService.getAllActsPlaces().subscribe(res => {
+      this.actPlaces = res.map((act: any) => act.TxLugar);
+      console.log("lugares: ", this.actPlaces);
+    })
+
+    this.institutionsService.getAllInstitutions().subscribe(res => {
+      this.instituctions = res.map((inst: any) => inst.nbinstitucion);
+      console.log("instituciones: ", this.instituctions);
+    });
+
+    this.specialitiesService.getAllSpecialities().subscribe(res => {
+      this.specialities = res.map((spec: any) => spec.Especialidad);
+      console.log("especialidades: ", this.specialities);
+
+      this.titulo = res.map((spec: any) => spec.Titulo);
+    });
   
     this.total = null;
     this.totalPaid = null;

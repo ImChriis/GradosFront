@@ -114,26 +114,49 @@
 
             <div class="inputGroup">
                 <label for="capacity">LUGAR</label>
-                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="TxLugar">
+                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="TxLugar" list="actPlaces">
             </div>
+
+            <datalist id="actPlaces">
+              @for(place of actPlaces; track place) {
+                <option value="{{place}}">
+              }
+            </datalist>
 
             <div class="inputGroup">
                 <label for="capacity">INSTITUTO</label>
-                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="nbInstitucion">
+                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="nbInstitucion" list="institutions">
             </div>
+
+            <datalist id="institutions">
+              @for(instituto of instituctions; track instituto) {
+                <option value="{{instituto}}">
+              }
+            </datalist>
 
             <div class="inputGroup4">
               <div class="inputGroup">
                 <label for="capacity">ESPECIALIDAD</label>
-                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="especialidad">
+                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="especialidad" list="specialities">
             </div>
+
+            <datalist id="specialities">
+              @for(especialidad of specialities; track especialidad) {
+                <option value="{{especialidad}}">
+              }
+            </datalist>
 
             <div class="inputGroup">
                 <label for="capacity">TITULO</label>
-                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="titulo">
+                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="titulo" list="titulos">
             </div>
             </div>
 
+            <datalist id="titulos">
+              @for(titulo of titulo; track titulo) {
+                <option value="{{titulo}}">
+              }
+            </datalist>
 
            <div class="inputGroup4" id="userTable">
                 <!-- @if(
