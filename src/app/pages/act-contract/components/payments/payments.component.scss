@@ -31,7 +31,8 @@ label{
     color: black;
     border-radius: 10px;
     padding-left: 10px;
-    text-transform: uppercase
+    text-transform: uppercase;
+    width: 100%;
 }
 
 .top{
@@ -78,4 +79,102 @@ label{
     flex-direction: row-reverse;
     align-items: center;
     gap: 5px;
+}
+
+.mid{
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.details{
+    width: 60%;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.detailsInputs{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.detailsInputs .inputGroup{
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.detailsTableBtn{
+    display: flex;
+    justify-content: start;
+    align-items: stretch;
+    gap: 10px;
+    flex-grow: 1;
+}
+
+.icon2{
+    display: flex;
+    justify-self: center;
+    align-items: end;
+    height: 100%;
+    color: black;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.icon2 i{
+    background-color: darkgray;
+    padding: 10px;
+    font-size: 30px;
+}
+
+.icon2 i:hover{
+    cursor: pointer;
+    background-color: gray;
+    transform: translateY(-2px);
+}
+
+.detailsTable{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.detailsTable textarea{
+    width: 100%;
+    flex-grow: 1;
+    background-color: #a9a9a9;
+    border: none;
+    color: black;
+    border-radius: 10px;
+    text-transform: uppercase;
+    resize: none;
+}
+
+.buttons{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.buttons i{
+    font-size: 40px;
+}
+
+.icon{
+    color: black;
+    background-color: darkgray;
+    padding: 10px 30px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.icon:hover{
+    cursor: pointer;
+    background-color: gray;
+    transform: translateY(-2px);
 }

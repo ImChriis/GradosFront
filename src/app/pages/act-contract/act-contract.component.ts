@@ -116,7 +116,7 @@ export class ActContractComponent implements OnInit{
     this.saldo = null;
     this.usersAmount = null;
 
-    // this.payments();
+    this.payments();
 
     this.actForm.disable();
     this.isAdding = false;

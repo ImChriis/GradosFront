@@ -192,18 +192,18 @@ form{
     font-size: 30px;
 }
 
-.icon{
-    color: black;
-    background-color: darkgray;
-    padding: 10px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
+    .icon{
+        color: black;
+        background-color: darkgray;
+        padding: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
 
-.icon:hover{
-    cursor: pointer;
-    background-color: gray;
-    transform: translateY(-2px);
-}
+    .icon:hover{
+        cursor: pointer;
+        background-color: gray;
+        transform: translateY(-2px);
+    }
 
 .icon2{
     display: flex;

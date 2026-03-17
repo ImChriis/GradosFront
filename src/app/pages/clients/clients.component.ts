@@ -5,10 +5,11 @@ import { Observable, startWith, switchMap } from 'rxjs';
 import { Client } from '../../@core/models/client.model';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { InputText } from 'primeng/inputtext';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClientForm } from '../../@core/models/forms/client-form';
 import { MessageService } from 'primeng/api';
 import { UppercaseDirective } from '../../@core/directives/uppercase.directive';
+import { OnlyNumbersDirective } from '../../@core/directives/only-numbers.directive';
 
 @Component({
   selector: 'app-clients',
@@ -18,7 +19,8 @@ import { UppercaseDirective } from '../../@core/directives/uppercase.directive';
     TableModule,
     InputText,
     ReactiveFormsModule,
-    UppercaseDirective
+    UppercaseDirective,
+    OnlyNumbersDirective
   ],
   templateUrl: './clients.component.html',
   styleUrl: './clients.component.scss'
@@ -35,13 +37,13 @@ export class ClientsComponent implements OnInit{
   id!: number;
 
   clientsForm: FormGroup<ClientForm> = this.fb.group({
-    id: new FormControl<number | null>(null, { nonNullable: true }),
-    nucedula: new FormControl<string | null>('', { nonNullable: true }),
-    txnombre: new FormControl<string | null>('', { nonNullable: true }),
-    txdireccion: new FormControl<string | null>('', { nonNullable: true }),
-    txtelefono: new FormControl<string | null>('', { nonNullable: true }),
+    id: new FormControl<number | null>(null, { nonNullable: true } ),
+    nucedula: new FormControl<string | null>('', { nonNullable: true, validators: [Validators.required] }),
+    txnombre: new FormControl<string | null>('', { nonNullable: true, validators: [Validators.required] }),
+    txdireccion: new FormControl<string | null>('', { nonNullable: true, validators: [Validators.required] }),
+    txtelefono: new FormControl<string | null>('', { nonNullable: true, validators:[Validators.required] }),
     txcelular: new FormControl<string | null>('', { nonNullable: true }),
-    txemail: new FormControl<string | null>('', { nonNullable: true }),
+    txemail: new FormControl<string | null>('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
     codUser: new FormControl<string | null>('', { nonNullable: true }),
   })
   
