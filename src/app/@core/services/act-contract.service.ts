@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs';
+import { Subject, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,11 @@ export class ActContractService {
   }
 
   getActUsersByCodigoActo(codigoActo: number){
-    return this.http.get<any>(`${this.api}/actContracts/${codigoActo}/users`);
+    return this.http.get<any>(`${this.api}/actContracts/${codigoActo}/users`).pipe(
+      tap((res) => {
+        console.log(res)
+      }
+    ));
   }
 
   getActTotal(CodigoActo: number){
@@ -42,5 +46,9 @@ export class ActContractService {
 
   addUserToAct(body: any){
     return this.http.post<any>(`${this.api}/actContracts/addUser`, body);
+  }
+
+  getPaymentDataByUser(CodigoActo: number, NoContrato: string, NuCedula: string){
+    return this.http.get<any>(`${this.api}/actContracts/${CodigoActo}/${NuCedula}/${NoContrato}`);
   }
 }

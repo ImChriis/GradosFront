@@ -190,8 +190,7 @@
                     <ng-template pTemplate="body" let-user class="p-table">
                       <tr class="table-content" 
                       (click)=" selectedUser(user)" 
-                      [class.disabled]="isEnabled" 
-                      [class.selected]="selectedAct?.CoLugar === user.CoLugar" > 
+> 
                         <td>
                           {{ user.NoContrato }}
                         </td>
@@ -258,7 +257,7 @@
               <i class="pi pi-minus"></i>
             </div>
 
-            <div class="icon2 pay" title="Cancelar" (click)="onCancel()">
+            <div class="icon2 pay" title="Pagar" (click)="payments(selectActUser)">
               <i class="pi pi-credit-card"></i>
             </div>
 
@@ -290,7 +289,7 @@
               <i class="pi pi-plus add"></i>
             </div>
 
-            <div class="icon" title="Guardar" (click)="onSave()" >
+            <div class="icon" title="Guardar" (click)="onSave()" [class.disabled]="!isEnabled">
               <i class="pi pi-save save"></i>
             </div>
 

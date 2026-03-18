@@ -96,17 +96,17 @@ export class ActContractComponent implements OnInit{
     this.acts$ = this.actContractService.getActs();
     this.actsService.getAllActsPlaces().subscribe(res => {
       this.actPlaces = res.map((act: any) => act.TxLugar);
-      console.log("lugares: ", this.actPlaces);
+      // console.log("lugares: ", this.actPlaces);
     })
 
     this.institutionsService.getAllInstitutions().subscribe(res => {
       this.instituctions = res.map((inst: any) => inst.nbinstitucion);
-      console.log("instituciones: ", this.instituctions);
+      // console.log("instituciones: ", this.instituctions);
     });
 
     this.specialitiesService.getAllSpecialities().subscribe(res => {
       this.specialities = res.map((spec: any) => spec.Especialidad);
-      console.log("especialidades: ", this.specialities);
+      // console.log("especialidades: ", this.specialities);
 
       this.titulo = res.map((spec: any) => spec.Titulo);
     });
@@ -116,18 +116,18 @@ export class ActContractComponent implements OnInit{
     this.saldo = null;
     this.usersAmount = null;
 
-    this.payments();
-
     this.actForm.disable();
     this.isAdding = false;
   }
 
   onSelectActContract(act: Act){  
+    this.isEnabled = true;
+    this.isAdding = true;
     this.selectedAct  = act;
     this.actForm.patchValue({
       CodigoActo: act.CodigoActo,
-      Fecha: act.Fecha,
-      Hora: act.Hora,
+      Fecha: this.formateDateString(act.Fecha),
+      Hora: this.formateTimeString(act.Hora),
       TxLugar: act.TxLugar,
       especialidad: act.especialidad,
       siglas: act.siglas,
@@ -155,14 +155,8 @@ export class ActContractComponent implements OnInit{
   }
 
   selectedUser(user: any){
-    console.log("selected user: ", user);
-
-    this.actForm.patchValue({
-      Nombre: user.Nombre,
-      NoContrato: user.NoContrato,
-      MnPagado: user.MnPagado,
-      MnSaldo: user.MnSaldo
-    })
+    this.selectActUser = user;
+    console.log(user)
   }
 
   onAdd(){
@@ -193,6 +187,7 @@ export class ActContractComponent implements OnInit{
     this.actForm.reset();
     this.actForm.disable();
     this.actUsers$ = null;
+    this.selectActUser = null;
   }
 
   recalculateModal(codigoActo: number | null){
@@ -236,17 +231,26 @@ export class ActContractComponent implements OnInit{
     }
   }
 
-  payments(){
+  payments(actUser: any){
+    if(!this.selectActUser){
+      this.messageService.add({ severity: 'warn', summary: 'No se ha seleccionado ningún contrato para ver los pagos.' });
+    }else{
       this.ref = this.dialogService.open(PaymentsComponent, {
-                header: 'Pagos',
-                width: '70%',
-                modal: true,
-                closable: true,
-                breakpoints: {
-                  '960px': '90%',
-                  '640px': '100%'
-                }
-              })
+          header: 'Pagos',
+          width: '62%',
+          height: '100%',
+          modal: true,
+          closable: true,
+          data: {
+            actUser,
+            codigoActo: this.selectedAct.CodigoActo,
+           },
+          breakpoints: {
+            '960px': '90%',
+            '640px': '100%'
+        }
+      })
+    }
   }
 
   formateTimeString(time: string){
@@ -258,8 +262,19 @@ export class ActContractComponent implements OnInit{
   }
 
   formateDateString(dateString: string){
-    const date = new Date(dateString);
-    return date.toLocaleDateString();
+    if (!dateString) return '';
     
+    // Suponiendo que el input viene como "DD-MM-YYYY"
+    const [day, month, year] = dateString.split('-');
+    
+    // Creamos el objeto Date (mes es 0-indexado)
+    const date = new Date(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10));
+
+    // Formateamos manualmente para evitar variaciones del navegador
+    const d = date.getDate().toString().padStart(2, '0');
+    const m = (date.getMonth() + 1).toString().padStart(2, '0');
+    const y = date.getFullYear();
+
+    return `${d}-${m}-${y}`;
   }
 }

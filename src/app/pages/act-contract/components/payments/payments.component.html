@@ -10,7 +10,7 @@
             <input type="text" id="cedula" name="cedula">
         </div>
 
-        <div class="inputGroup">
+        <div class="inputGroup cliente">
             <label for="name">CLIENTE</label>
             <input type="text" id="name" name="name">
         </div>
@@ -28,22 +28,22 @@
             </div>
 
             <div class="inputGroup">
-                <label for="montoContrato">MONTO CONTRATO</label>
+                <label for="montoContrato">DESCUENTO</label>
                 <input type="text" id="montoContrato" name="montoContrato">
             </div>
 
             <div class="inputGroup">
-                <label for="montoContrato">MONTO CONTRATO</label>
+                <label for="montoContrato">INICIAL CONTRATO</label>
                 <input type="text" id="montoContrato" name="montoContrato">
             </div>
 
             <div class="inputGroup">
-                <label for="montoContrato">MONTO CONTRATO</label>
+                <label for="montoContrato">MONTO PAGADO</label>
                 <input type="text" id="montoContrato" name="montoContrato">
             </div>
 
             <div class="inputGroup">
-                <label for="montoContrato">MONTO CONTRATO</label>
+                <label for="montoContrato">MONTO SALDO</label>
                 <input type="text" id="montoContrato" name="montoContrato">
             </div>
             
@@ -57,6 +57,10 @@
                     <label for="preview">PREVIEW</label>
                     <input type="checkbox" name="preview" id="preview">
                 </div>
+
+                <button>
+                    ELIMINAR RECIBO
+                </button>
             </div>
         </div>
     </div>
@@ -81,9 +85,9 @@
             </div>
 
             <div class="detailsTableBtn">
-                <div class="icon2">
+                <!-- <div class="icon2">
                     <i class="pi pi-file-excel"></i>
-                </div>
+                </div> -->
 
                 <div class="detailsTable">
                     <label for="observacion">OBSERVACIÓN</label>
@@ -93,28 +97,70 @@
         </div>
 
         <div class="buttons">
-            <div class="icon">
+            <div class="icon" title="Nueva Operación">
                 <i class="pi pi-file"></i>
             </div>
 
-            <div class="icon">
-                <i class="pi pi-file"></i>
+            <div class="icon" title="Caja">
+                <i class="pi pi-money-bill"></i>
             </div>
 
-            <div class="icon">
+            <div class="icon" title="Imprimir">
                 <i class="pi pi-print"></i>
             </div>
 
-            <div class="icon">
+            <div class="icon" title="Actualizar">
                 <i class="pi pi-refresh"></i>
             </div>
 
-            <div class="icon">
+            <div class="icon" title="Cancelar">
                 <i class="pi pi-times"></i>
             </div>
 
-            <div class="icon">
+            <div class="icon" title="Salida">
                 <i class="pi pi-sign-out"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="bot">
+        <div class="abonosTable">
+            <label for="abonos">ABONOS</label>
+        </div>
+
+        <div class="payments">
+            <label>FORMAS DE PAGO</label>
+
+            <div class="inputGroup">
+                <label for="montoContrato">MÉTODO DE PAGO</label>
+                <input type="text" id="montoContrato" name="montoContrato">
+            </div>
+
+            <div class="inputGroup">
+                <label for="montoContrato">BANCO</label>
+                <input type="text" id="montoContrato" name="montoContrato">
+            </div>
+
+           <div class="paymentsBot">
+                <div class="inputs-col">
+                    <div class="inputGroup">
+                        <label for="cheque">NO. REFERENCIA</label>
+                        <input type="text" id="cheque">
+                    </div>
+                    <div class="inputGroup">
+                        <label for="fecha">FECHA</label>
+                        <input type="text" id="fecha">
+                    </div>
+                    <div class="inputGroup">
+                        <label for="trans">MONTO PAGO</label>
+                        <input type="text" id="trans">
+                    </div>
+                </div>
+
+                <div class="icons-col">
+                    <div class="icon" title="Agregar"><i class="pi pi-plus"></i></div>
+                    <div class="icon" title="Eliminar"><i class="pi pi-minus"></i></div>
+                </div>
             </div>
         </div>
     </div>

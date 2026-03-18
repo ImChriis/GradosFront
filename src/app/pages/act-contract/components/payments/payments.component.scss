@@ -1,10 +1,22 @@
 .container{
     width: 100%;
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
+    font-size: 12px !important;
+}
+
+::ng-deep{
+    .p-dialog-header{
+        height: 10px;
+    }
+
+    .p-dialog-footer{
+        display: none;
+    }
 }
 
 label{
@@ -16,16 +28,22 @@ label{
     width: 100%;
     display: flex;
     justify-content: space-between;
+    gap: 20px;
+}
+
+.user .inputGroup:last-child{
+    width: 50%;
 }
 
 .inputGroup{
     display: flex;
     flex-direction: column;
+    // width: 100%;
     gap: 3px;
 }
 
 .inputGroup input{
-    height: 3vh;
+    height: 20px;
     background-color: #a9a9a9;
     border: none;
     color: black;
@@ -71,8 +89,21 @@ label{
 .selects{
     width: 100%;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: end;
+    gap: 10px;
 } 
+
+.selects button{
+    color: white;
+    font-weight: bold;
+    background-color: rgb(92, 37, 1);
+    border: none;
+}
+
+.selects button:hover{
+    cursor: pointer;
+    opacity: 0.9;
+}
 
 .selectGroup{
     display: flex;
@@ -159,7 +190,7 @@ label{
 .buttons{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 5px;
 }
 
 .buttons i{
@@ -177,4 +208,70 @@ label{
     cursor: pointer;
     background-color: gray;
     transform: translateY(-2px);
+}
+
+.bot{
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.abonosTable{
+    width: 60%;
+    height: auto;
+    background-color: #a9a9a9;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.payments{
+    width: 37%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.paymentsBot {
+    display: grid;
+    /* Columna 1: toma el espacio sobrante (1fr) */
+    /* Columna 2: toma solo el espacio de los iconos (auto o min-content) */
+    grid-template-columns: 1fr auto; 
+    grid-template-rows: repeat(3, auto); /* 3 filas para los 3 inputs */
+    gap: 10px;
+    align-items: end; /* Alinea iconos con la base de los inputs */
+    align-items: stretch;
+}
+
+/* Colocamos los inputs en la primera columna */
+.paymentsBot .inputGroup {
+    grid-column: 1;
+}
+
+/* Colocamos los iconos en la segunda columna, uno al lado del otro o debajo */
+.paymentsBot .icon {
+    grid-column: 2;
+    /* Si quieres que los iconos estén uno debajo del otro, no hagas nada. 
+       Si quieres que estén juntos en una fila al lado de los inputs, 
+       podemos envolverlos en un div o usar subgrid. */
+}
+
+.inputs-col{
+    display: grid;
+    gap: 4.2px;
+}
+
+.icons-col{
+    display: grid;
+    align-items: stretch;
+    gap: 10px;
+}
+
+.icons-col .icon i{
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    font-size: 30px;
 }
