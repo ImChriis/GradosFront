@@ -18,7 +18,48 @@
 
     <div class="top">
         <div class="table">
-
+              @if(
+      recibos$ | async
+      ; as state) {
+      <p-table
+        #dt1
+        [value]='state'
+        [rows]="10"
+        styleClass="ml-3 mr-3"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="min-width: 10rem" class="border">
+                <div class="flex thstyles">NO. RECIBO</div>
+              </th>
+              <th style="min-width: 10rem">
+                <div class="flex thstyles">FECHA RECIBO</div>
+              </th>
+              <th style="min-width: 10rem">
+                <div class="flex thstyles">MONTO RECIBO</div>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-recibo class="p-table">
+            <tr class="table-content"> 
+              <td>
+                {{ recibo.NoRecibo }}
+              </td>
+              <td>
+                {{ recibo.ferecibo | date: 'dd/MM/yyyy' }}
+              </td>
+              <td>
+                {{ recibo.mnrecibo | currency: 'Bs. ': 'symbol':'1.2-2' }}
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">No elementos encontrados.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      }
         </div>
 
         <div class="inputs">
@@ -126,6 +167,54 @@
     <div class="bot">
         <div class="abonosTable">
             <label for="abonos">ABONOS</label>
+                          @if(
+      abonos$ | async
+      ; as state) {
+      <p-table
+        #dt1
+        [value]='state'
+        [rows]="10"
+        styleClass="ml-3 mr-3"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="min-width: 10rem" class="border">
+                <div class="flex thstyles">FECHA DEPOSITO</div>
+              </th>
+              <th style="min-width: 10rem">
+                <div class="flex thstyles">TIPO OPERACIÓN</div>
+              </th>
+              <th style="min-width: 10rem">
+                <div class="flex thstyles">BANCO</div>
+              </th>
+                <th style="min-width: 10rem">
+                <div class="flex thstyles">NO. DEPOSITO</div>
+              </th>
+             <th style="min-width: 10rem">
+                <div class="flex thstyles">MONTO DEPOSITO</div>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-abono class="p-table">
+            <tr class="table-content"> 
+              <td>
+                {{ abono.Fecha | date: 'dd/MM/yyyy' }}
+              </td>
+              <td>
+                {{ abono.TipoOperacion }}
+              </td>
+              <td>
+                {{ abono.MontoDeposito | currency: 'Bs. ': 'symbol':'1.2-2' }}
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">No elementos encontrados.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      }
         </div>
 
         <div class="payments">

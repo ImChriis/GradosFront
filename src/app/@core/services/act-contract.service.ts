@@ -51,4 +51,12 @@ export class ActContractService {
   getPaymentDataByUser(CodigoActo: number, NoContrato: string, NuCedula: string){
     return this.http.get<any>(`${this.api}/actContracts/${CodigoActo}/${NuCedula}/${NoContrato}`);
   }
+  
+  getRecibosByUserContract(NoContrato: number){
+    return this.http.get<any>(`${this.api}/actContracts/${NoContrato}`);
+  }
+
+  getAbonosByUserContract(NoContrato: string, NuCedula: string){
+    return this.http.get<any>(`${this.api}/actContracts/${NuCedula}/${NoContrato}/abonos`);
+  }
 }

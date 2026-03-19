@@ -42,7 +42,7 @@ interface Act {
     ReactiveFormsModule,
   ],
   templateUrl: './act-contract.component.html',
-  styleUrl: './act-contract.component.scss'
+  styleUrl: './act-contract.component.scss',
 })
 export class ActContractComponent implements OnInit{
   private actContractService =  inject(ActContractService);

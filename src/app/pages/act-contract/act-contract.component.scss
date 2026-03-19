@@ -321,7 +321,7 @@ td{
   pointer-events: none;
 }
 
-::ng-deep{
+:host ::ng-deep .body{
     .p-table{
         width: 90% !important;
     }
