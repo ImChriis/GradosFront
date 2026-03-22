@@ -10,8 +10,7 @@ import { map, Observable } from 'rxjs';
   selector: 'app-payments',
   imports: [
     CommonModule,
-    TableModule,
-    AsyncPipe
+    TableModule
   ],
   templateUrl: './payments.component.html',
   styleUrl: './payments.component.scss'
@@ -25,12 +24,27 @@ export class PaymentsComponent implements OnInit{
   NoContrato!: number;
   recibos$!: Observable<any>;
   abonos$!: Observable<any>;
+  client!: string;
+  montoContrato!: number;
+  descuento!: number;
+  MnInicial!: number;
+  montoPagado!: number;
+  montoSaldo!: number;
+  NoRecibo!: number;
 
   ngOnInit(): void {
     this.NuCedula = this.actUser.NuCedula;
     this.NoContrato = this.actUser.NoContrato;
+    this.client = this.actUser.Nombre;
+    this.montoContrato = this.actUser.MnContrato;
+    this.descuento = this.actUser.MnDescuento;
+    this.MnInicial = this.actUser.MnInicial;
+    this.montoPagado = this.actUser.MnPagado;
+    this.montoSaldo = this.actUser.MnSaldo;
 
     console.log(this.codigoActo, this.NoContrato, this.NuCedula);
+
+    console.log("data", this.actUser);
     
     this.actContractService.getPaymentDataByUser(
       this.codigoActo,
@@ -57,6 +71,11 @@ export class PaymentsComponent implements OnInit{
         console.log('Abonos data for user:', response);
       })
     );
+  }
+
+  selectRecibo(recibo: any){
+    console.log('Selected recibo:', recibo);
+    this.NoRecibo = recibo.NoRecibo;
   }
 }
  

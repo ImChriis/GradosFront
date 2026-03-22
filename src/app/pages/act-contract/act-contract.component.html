@@ -62,7 +62,7 @@
             <tr class="table-content" 
             (click)=" onSelectActContract(act)" 
             [class.disabled]="isEnabled" 
-            [class.selected]="selectedAct?.CoLugar === act.CoLugar" > 
+            [class.selected]="selectedAct?.CodigoActo === act.CodigoActo" > 
               <td>
                 {{ act.CodigoActo }}
               </td>
@@ -188,9 +188,10 @@
                       </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-user class="p-table">
-                      <tr class="table-content" 
+                      <tr class="table-content2" 
                       (click)=" selectedUser(user)" 
-> 
+                      [class.selected]="selectActUser?.NoContrato === user.NoContrato"
+                      > 
                         <td>
                           {{ user.NoContrato }}
                         </td>

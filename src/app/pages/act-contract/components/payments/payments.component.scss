@@ -64,6 +64,16 @@ label{
     width: 60%;
 }
 
+.table-content tr:hover{
+    background-color: gray !important;
+    cursor: pointer;
+}
+
+.table-content.selected {
+    background-color: #acd4f5 !important;
+    cursor: pointer;
+}
+
 th{
     background-color: rgb(190, 190, 190) !important;
     color: black !important;
@@ -84,12 +94,6 @@ th{
 
   td{
     border: 1px solid black !important; //bordes negros de prueba
-  }
-
-  :host ::ng-deep .table{
-    .p-datatable-header{
-        background-color: red;
-    }
   }
 
 .inputs{
@@ -301,3 +305,4 @@ th{
     align-items: center;
     font-size: 30px;
 }
+

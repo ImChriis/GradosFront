@@ -321,7 +321,22 @@ td{
   pointer-events: none;
 }
 
-:host ::ng-deep .body{
+.table-content.selected {
+    background-color: #acd4f5 !important;
+    cursor: pointer;
+}
+
+.table-content2:hover{
+    background-color: gray !important;
+    cursor: pointer;
+}
+
+.table-content2.selected {
+    background-color: #acd4f5 !important;
+    cursor: pointer;
+}
+
+::ng-deep{
     .p-table{
         width: 90% !important;
     }

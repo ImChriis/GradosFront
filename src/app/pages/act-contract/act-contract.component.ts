@@ -70,6 +70,7 @@ export class ActContractComponent implements OnInit{
   instituctions: string[] = [];
   specialities: string[] = [];
   titulo: string[] = [];
+  MnTotal!: number;
 
   actForm = this.fb.group({
     CodigoActo: this.fb.control<number | null>(null),
@@ -137,6 +138,8 @@ export class ActContractComponent implements OnInit{
       //users data
     })
 
+    console.log("selected act: ", this.selectedAct);
+
     this.codigoActo = act.CodigoActo;
     this.actUsers$ = this.actContractService.getActUsersByCodigoActo(act.CodigoActo!);
     this.updateTotals(act.CodigoActo!);
@@ -156,7 +159,7 @@ export class ActContractComponent implements OnInit{
 
   selectedUser(user: any){
     this.selectActUser = user;
-    console.log(user)
+    console.log(user);
   }
 
   onAdd(){
