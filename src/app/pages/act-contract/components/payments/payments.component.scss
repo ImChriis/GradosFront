@@ -255,6 +255,11 @@ th{
     display: flex;
     flex-direction: column;
     gap: 10px;
+    overflow: hidden;
+}
+
+.abonosTable th, .abonosTable td{
+    font-size: 10px
 }
 
 .payments{
