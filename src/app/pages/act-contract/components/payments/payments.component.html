@@ -18,12 +18,12 @@
 
     <div class="top">
         <div class="table">
-              @if(
+              <!-- @if(
       recibos$ | async
-      ; as state) {
+      ; as state) { -->
       <p-table
         #dt1
-        [value]='state'
+        [value]='recibos$ | async'
         [rows]="10"
         styleClass="ml-3 mr-3"
         >
@@ -62,7 +62,7 @@
             </tr>
           </ng-template>
         </p-table>
-      }
+      <!-- } -->
         </div>
 
         <div class="inputs">
@@ -178,28 +178,30 @@
         [value]='abonos$ | async'
         [rows]="10"
         styleClass="ml-3 mr-3"
+        [scrollable]="true" 
+        scrollDirection="horizontal"
         >
           <ng-template pTemplate="header">
             <tr>
-              <th style="min-width: 10rem" class="border">
+              <th style="min-width: 1rem" class="border">
                 <div class="flex thstyles">FECHA DEPOSITO</div>
               </th>
-              <th style="min-width: 10rem">
+              <th style="min-width: 1rem">
                 <div class="flex thstyles">TIPO OPERACIÓN</div>
               </th>
-              <th style="min-width: 10rem">
+              <th style="min-width: 1rem">
                 <div class="flex thstyles">BANCO</div>
               </th>
-                <th style="min-width: 10rem">
+                <th style="min-width: 1rem">
                 <div class="flex thstyles">NO. DEPOSITO</div>
               </th>
-             <th style="min-width: 10rem">
+             <th style="min-width: 1rem">
                 <div class="flex thstyles">MONTO DEPOSITO</div>
               </th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-abono class="p-table">
-            <tr class="table-content"> 
+            <tr class="table-content tableAbonos"> 
               <td>
                 {{ abono.Fecha | date: 'dd/MM/yyyy' }}
               </td>
@@ -207,7 +209,13 @@
                 {{ abono.TipoOperacion }}
               </td>
               <td>
-                {{ abono.MontoDeposito | currency: 'Bs. ': 'symbol':'1.2-2' }}
+                {{ abono.TxBanco }}
+              </td>
+              <td>
+                {{ abono.NuDeposito }}
+              </td>
+              <td>
+                {{ abono.MnDeposito | currency: 'Bs. ': 'symbol':'1.2-2' }}
               </td>
             </tr>
           </ng-template>

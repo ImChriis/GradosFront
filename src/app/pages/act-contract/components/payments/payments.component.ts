@@ -62,20 +62,24 @@ export class PaymentsComponent implements OnInit{
     this.recibos$ = this.actContractService.getRecibosByUserContract(this.NoContrato).pipe(
       map(response => response.data)
     );
-
-    this.abonos$ = this.actContractService.getAbonosByUserContract(
-      String(this.NuCedula),
-      String(this.NoContrato)
-    ).pipe(
-      map(response => {response.data
-        console.log('Abonos data for user:', response);
-      })
-    );
   }
 
   selectRecibo(recibo: any){
     console.log('Selected recibo:', recibo);
     this.NoRecibo = recibo.NoRecibo;
+
+    this.abonos$ = this.actContractService.getAbonosByUserContract(
+      String(this.NoContrato),
+      String(this.NuCedula),
+      this.NoRecibo
+    ).pipe(
+      map(response => {
+        console.log('Abonos for recibo:', response.data)
+        return response.data
+      })
+    );
+    
+    console.log(this.abonos$)
   }
 }
  
