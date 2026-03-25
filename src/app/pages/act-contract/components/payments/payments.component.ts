@@ -30,7 +30,10 @@ export class PaymentsComponent implements OnInit{
   MnInicial!: number;
   montoPagado!: number;
   montoSaldo!: number;
-  NoRecibo!: number;
+  NoRecibo: number = 0;
+  fechaSelectedRecibo: string = '';
+  montoSelectedRecibo: number | null = null;
+  observacion: string = '';
 
   ngOnInit(): void {
     this.NuCedula = this.actUser.NuCedula;
@@ -67,7 +70,9 @@ export class PaymentsComponent implements OnInit{
   selectRecibo(recibo: any){
     console.log('Selected recibo:', recibo);
     this.NoRecibo = recibo.NoRecibo;
-
+    this.fechaSelectedRecibo = recibo.ferecibo;
+    this.montoSelectedRecibo = recibo.mnrecibo;
+    this.observacion = recibo.TxConcepRec;
     this.abonos$ = this.actContractService.getAbonosByUserContract(
       String(this.NoContrato),
       String(this.NuCedula),

@@ -114,17 +114,17 @@
             <div class="detailsInputs">
                 <div class="inputGroup">
                     <label for="recibo">NO. RECIBO</label>
-                    <input type="text" id="recibo" name="recibo">
+                    <input type="text" id="recibo" name="recibo" readonly [value]="NoRecibo ? NoRecibo : ''">
                 </div>
 
                 <div class="inputGroup">
                     <label for="fecha">FECHA</label>
-                    <input type="text" id="fecha" name="fecha">
+                    <input type="text" id="fecha" name="fecha" readonly [value]="fechaSelectedRecibo | date: 'dd/MM/yyyy' : ''">
                 </div>
 
                 <div class="inputGroup">
                     <label for="pago">PAGO</label>
-                    <input type="text" id="pago" name="pago">
+                    <input type="text" id="pago" name="pago" readonly [value]="montoSelectedRecibo | currency: 'Bs. ': 'symbol':'1.2-2'">
                 </div>
             </div>
 
@@ -135,34 +135,34 @@
 
                 <div class="detailsTable">
                     <label for="observacion">OBSERVACIÓN</label>
-                    <textarea name="observacion" id="observacion"></textarea>
+                    <textarea name="observacion" id="observacion" [value]="observacion"></textarea>
                 </div>
             </div>
         </div>
 
         <div class="buttons">
             <div class="icon" title="Nueva Operación">
-                <i class="pi pi-file"></i>
+                <i class="pi pi-file new"></i>
             </div>
 
             <div class="icon" title="Caja">
-                <i class="pi pi-money-bill"></i>
+                <i class="pi pi-money-bill pay"></i>
             </div>
 
             <div class="icon" title="Imprimir">
-                <i class="pi pi-print"></i>
+                <i class="pi pi-print print"></i>
             </div>
 
             <div class="icon" title="Actualizar">
-                <i class="pi pi-refresh"></i>
+                <i class="pi pi-refresh refresh"></i>
             </div>
 
             <div class="icon" title="Cancelar">
-                <i class="pi pi-times"></i>
+                <i class="pi pi-times times"></i>
             </div>
 
             <div class="icon" title="Salida">
-                <i class="pi pi-sign-out"></i>
+                <i class="pi pi-sign-out exit"></i>
             </div>
         </div>
     </div>
@@ -252,8 +252,8 @@
                 </div>
 
                 <div class="icons-col">
-                    <div class="icon" title="Agregar"><i class="pi pi-plus"></i></div>
-                    <div class="icon" title="Eliminar"><i class="pi pi-minus"></i></div>
+                    <div class="icon" title="Agregar"><i class="pi pi-plus add"></i></div>
+                    <div class="icon" title="Eliminar"><i class="pi pi-minus minus"></i></div>
                 </div>
             </div>
         </div>
