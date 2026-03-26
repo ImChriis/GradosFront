@@ -14,6 +14,7 @@ import { PaymentsComponent } from './components/payments/payments.component';
 import { ActsService } from '../../@core/services/acts.service';
 import { InstitutionsService } from '../../@core/services/institutions.service';
 import { SpecialitiesService } from '../../@core/services/specialities.service';
+import { OnlyNumbersDirective } from '../../@core/directives/only-numbers.directive';
 
 //temporal
 interface Act {
@@ -40,6 +41,7 @@ interface Act {
     TableModule,
     InputTextModule,
     ReactiveFormsModule,
+    OnlyNumbersDirective
   ],
   templateUrl: './act-contract.component.html',
   styleUrl: './act-contract.component.scss',
