@@ -45,8 +45,12 @@ export const routes: Routes = [
                 path: 'actContracts',
                 loadComponent: () => import('./pages/act-contract/act-contract.component').then(m => m.ActContractComponent),
                 title: 'Grados - Contratos de Actos',
+            },
+            {
+                path: 'settings',
+                loadComponent: () => import('./pages/settings/settings.component').then(m => m.SettingsComponent),
+                title: 'Grados - Configuración',
             }
-
         ]
     }
 ];

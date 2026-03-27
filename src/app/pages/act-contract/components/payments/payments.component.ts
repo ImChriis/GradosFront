@@ -1,16 +1,18 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { ActContractService } from '../../../../@core/services/act-contract.service';
-import { AsyncPipe, CommonModule } from '@angular/common';
+import {  CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { map, Observable } from 'rxjs';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-payments',
   imports: [
     CommonModule,
-    TableModule
+    TableModule,
+    ReactiveFormsModule
   ],
   templateUrl: './payments.component.html',
   styleUrl: './payments.component.scss'
@@ -18,6 +20,7 @@ import { map, Observable } from 'rxjs';
 export class PaymentsComponent implements OnInit{
   private actContractService = inject(ActContractService);
   private dialogConfig = inject(DynamicDialogConfig);
+  private fb = inject(FormBuilder);
   actUser = this.dialogConfig.data.actUser;
   codigoActo = this.dialogConfig.data.codigoActo;
   NuCedula!: number;
