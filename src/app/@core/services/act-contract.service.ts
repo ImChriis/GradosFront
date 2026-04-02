@@ -59,4 +59,10 @@ export class ActContractService {
   getAbonosByUserContract(NoContrato: string, NuCedula: string, NoRecibo: number){
     return this.http.get<any>(`${this.api}/actContracts/abonos/${NoContrato}/${NuCedula}/${NoRecibo}`);
   }
+
+  addARecibo(body: any){  // recibo y abono es lo mismo
+    return this.http.post<any>(`${this.api}/actContracts/createRecibo`, body).pipe(
+      tap(() =>  this.refresh$.next())
+    )
+  }
 }

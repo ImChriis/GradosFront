@@ -35,4 +35,8 @@ export class BanksService {
       tap(() => this.refresh$.next())
     )
   }
+
+  getMetodoPago(){
+    return this.http.get<String[]>(`${this.api}/metodoPago`);
+  }
  }

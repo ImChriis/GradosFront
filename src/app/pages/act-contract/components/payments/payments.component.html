@@ -1,4 +1,4 @@
-<form action="">
+<form [formGroup]="reciboPagoForm" (ngSubmit)="onSubmit()">
   <div class="container">
     <div class="user">
         <div class="inputGroup">
@@ -136,7 +136,7 @@
 
                 <div class="detailsTable">
                     <label for="observacion">OBSERVACIÓN</label>
-                    <textarea name="observacion" id="observacion" [value]="observacion"></textarea>
+                    <textarea name="observacion" id="observacion" [value]="observacion" formControlName="TxConcepRec"></textarea>
                 </div>
             </div>
         </div>
@@ -228,32 +228,40 @@
 
             <div class="inputGroup">
                 <label for="montoContrato">MÉTODO DE PAGO</label>
-                <input type="text" id="montoContrato" name="montoContrato">
+                <input type="text" id="montoContrato" name="montoContrato" formControlName="MaFormPag" list="metodoPago">
             </div>
+
+            <datalist id="metodoPago">
+                <option *ngFor="let metodo of metodosPago" [value]="metodo"></option>
+            </datalist>
 
             <div class="inputGroup">
                 <label for="montoContrato">BANCO</label>
-                <input type="text" id="montoContrato" name="montoContrato">
+                <input type="text" id="montoContrato" name="montoContrato" formControlName="TxBanco" list="bancos">
             </div>
+
+            <datalist id="bancos">
+                <option *ngFor="let banco of banks" [value]="banco"></option>
+            </datalist>
 
            <div class="paymentsBot">
                 <div class="inputs-col">
                     <div class="inputGroup">
                         <label for="cheque">NO. REFERENCIA</label>
-                        <input type="text" id="cheque">
+                        <input type="text" id="cheque" name="cheque" formControlName="NuRefDocBan">
                     </div>
                     <div class="inputGroup">
                         <label for="fecha">FECHA</label>
-                        <input type="text" id="fecha">
+                        <input type="text" id="fecha" name="fecha" formControlName="ferecibo">
                     </div>
                     <div class="inputGroup">
                         <label for="trans">MONTO PAGO</label>
-                        <input type="text" id="trans">
+                        <input type="text" id="trans" name="trans" formControlName="mnrecibo">
                     </div>
                 </div>
 
                 <div class="icons-col">
-                    <div class="icon" title="Agregar"><i class="pi pi-plus add"></i></div>
+                    <div class="icon" title="Agregar" (click)="onSubmit()"><i class="pi pi-plus add"></i></div>
                     <div class="icon" title="Eliminar"><i class="pi pi-minus minus"></i></div>
                 </div>
             </div>

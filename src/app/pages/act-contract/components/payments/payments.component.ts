@@ -4,8 +4,8 @@ import { ActContractService } from '../../../../@core/services/act-contract.serv
 import {  CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { map, Observable } from 'rxjs';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-
+import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { BanksService } from '../../../../@core/services/banks.service';
 
 @Component({
   selector: 'app-payments',
@@ -20,6 +20,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 export class PaymentsComponent implements OnInit{
   private actContractService = inject(ActContractService);
   private dialogConfig = inject(DynamicDialogConfig);
+  private banksService = inject(BanksService);
   private fb = inject(FormBuilder);
   actUser = this.dialogConfig.data.actUser;
   codigoActo = this.dialogConfig.data.codigoActo;
@@ -37,6 +38,27 @@ export class PaymentsComponent implements OnInit{
   fechaSelectedRecibo: string = '';
   montoSelectedRecibo: number | null = null;
   observacion: string = '';
+  metodosPago: String[] = [];
+  banks: String[] = [];
+
+  reciboPagoForm = this.fb.group({
+    NoRecibo: [null as number | null],
+    ferecibo: [''],
+    NuCedula: [null as number | null],
+    CodSucursal: [null as number | null],
+    NoContrato: [null as number | null],
+    tprecibo: [''],
+    mnrecibo: [null as number | null],
+    mnsaldorec: [null as number | null],
+    TxConcepRec: [''],
+    CodUser: [null as number | null],
+    Anulado: [null as number | null],
+    Tipo: [''],
+    CodigoActo: [null as number | null],
+    MaFormPag: [''],
+    TxBanco: [''],
+    NuRefDocBan: [null as number | null]
+  })
 
   ngOnInit(): void {
     this.NuCedula = this.actUser.NuCedula;
@@ -68,6 +90,39 @@ export class PaymentsComponent implements OnInit{
     this.recibos$ = this.actContractService.getRecibosByUserContract(this.NoContrato).pipe(
       map(response => response.data)
     );
+
+    this.banksService.getMetodoPago().subscribe({
+      next: (response) => {
+        this.metodosPago = response.map((item: any) => item.nombreMetodoPago);
+        console.log('Métodos de pago:', this.metodosPago);
+      }
+    })
+
+    this.banksService.getAllBanks().subscribe({
+      next: (response) => {
+        this.banks = response.map((item: any) => item.Bancos);
+        console.log('Bancos:', this.banks);
+      }
+    })
+  }
+
+  onSubmit(){
+    const formData = this.reciboPagoForm.value;
+    formData.CodigoActo = this.codigoActo;
+    formData.NoContrato = this.NoContrato;
+    formData.NuCedula = this.NuCedula;
+    formData.ferecibo = new Date().toISOString(); // Asignar la fecha actual en formato ISO
+    formData.mnsaldorec = this.montoSelectedRecibo;
+
+    this.actContractService.addARecibo(formData).subscribe({
+      next: (response) => {
+        console.log('Recibo agregado:', response);
+      },
+      error: (error) => {
+        console.error('Error al agregar recibo:', error);
+      }
+    });
+    
   }
 
   selectRecibo(recibo: any){
@@ -88,6 +143,10 @@ export class PaymentsComponent implements OnInit{
     );
     
     console.log(this.abonos$)
+  }
+
+  add(){
+    
   }
 }
  
