@@ -1,134 +1,135 @@
-<form action="">
+<form [formGroup]="settingsForm" (ngSubmit)="onSubmit()">
     <div class="container">
         <div class="razonSocial">
             <div class="inputGroup">
                 <label for="social">RAZÓN SOCIAL</label>
-                <input type="text" id="social" name="social">
+                <input type="text" id="social" formControlName="Nombre">
             </div>
 
             <div class="inputGroup2">
                 <label for="rif">RIF</label>
-                <input type="text" id="rif" name="rif">
+                <input type="text" id="rif" formControlName="Rif">
             </div>
 
             <div class="inputGroup">
                 <label for="direccion">DIRECCIÓN</label>
-                <textarea name="direccion" id="direccion"></textarea>
+                <textarea id="direccion" formControlName="Direccion"></textarea>
             </div>
 
             <div class="inputGroup3">
                 <div class="inputGroup">
                     <label for="telefono">TELÉFONO</label>
-                    <input type="text" id="telefono" name="telefono">
+                    <input type="text" id="telefono" formControlName="Telefono">
                 </div>
 
                 <div class="inputGroup">
                     <label for="fax">FAX</label>
-                    <input type="text" id="fax" name="fax">
+                    <input type="text" id="fax" formControlName="Fax">
                 </div>
             </div>
 
             <div class="inputGroup2">
                 <label for="sucursal">COD. SUCURSAL</label>
-                <input type="text" id="sucursal" name="sucursal">
+                <input type="text" id="sucursal" formControlName="CoSucursal">
             </div>
 
             <div class="inputGroup">
                 <label for="nombreSucursal">NOMBRE SUC.</label>
-                <input type="text" id="nombreSucursal" name="nombreSucursal">
+                <input type="text" id="nombreSucursal" formControlName="NbSucursal">
             </div>
 
             <div class="inputGroup2">
                 <label for="admin">CLAVE ADMIN</label>
-                <input type="text" id="admin" name="admin">
+                <input type="password" id="admin" formControlName="txclaveadm">
             </div>
         </div>
 
         <div class="configuration">
             <div class="left">
                 <div class="inputGroup2">
-                    <label for="fab">CAMT. DIAS FAB</label>
-                    <input type="text" id="fab" name="fab">
+                    <label for="fab">CANT. DIAS FAB</label>
+                    <input type="number" id="fab" formControlName="CaDiasFab">
                 </div>
 
                 <div class="inputGroup2">
                     <label for="eng">CANT. DIAS ENG.</label>
-                    <input type="text" id="eng" name="eng">
+                    <input type="number" id="eng" formControlName="CaDiasEngaste">
                 </div>
 
                 <div class="inputGroup2">
                     <label for="oro18">PRECIO ORO 18</label>
-                    <input type="text" id="oro18" name="oro18">
+                    <input type="text" id="oro18" formControlName="PcOro18">
                 </div>
 
                 <div class="inputGroup2">
                     <label for="oro14">PRECIO ORO 14</label>
-                    <input type="text" id="oro14" name="oro14">
+                    <input type="text" id="oro14" formControlName="PcOro14">
                 </div>
 
                 <div class="inputGroup2">
                     <label for="oro10">PRECIO ORO 10</label>
-                    <input type="text" id="oro10" name="oro10">
+                    <input type="text" id="oro10" formControlName="PcOro10">
                 </div>
 
                 <div class="inputGroup2">
                     <label for="mewrma">MONTO MERMA</label>
-                    <input type="text" id="mewrma" name="mewrma">
+                    <input type="text" id="mewrma" formControlName="MnMerma">
                 </div>
 
                 <div class="inputGroup2">
                     <label for="oro">COSTO ORO</label>
-                    <input type="text" id="oro" name="oro">
+                    <input type="text" id="oro" formControlName="MnCostOro">
                 </div>
 
                 <div class="inputGroup2">
                     <label for="obra">COSTO MANO OB.</label>
-                    <input type="text" id="obra" name="obra">
+                    <input type="text" id="obra" formControlName="MnCostoMano">
                 </div>
             </div>
 
             <div class="right">
                 <div class="inputGroup2">
                     <label for="iva">IMPUESTO (IVA)</label>
-                    <input type="text" id="iva" name="iva">
+                    <input type="text" id="iva" formControlName="Impuesto">
                 </div>
 
                 <div class="inputGroup2">
                     <label for="recibo">NO. RECIBO</label>
-                    <input type="text" id="recibo" name="recibo">
+                    <input type="number" id="recibo" formControlName="NoRecibo">
                 </div>
 
                 <div class="inputGroup2">
                     <label for="contrato">NO. CONTRATO</label>
-                    <input type="text" id="contrato" name="contrato">
+                    <input type="number" id="contrato" formControlName="NoContrato">
                 </div>
 
                 <div class="inputGroup2">
                     <label for="acto">NO. ACTO</label>
-                    <input type="text" id="acto" name="acto">
+                    <input type="number" id="acto" formControlName="NoActo">
                 </div>
 
                 <div class="inputGroup2">
                     <label for="cierre">NO. CIERRE</label>
-                    <input type="text" id="cierre" name="cierre">
+                    <input type="number" id="cierre" formControlName="NoCierre">
                 </div>
 
                 <div class="select">
-                    <input type="checkbox" id="NoRecibo" name="NoRecibo">
+                    <input type="checkbox" id="NoRecibo" formControlName="GeneraNoRecibo">
                     <label for="NoRecibo">NO. RECIBO AUTOMÁTICO</label>
                 </div>
 
                 <div class="select">
-                    <input type="checkbox" id="NoContrato" name="NoContrato">
+                    <input type="checkbox" id="NoContrato" formControlName="GeneraNoContrato">
                     <label for="NoContrato">NO. CONTRATO AUTOMÁTICO</label>
                 </div>
 
                 <div class="select">
-                    <input type="checkbox" id="NoActo" name="NoActo">
+                    <input type="checkbox" id="NoActo" formControlName="GeneraNoActo">
                     <label for="NoActo">NO. ACTO AUTOMÁTICO</label>
                 </div>
+
                 <div class="select">
-                    <input type="checkbox" id="NoCierre" name="NoCierre">
+                    <input type="checkbox" id="NoCierre" formControlName="GeneraNoCierre">
                     <label for="NoCierre">NO. CIERRE AUTOMÁTICO</label>
                 </div>
             </div>
@@ -137,30 +138,30 @@
         <div class="mensajes">
             <div class="textAreaGroup">
                 <label for="mensaje1">MENSAJE 1</label>
-                <textarea id="mensaje1" name="mensaje1"></textarea>
+                <textarea id="mensaje1" formControlName="TxMensaje1"></textarea>
             </div>
 
             <div class="textAreaGroup">
                 <label for="mensaje2">MENSAJE 2</label>
-                <textarea id="mensaje2" name="mensaje2"></textarea>
+                <textarea id="mensaje2" formControlName="TxMensaje2"></textarea>
             </div>
 
             <div class="textAreaGroup">
                 <label for="mensaje3">MENSAJE 3</label>
-                <textarea id="mensaje3" name="mensaje3"></textarea>
+                <textarea id="mensaje3" formControlName="TxMensaje3"></textarea>
             </div>
         </div>
 
         <div class="buttons">
             <div class="inputGroup">
                 <label for="fecha">FECHA REGISTRO</label>
-                <input type="date" id="fecha" name="fecha">
+                <input type="text" id="fecha" formControlName="feregistro" readonly>
             </div>
 
             <div class="btns">
-                <div class="icon">
+                <button type="submit" class="icon" style="border:none; cursor:pointer;">
                     <i class="pi pi-save"></i>
-                </div>
+                </button>
 
                 <div class="icon">
                     <i class="pi pi-sign-out"></i>

@@ -1,0 +1,36 @@
+export interface Settings {
+  Id: string;
+  CoSucursal: string;
+  NbSucursal: string;
+  Producto: string;
+  Nombre: string;
+  Rif: string;
+  Direccion: string;
+  Telefono: string;
+  Fax: string;
+  feregistro?: Date | string;
+  txclaveadm: string;
+  NoRecibo: number;
+  NoContrato: number;
+  NoActo: number;
+  NoCierre: number;
+  CaDiasFab: number;
+  CaDiasEngaste: number;
+  MaFormRec: number;
+  PcOro18: string;
+  PcOro14: string;
+  PcOro10: string;
+  MnMerma: string;
+  MnCostOro: string;
+  Impuesto: string;
+  MnCostoMano: string;
+  UbicacionLogo: string;
+  UbicacionRpt: string;
+  TxMensaje1: string;
+  TxMensaje2: string;
+  TxMensaje3: string;
+  GeneraNoRecibo: number;
+  GeneraNoContrato: number;
+  GeneraNoActo: number;
+  GeneraNoCierre: number;
+}

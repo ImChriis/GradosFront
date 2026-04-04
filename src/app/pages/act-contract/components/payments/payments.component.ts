@@ -6,6 +6,7 @@ import { TableModule } from 'primeng/table';
 import { map, Observable } from 'rxjs';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { BanksService } from '../../../../@core/services/banks.service';
+import { SettingsService } from '../../../../@core/services/settings.service';
 
 @Component({
   selector: 'app-payments',
@@ -21,6 +22,7 @@ export class PaymentsComponent implements OnInit{
   private actContractService = inject(ActContractService);
   private dialogConfig = inject(DynamicDialogConfig);
   private banksService = inject(BanksService);
+  private settingsService = inject(SettingsService);
   private fb = inject(FormBuilder);
   actUser = this.dialogConfig.data.actUser;
   codigoActo = this.dialogConfig.data.codigoActo;
@@ -146,7 +148,23 @@ export class PaymentsComponent implements OnInit{
   }
 
   add(){
-    
+    this.settingsService.getSettings().subscribe({
+      next: (res: any) => {
+        console.log(res) // Incrementar el número de recibo basado en la configuración actual
+        const NoRecibo = res.NoRecibo + 1; // Suponiendo que la configuración devuelve un array y el número de recibo está en la primera posición
+        this.NoRecibo = NoRecibo;
+      }
+    })
+    this.fechaSelectedRecibo = new Date().toISOString();
+    this.montoSelectedRecibo = this.actUser.MnSaldo;
+  }
+  
+  cancel(){
+    this.NoRecibo = 0;
+    this.fechaSelectedRecibo = '';
+    this.montoSelectedRecibo = null;
+    this.observacion = '';
+    this.abonos$ = new Observable();
   }
 }
  
