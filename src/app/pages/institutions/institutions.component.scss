@@ -70,7 +70,7 @@ form{
 }
 
 .inputGroup textarea{
-    height: 15vh;
+    height: 7vh;
     background-color: white;
     border: none;
     color: black;
@@ -287,5 +287,20 @@ td{
 
 }
 
+.tipos{
+     border: 1px solid;
+    border-radius: 10px;
+    border-color: #ababab;
+    padding: 15px;
+    position: relative;
+    margin-top: 10px;
+}
 
+.titles{
+    margin-top: 10px;
+    position: absolute;
+    top: -20px;
+    background-color: #dedcdc;
+    font-weight: bold;
+}
 

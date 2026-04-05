@@ -17,7 +17,7 @@
         [rowsPerPageOptions]="[10, 25, 50]"
         [paginator]="true"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
-        [globalFilterFields]="['txnombre', 'lugar', 'tipo', 'estatus', 'destacado']"
+        [globalFilterFields]="['txnombre', 'lugar', 'tipo', 'estatus', 'destacado', 'nucedula', 'txemail']"
         styleClass="ml-3 mr-3"
         >
         <ng-template pTemplate="caption" let-event>
@@ -126,7 +126,7 @@
               <i class="pi pi-plus add"></i>
             </div>
 
-            <div class="icon" title="Guardar" (click)="onSave()" >
+            <div class="icon" title="Guardar" (click)="onSave()" [class.disabled]="!isAdding">
               <i class="pi pi-save save"></i>
             </div>
 

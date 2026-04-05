@@ -1,0 +1,171 @@
+<div class="container">
+    <div class="clientsList">
+      <div class="title">
+        <h2>Usuarios</h2>
+      </div>
+
+      <div class="body"> 
+        @if(
+      users$ | async
+      ; as state) {
+      <p-table
+        #dt1
+        dataKey="idEvento"
+        [value]='state'
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [paginator]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+        [globalFilterFields]="['txnombre', 'lugar', 'tipo', 'estatus', 'destacado']"
+        styleClass="ml-3 mr-3"
+        >
+        <ng-template pTemplate="caption" let-event>
+          <div class="flex-row">
+            <div class="p-toolbar-group-end">
+              <span class="p-input-icon-left ml-auto">
+                <i class=""></i>
+                <input
+                class="search"
+                #searchInput
+                pInputText
+                type="text"
+                placeholder="BUSCAR"
+                (input)="dt1.filterGlobal(searchInput.value, 'contains')"
+              />
+                </span>
+            </div>
+          </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="min-width: 1rem" class="border">
+                <div class="flex thstyles">CÉDULA</div>
+              </th>
+              <th style="min-width: 8rem">
+                <div class="flex thstyles">NOMBRE</div>
+              </th>
+              <th style="min-width: 8rem">
+                <div class="flex thstyles">USUARIO</div>
+              </th>
+              <th style="min-width: 10rem">
+                <div class="flex thstyles">TIPO DE USUARIO</div>
+              </th>
+              <th style="min-width: 15rem">
+                <div class="flex thstyles">FECHA REGISTRO</div>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-user class="p-table">
+            <tr class="table-content" 
+            (click)=" selectUser(user)" 
+            [class.disabled]="isEnabled" 
+            [class.selected]="selectedUser?.CodUsuario === user.CodUsuario" >
+              <td class="select">
+                {{ user.Cedula }}
+              </td>
+              <td class="name">
+                {{ user.Nombre }} {{ user.Apellido }}
+              </td>
+              <td>
+                {{ user.Usuario }}
+              </td>
+              <td>
+                {{ user.MaTipoUsr }}
+              </td>
+              <td>
+                {{ user.FechaReg | date: 'dd-MM-yyyy' }}
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">No elementos encontrados.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      }
+    </div>
+    </div>
+
+    <div class="clientForm">
+        <form [formGroup]="userForm" autocomplete="off">
+            <div class="inputGroup">
+                <label for="identification">CÉDULA</label>
+                <input type="text" id="identification" name="identification" formControlName="Cedula" appUppercase appOnlyNumbers>
+            </div>
+
+            <div class="inputGroup">
+                <label for="name">NOMBRE</label>
+                <input type="text" id="name" name="name" formControlName="Nombre" appUppercase>
+            </div>
+
+            <div class="inputGroup">
+                <label for="lastname">APELLIDO</label>
+                <input type="text" id="lastname" name="lastname" formControlName="Apellido" appUppercase>
+            </div>
+
+            <div class="inputGroup">
+                <label for="phone">FECHA REGISTRO</label>
+                <input type="date" id="phone" name="phone" formControlName="FechaReg" appUppercase appOnlyNumbers>
+            </div>
+
+            <div class="users">
+                <label class="titles">USUARIO Y CLAVE DE ACCESO</label>
+
+                <div class="inputGroup">
+                    <label for="username">USUARIO</label>
+                    <input type="text" id="username" name="username" formControlName="Usuario" appUppercase>
+                </div>
+
+                <div class="inputGroup">
+                    <label for="clave">INGRESE CONTRASEÑA</label>
+                    <input type="text" id="clave" name="clave" formControlName="Clave" appUppercase>
+                </div>
+
+                <div class="inputGroup">
+                    <label for="clave2">REPITA CONTRASEÑA</label>
+                    <input type="text" id="clave2" name="clave2" formControlName="Clave2" appUppercase>
+                </div>
+            </div>
+
+            <div class="acceso">
+                <label class="titles2">NIVEL DE ACCESO</label>
+
+                <div class="inputGroup">
+                    <label for="accessLevel">ACCESO AL SISTEMA</label>
+                    <select id="accessLevel" name="accessLevel" formControlName="MaTipoUsr">
+                        <option value="" disabled selected>Seleccione un nivel de acceso</option>
+                        <option value="Administrador">ADMINISTRADOR</option>
+                        <option value="Usuario">USUARIO</option>
+                        <option value="Reportes">REPORTES</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+
+        <div class="buttons">
+          <!-- <div class="icon" title="Buscar">
+            <i class="pi pi-search searchIcon"></i>
+          </div> -->
+
+          <div class="icons">
+            <div class="icon" title="Agregar" (click)="add()" [class.disabled]="isAdding">
+              <i class="pi pi-plus add"></i>
+            </div>
+
+            <div class="icon" title="Guardar" (click)="save()" [class.disabled]="!isAdding">
+              <i class="pi pi-save save"></i>
+            </div>
+
+            <div class="icon" title="Eliminar" (click)="delete()"  [class.disabled]="!selectedUser" >
+              <i class="pi pi-trash delete"></i>
+            </div>
+          </div>
+
+          <div class="icon" title="Cancelar" (click)="cancel()">
+            <i class="pi pi-times cancel"></i>
+          </div>
+        </div>
+    </div>
+</div>

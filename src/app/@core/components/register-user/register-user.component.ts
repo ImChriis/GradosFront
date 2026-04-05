@@ -6,12 +6,14 @@ import { ClientForm } from '../../models/forms/client-form';
 import { MessageService } from 'primeng/api';
 import { Client } from '../../models/client.model';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { UppercaseDirective } from '../../directives/uppercase.directive';
 
 @Component({
   selector: 'app-register-user',
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    UppercaseDirective
   ],
   templateUrl: './register-user.component.html',
   styleUrl: './register-user.component.scss'
@@ -33,7 +35,7 @@ export class RegisterUserComponent {
     txemail: new FormControl<string | null>('', { nonNullable: true }),
     codUser: new FormControl<string | null>('', { nonNullable: true }),
   })
-
+  
   onSubmit(){
     this.clientService.addClient(this.userForm.value as Client).subscribe({
       next: (res => {

@@ -46,10 +46,13 @@ export class InstitutionsComponent implements OnInit{
         return this.institutionsService.getAllInstitutions()
       })
     )
+
+    this.institutionsForm.disable();
+    this.selectedInstitution = null;
   }
 
   onSelectedInstitution(institution: Institution){
-    this.isAdding = false;
+    this.isAdding = true;
     this.isEnabled = false;
     this.selectedInstitution = institution;
     this.institutionsForm.enable();
@@ -70,7 +73,7 @@ export class InstitutionsComponent implements OnInit{
 
        setTimeout(() => {
       const el = document.querySelector<HTMLInputElement>(
-        'input[formcontrolname="nbinstitucion"], textarea[formcontrolname="siglas"]'
+        'textarea[formcontrolname="nbinstitucion"]'
       );
       el?.focus();
     }, 0);

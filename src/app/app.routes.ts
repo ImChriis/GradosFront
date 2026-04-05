@@ -50,6 +50,11 @@ export const routes: Routes = [
                 path: 'settings',
                 loadComponent: () => import('./pages/settings/settings.component').then(m => m.SettingsComponent),
                 title: 'Grados - Configuración',
+            },
+            {
+                path: 'users',
+                loadComponent: () => import('./pages/users/users.component').then(m => m.UsersComponent),
+                title: 'Grados - Usuarios',
             }
         ]
     }

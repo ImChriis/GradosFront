@@ -218,7 +218,7 @@ export class ActContractComponent implements OnInit{
     }
   }
 
-  addContract(CodigoActo: number | null, MnTotal: number | null){
+  addContract(CodigoActo: number | null, MnTotal: number | null, totalPerStudent: number | null){
     if(!CodigoActo || !MnTotal){
       this.messageService.add({ severity: 'warn', summary: 'No se ha seleccionado ningún acto para agregar un contrato.' });
     }else{
@@ -226,12 +226,16 @@ export class ActContractComponent implements OnInit{
         header: 'Incluir Contratos',
         width: '50vw',
         modal: true,
-        data: { CodigoActo, MnTotal },
+        data: { CodigoActo, MnTotal, totalPerStudent },
         closable: true,
         breakpoints: {
           '960px': '75vw',
           '640px': '90vw'
         }    
+      });
+
+      this.ref.onClose.subscribe((res) => {
+        this.updateTotals(CodigoActo!);
       })
     }
   }
@@ -248,7 +252,7 @@ export class ActContractComponent implements OnInit{
           closable: true,
           data: {
             actUser,
-            codigoActo: this.selectedAct.CodigoActo,
+            codigoActo: this.selectedAct.CodigoActo
            },
           breakpoints: {
             '960px': '90%',

@@ -36,4 +36,7 @@ export class ClientsService {
     )
   }
   
+  getClientByCedula(nucedula: number){
+    return this.http.get(`${this.api}/clients/${nucedula}`);
+  }
 }

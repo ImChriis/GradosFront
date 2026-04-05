@@ -96,32 +96,34 @@
                 <input type="text" id="identification" name="identification" formControlName="siglas" appUppercase>
             </div>
 
-            <div class="inputGroup2">
-              <label for="identification">TIPO</label>
+            <div class="tipos">
+              <div class="inputGroup2">
+                <label for="identification" class="titles">TIPO</label>
 
-              <div class="select">
-                <input type="radio" id="university" name="tpinstitucion" value="Uni" formControlName="tpinstitucion">
-                <label for="university">UNIVERSIDAD</label>
-              </div>
+                <div class="select">
+                  <input type="radio" id="university" name="tpinstitucion" value="Uni" formControlName="tpinstitucion">
+                  <label for="university">UNIVERSIDAD</label>
+                </div>
 
-              <div class="select">
-                <input type="radio" id="tecnologico" name="tpinstitucion" value="Tec" formControlName="tpinstitucion">
-                <label for="tecnologico">TECNOLÓGICO</label>
-              </div>
+                <div class="select">
+                  <input type="radio" id="tecnologico" name="tpinstitucion" value="Tec" formControlName="tpinstitucion">
+                  <label for="tecnologico">TECNOLÓGICO</label>
+                </div>
 
-              <div class="select">
-                <input type="radio" id="school" name="tpinstitucion" value="Col" formControlName="tpinstitucion">
-                <label for="school">COLEGIO</label>
-              </div>
+                <div class="select">
+                  <input type="radio" id="school" name="tpinstitucion" value="Col" formControlName="tpinstitucion">
+                  <label for="school">COLEGIO</label>
+                </div>
 
-              <div class="select">
-                <input type="radio" id="enterprise" name="tpinstitucion" value="Emp" formControlName="tpinstitucion">
-                <label for="enterprise">EMPRESA</label>
-              </div>
+                <div class="select">
+                  <input type="radio" id="enterprise" name="tpinstitucion" value="Emp" formControlName="tpinstitucion">
+                  <label for="enterprise">EMPRESA</label>
+                </div>
 
-              <div class="select">
-                <input type="radio" id="particular" name="tpinstitucion" value="Par" formControlName="tpinstitucion">
-                <label for="particular">PARTICULAR</label>
+                <div class="select">
+                  <input type="radio" id="particular" name="tpinstitucion" value="Par" formControlName="tpinstitucion">
+                  <label for="particular">PARTICULAR</label>
+                </div>
               </div>
             </div>
         </form>
@@ -136,7 +138,7 @@
               <i class="pi pi-plus add"></i>
             </div>
 
-            <div class="icon" title="Guardar" (click)="onSave()" >
+            <div class="icon" title="Guardar" (click)="onSave()" [class.disabled]="!isAdding">
               <i class="pi pi-save save"></i>
             </div>
 

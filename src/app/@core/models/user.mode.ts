@@ -1,10 +1,10 @@
 export interface User{
-    id: number;
-    nombre: string | null;
-    apellido: string | null;
-    cedula: string | null;
-    usuario: string | null;
-    clave: string | null;
-    maTipoUsr: string | null;
-    fechaReg: Date | null;
+    CodUsuario: number;
+    Nombre: string | null;
+    Apellido: string | null;
+    Cedula: string | null;
+    Usuario: string | null;
+    Clave: string | null;
+    MaTipoUsr: string | null;
+    FechaReg: Date | null;
 }

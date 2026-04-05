@@ -125,7 +125,7 @@
 
                 <div class="inputGroup">
                     <label for="pago">PAGO</label>
-                    <input type="text" id="pago" name="pago" readonly [value]="montoSelectedRecibo | currency: 'Bs. ': 'symbol':'1.2-2'">
+                    <input type="text" id="pago" name="pago" [readOnly]="!isAdding" [value]="montoSelectedRecibo | currency: 'Bs. ': 'symbol':'1.2-2'" formControlName="mnrecibo" appOnlyNumbers>
                 </div>
             </div>
 
@@ -136,7 +136,7 @@
 
                 <div class="detailsTable">
                     <label for="observacion">OBSERVACIÓN</label>
-                    <textarea name="observacion" id="observacion" [value]="observacion" formControlName="TxConcepRec"></textarea>
+                    <textarea name="observacion" id="observacion" [value]="observacion" formControlName="TxConcepRec" appUppercase></textarea>
                 </div>
             </div>
         </div>
@@ -228,35 +228,31 @@
 
             <div class="inputGroup">
                 <label for="montoContrato">MÉTODO DE PAGO</label>
-                <input type="text" id="montoContrato" name="montoContrato" formControlName="MaFormPag" list="metodoPago">
+                <select name="" id="" formControlName="TxMetodoPago">
+                    <option *ngFor="let metodo of metodosPago" [value]="metodo">{{ metodo }}</option>
+                </select>
             </div>
-
-            <datalist id="metodoPago">
-                <option *ngFor="let metodo of metodosPago" [value]="metodo"></option>
-            </datalist>
 
             <div class="inputGroup">
                 <label for="montoContrato">BANCO</label>
-                <input type="text" id="montoContrato" name="montoContrato" formControlName="TxBanco" list="bancos">
+                <select name="" id="" formControlName="TxBanco">
+                    <option *ngFor="let banco of banks" [value]="banco">{{ banco }}</option>
+                </select>
             </div>
-
-            <datalist id="bancos">
-                <option *ngFor="let banco of banks" [value]="banco"></option>
-            </datalist>
 
            <div class="paymentsBot">
                 <div class="inputs-col">
                     <div class="inputGroup">
                         <label for="cheque">NO. REFERENCIA</label>
-                        <input type="text" id="cheque" name="cheque" formControlName="NuRefDocBan">
+                        <input type="text" id="cheque" name="cheque" formControlName="NuRefDocBan" appOnlyNumbers>
                     </div>
                     <div class="inputGroup">
                         <label for="fecha">FECHA</label>
-                        <input type="text" id="fecha" name="fecha" formControlName="ferecibo">
+                        <input type="date" id="fecha" name="fecha" formControlName="ferecibo">
                     </div>
                     <div class="inputGroup">
                         <label for="trans">MONTO PAGO</label>
-                        <input type="text" id="trans" name="trans" formControlName="mnrecibo">
+                        <input type="text" id="trans" name="trans" formControlName="mnrecibo" appOnlyNumbers>
                     </div>
                 </div>
 

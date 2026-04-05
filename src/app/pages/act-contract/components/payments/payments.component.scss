@@ -216,6 +216,7 @@ th{
     border-radius: 10px;
     text-transform: uppercase;
     resize: none;
+    padding-left: 10px;
 }
 
 .buttons{
@@ -341,4 +342,14 @@ th{
 
 .minus{
     color: red;
+}
+
+.inputGroup select{
+    height: 3vh;
+    background-color: #a9a9a9;
+    border: none;
+    color: black;
+    border-radius: 10px;
+    padding-left: 10px;
+    text-transform: uppercase
 }

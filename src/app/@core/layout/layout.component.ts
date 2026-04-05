@@ -74,9 +74,9 @@ export class LayoutComponent implements OnInit{
           {
             label: 'Contratos',
             items: [
-              {
-                label: 'Anillos',
-              },
+              // {
+              //   label: 'Anillos',
+              // },
               {
                 label: 'Actos de Grado',
                 routerLink: '/actContracts'
@@ -92,9 +92,9 @@ export class LayoutComponent implements OnInit{
 
             ]
           },
-          {
-            label: 'Reclamos y Servicios',
-          },
+          // {
+          //   label: 'Reclamos y Servicios',
+          // },
           {
             separator: true
           },
@@ -146,10 +146,12 @@ export class LayoutComponent implements OnInit{
         label: 'Herramientas',
         items: [
           {
-            label: 'Usuarios'
+            label: 'Usuarios',
+            routerLink: '/users'
           },
           {
-            label: 'Opciones'
+            label: 'Opciones',
+            routerLink: '/settings'
           }
         ]
       },

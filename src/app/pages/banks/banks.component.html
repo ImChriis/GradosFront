@@ -38,8 +38,14 @@
           </ng-template>
           <ng-template pTemplate="header">
             <tr>
-              <th style="min-width: 1rem" class="border">
+              <th style="min-width: 6rem" class="border">
+                <div class="flex thstyles">CODIGO</div>
+              </th>
+              <th style="min-width: 10rem" class="border">
                 <div class="flex thstyles">BANCOS</div>
+              </th>
+              <th style="min-width: 1rem" class="border">
+                <div class="flex thstyles">STATUS</div>
               </th>
             </tr>
           </ng-template>
@@ -49,7 +55,21 @@
             [class.disabled]="isEnabled" 
             [class.selected]="selectedBank?.id === bank.id" >
               <td>
+                @if(bank.Codigo === "") {
+                  XXXX
+                } @else {
+                  {{ bank.Codigo }}
+                }
+              </td>
+              <td>
                 {{ bank.Bancos }}
+              </td>
+              <td>
+                @if(bank.Status === 1) {
+                  ACTIVO
+                } @else {
+                  INACTIVO
+                }
               </td>
             </tr>
           </ng-template>
@@ -66,8 +86,28 @@
     <div class="clientForm">
         <form [formGroup]="banksForm" autocomplete="off">
             <div class="inputGroup">
+                <label for="identification">CODIGO</label>
+                <input type="text" id="identification" name="identification" formControlName="Codigo" appUppercase>
+            </div>
+
+            <div class="inputGroup">
                 <label for="identification">BANCOS</label>
                 <input type="text" id="identification" name="identification" formControlName="Bancos" appUppercase>
+            </div>
+
+          <div class="estado">
+              <div class="inputGroup2">
+                <label for="identification" class="titles">STATUS</label>
+                <div class="select">
+                    <input type="radio" id="active" class="checkbox" name="Status" [value]="1" formControlName="Status">
+                    <label for="active">ACTIVO</label>
+                </div>
+
+                <div class="select">
+                    <input type="radio" id="inactive" class="checkbox"  name="Status" [value]="0" formControlName="Status">
+                    <label for="inactive">INACTIVO</label>
+                </div>
+              </div>
             </div>
         </form>
 
@@ -81,7 +121,7 @@
               <i class="pi pi-plus add"></i>
             </div>
 
-            <div class="icon" title="Guardar" (click)="onSave()" >
+            <div class="icon" title="Guardar" (click)="onSave()" [class.disabled]="!isAdding">
               <i class="pi pi-save save"></i>
             </div>
 

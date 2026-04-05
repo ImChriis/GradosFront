@@ -50,12 +50,12 @@ export class ActPlacesComponent implements OnInit{
       })
     )
     
-    // this.actPlacesForm.disable();
+    this.actPlacesForm.disable();
     this.selectedActPlace = null;
   }
 
   onSelect(actPlace: ActPlace){
-    this.isAdding = false;
+    this.isAdding = true;
     this.isEnabled = false;
     this.selectedActPlace = actPlace;
     this.actPlacesForm.enable();
@@ -79,7 +79,7 @@ export class ActPlacesComponent implements OnInit{
 
     setTimeout(() => {
       const el = document.querySelector<HTMLInputElement>(
-        'input[formcontrolname="nucedula"], textarea[formcontrolname="nucedula"]'
+        'textarea[formcontrolname="TxLugar"]'
       );
       el?.focus();
     }, 0);

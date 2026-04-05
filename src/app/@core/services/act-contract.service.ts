@@ -45,7 +45,9 @@ export class ActContractService {
   }
 
   addUserToAct(body: any){
-    return this.http.post<any>(`${this.api}/actContracts/addUser`, body);
+    return this.http.post<any>(`${this.api}/actContracts/addUser`, body).pipe(
+      tap(() => this.refresh$.next())
+     );
   }
 
   getPaymentDataByUser(CodigoActo: number, NoContrato: string, NuCedula: string){

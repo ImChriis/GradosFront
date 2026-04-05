@@ -93,7 +93,7 @@
               <i class="pi pi-plus add"></i>
             </div>
 
-            <div class="icon" title="Guardar" (click)="onSave()" >
+            <div class="icon" title="Guardar" (click)="onSave()" [class.disabled]="!isAdding">
               <i class="pi pi-save save"></i>
             </div>
 

@@ -7,13 +7,17 @@ import { map, Observable } from 'rxjs';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { BanksService } from '../../../../@core/services/banks.service';
 import { SettingsService } from '../../../../@core/services/settings.service';
+import { UppercaseDirective } from '../../../../@core/directives/uppercase.directive';
+import { OnlyNumbersDirective } from '../../../../@core/directives/only-numbers.directive';
 
 @Component({
   selector: 'app-payments',
   imports: [
     CommonModule,
     TableModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    UppercaseDirective,
+    OnlyNumbersDirective
   ],
   templateUrl: './payments.component.html',
   styleUrl: './payments.component.scss'
@@ -26,6 +30,7 @@ export class PaymentsComponent implements OnInit{
   private fb = inject(FormBuilder);
   actUser = this.dialogConfig.data.actUser;
   codigoActo = this.dialogConfig.data.codigoActo;
+  totalPerStudent = this.dialogConfig.data.totalPerStudent;
   NuCedula!: number;
   NoContrato!: number;
   recibos$!: Observable<any>;
@@ -42,6 +47,7 @@ export class PaymentsComponent implements OnInit{
   observacion: string = '';
   metodosPago: String[] = [];
   banks: String[] = [];
+  isAdding: boolean = false;
 
   reciboPagoForm = this.fb.group({
     NoRecibo: [null as number | null],
@@ -148,6 +154,13 @@ export class PaymentsComponent implements OnInit{
   }
 
   add(){
+        setTimeout(() => {
+      const el = document.querySelector<HTMLInputElement>(
+        'input[formcontrolname="mnrecibo"]'
+      );
+      el?.focus();
+    }, 0);
+
     this.settingsService.getSettings().subscribe({
       next: (res: any) => {
         console.log(res) // Incrementar el número de recibo basado en la configuración actual
@@ -156,7 +169,7 @@ export class PaymentsComponent implements OnInit{
       }
     })
     this.fechaSelectedRecibo = new Date().toISOString();
-    this.montoSelectedRecibo = this.actUser.MnSaldo;
+    this.isAdding = true;
   }
   
   cancel(){

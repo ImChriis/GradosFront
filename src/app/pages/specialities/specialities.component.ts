@@ -45,6 +45,9 @@ export class SpecialitiesComponent implements OnInit{
         return this.specialitiesService.getAllSpecialities();
       })
     )
+
+    this.specialititesForm.disable();
+    this.selectedSpeciality = null;
   }
 
   onSelectedSpeciality(speciality: Speciality){

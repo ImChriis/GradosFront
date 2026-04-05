@@ -82,41 +82,44 @@
             </div>
 
             <div class="inputGroup3">
+              <div class="tipos">
+                <div class="inputGroup2">
+                  <label for="identification" class="titles">TIPO</label>
+                  <div class="select">
+                      <input type="radio" id="university" class="checkbox" name="MaTipoLugar" [value]="1" formControlName="MaTipoLugar" >
+                      <label for="university">TEATRO TECHADO</label>
+                  </div>
+
+                  <div class="select">
+                      <input type="radio" id="tecnologico" class="checkbox" name="MaTipoLugar"  [value]="2" formControlName="MaTipoLugar">
+                      <label for="tecnologico">ANFITEATRO </label>
+                  </div>
+
+                  <div class="select">
+                      <input type="radio" id="school" class="checkbox" name="MaTipoLugar"  [value]="3" formControlName="MaTipoLugar">
+                      <label for="school">TEATRO SIN TECHADO</label>
+                  </div>  
+
+                  <div class="select">
+                      <input type="radio" id="enterprise" class="checkbox" name="MaTipoLugar"  [value]="4" formControlName="MaTipoLugar">
+                      <label for="enterprise">AL AIRE LIBRE</label>
+                  </div>
+
+                  <div class="select">
+                      <input type="radio" id="particular" class="checkbox" name="MaTipoLugar"  [value]="5" formControlName="MaTipoLugar">
+                      <label for="particular">TEATRO - CINE</label>
+                  </div>
+
+                <div class="select">
+                      <input type="radio" id="particular" class="checkbox" name="MaTipoLugar"  [value]="6" formControlName="MaTipoLugar">
+                      <label for="particular">OTRO</label>
+                  </div>
+              </div>
+              </div>
+
+            <div class="estado">
               <div class="inputGroup2">
-                <label for="identification">TIPO</label>
-                <div class="select">
-                    <input type="radio" id="university" class="checkbox" name="MaTipoLugar" [value]="1" formControlName="MaTipoLugar" >
-                    <label for="university">TEATRO TECHADO</label>
-                </div>
-
-                <div class="select">
-                    <input type="radio" id="tecnologico" class="checkbox" name="MaTipoLugar"  [value]="2" formControlName="MaTipoLugar">
-                    <label for="tecnologico">ANFITEATRO </label>
-                </div>
-
-                <div class="select">
-                    <input type="radio" id="school" class="checkbox" name="MaTipoLugar"  [value]="3" formControlName="MaTipoLugar">
-                    <label for="school">TEATRO SIN TECHADO</label>
-                </div>  
-
-                <div class="select">
-                    <input type="radio" id="enterprise" class="checkbox" name="MaTipoLugar"  [value]="4" formControlName="MaTipoLugar">
-                    <label for="enterprise">AL AIRE LIBRE</label>
-                </div>
-
-                <div class="select">
-                    <input type="radio" id="particular" class="checkbox" name="MaTipoLugar"  [value]="5" formControlName="MaTipoLugar">
-                    <label for="particular">TEATRO - CINE</label>
-                </div>
-
-               <div class="select">
-                    <input type="radio" id="particular" class="checkbox" name="MaTipoLugar"  [value]="6" formControlName="MaTipoLugar">
-                    <label for="particular">OTRO</label>
-                </div>
-            </div>
-
-            <div class="inputGroup2">
-                <label for="identification">STATUS</label>
+                <label for="identification" class="titles2">STATUS</label>
                 <div class="select">
                     <input type="radio" id="active" class="checkbox" name="Activo" [value]="1" formControlName="Activo">
                     <label for="active">ACTIVO</label>
@@ -126,6 +129,7 @@
                     <input type="radio" id="inactive" class="checkbox"  name="Activo" [value]="0" formControlName="Activo">
                     <label for="inactive">INACTIVO</label>
                 </div>
+              </div>
             </div>
             </div>
         </form>
@@ -140,7 +144,7 @@
               <i class="pi pi-plus add"></i>
             </div>
 
-            <div class="icon" title="Guardar" (click)="onSave()" >
+            <div class="icon" title="Guardar" (click)="onSave()" [class.disabled]="!isAdding">
               <i class="pi pi-save save"></i>
             </div>
 

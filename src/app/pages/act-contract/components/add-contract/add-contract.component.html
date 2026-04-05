@@ -3,7 +3,7 @@
             <div class="group">
             <div class="inputGroup2">
                 <label for="cedula">NO. CÉDULA</label>
-                <input type="text" id="cedula" name="cedula" appUppercase formControlName="NuCedula">
+                <input type="text" id="cedula" name="cedula" appUppercase formControlName="NuCedula" (keydown.enter)="searchUserByCedula($event)">
             </div>
 
             <div class="inputGroup2">
@@ -55,7 +55,7 @@
         </div>
 
         <div class="btns">
-            <div class="icon" title="Cancelar" (click)="onSubmit()">
+            <div class="icon" title="Cancelar" (click)="onSubmit()" [class.disabled]="actForm.invalid">
                 <i class="pi pi-save"></i>
             </div>
 
