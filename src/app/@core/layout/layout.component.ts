@@ -1,8 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MenuItem } from 'primeng/api';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MenubarModule } from 'primeng/menubar';
-import { last } from 'rxjs';
+import { ReportActPlacesComponent } from '../components/modals/report-act-places/report-act-places.component';
 
 @Component({
   selector: 'app-layout',
@@ -16,6 +17,9 @@ import { last } from 'rxjs';
 })
 export class LayoutComponent implements OnInit{
   private router = inject(Router);
+  private dialogService = inject(DialogService);
+  // private dialogRef = inject(DynamicDialogRef);
+  ref!: DynamicDialogRef;
 
   items: MenuItem[]| undefined;
   user!: string;
@@ -113,7 +117,8 @@ export class LayoutComponent implements OnInit{
             label: 'Institutos'
           },
           {
-            label: 'Lugares para Actos'
+            label: 'Lugares para Actos',
+            command: () => this.openModal(ReportActPlacesComponent)
           },
           {
             separator: true
@@ -162,11 +167,27 @@ export class LayoutComponent implements OnInit{
             label: 'Acerca de'
           },
           {
+            separator: true
+          },
+          {
             label: 'Manual de Usuario'
           }
         ]
       }
     ]
+  }
+
+  openModal(component: any){
+    this.ref = this.dialogService.open(component, {
+       header: 'Reporte Lugardes de Acto',
+            width: '50%',
+            modal: true,
+            closable: true,
+            breakpoints: {
+              '960px': '90%',
+              '640px': '100%'
+            }
+    })
   }
 
   logout(){
