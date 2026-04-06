@@ -5,13 +5,13 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { PdfViewerComponent } from '../../pdf-viewer/pdf-viewer.component';
 
 @Component({
-  selector: 'app-report-act-places',
+  selector: 'app-report-specialities',
   imports: [],
-  templateUrl: './report-act-places.component.html',
-  styleUrl: './report-act-places.component.scss'
+  templateUrl: './report-specialities.component.html',
+  styleUrl: './report-specialities.component.scss'
 })
-export class ReportActPlacesComponent implements OnInit, OnDestroy{
-  private reportsService = inject(ReportsService);
+export class ReportSpecialitiesComponent implements OnInit, OnDestroy{
+ private reportsService = inject(ReportsService);
   private messageService = inject(MessageService);
   private dialogService = inject(DialogService);
   private currentBlobUrl: string | null = null;
@@ -28,8 +28,8 @@ export class ReportActPlacesComponent implements OnInit, OnDestroy{
 
   onSubmit(type: string, esPantalla: boolean) {
     const serviceCall = type === 'PDF' 
-      ? this.reportsService.getActPlacesPdf(this.nombre)
-      : this.reportsService.getActPlacesExcel(this.nombre);
+      ? this.reportsService.getSpecialitiesPdf(this.nombre)
+      : this.reportsService.getSpecialitiesExcel(this.nombre);
 
     serviceCall.subscribe({
       next: (res) => {

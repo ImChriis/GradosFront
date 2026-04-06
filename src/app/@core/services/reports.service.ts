@@ -9,11 +9,27 @@ export class ReportsService {
   private api: string = environment.api;
   private http = inject(HttpClient);
 
-  getActPlacesPdf(){
-    return this.http.get(`${this.api}/reports/actPlacesPdf`, {responseType: 'blob'});
+  getSpecialitiesPdf(usuarioReporte: string){
+    return this.http.get(`${this.api}/reports/specialitiesPdf/${usuarioReporte}`, {responseType: 'blob'});
   }
 
-  getActPlacesExcel(){
-    return this.http.get(`${this.api}/reports/actPlacesExcel`, {responseType: 'blob'});
+  getSpecialitiesExcel(usuarioReporte: string){
+    return this.http.get(`${this.api}/reports/specialitiesExcel/${usuarioReporte}`, {responseType: 'blob'});
+  }
+  
+  getInstitutionsPdf(usuarioReporte: string){
+    return this.http.get(`${this.api}/reports/institutionsPdf/${usuarioReporte}`, {responseType: 'blob'});
+  }
+
+  getInstitutionsExcel(usuarioReporte: string){
+    return this.http.get(`${this.api}/reports/institutionsExcel/${usuarioReporte}`, {responseType: 'blob'});
+  }
+
+  getActPlacesPdf(usuarioReporte: string){
+    return this.http.get(`${this.api}/reports/actPlacesPdf/${usuarioReporte}`, {responseType: 'blob'});
+  }
+
+  getActPlacesExcel(usuarioReporte: string){
+    return this.http.get(`${this.api}/reports/actPlacesExcel/${usuarioReporte}`, {responseType: 'blob'});
   }
 }

@@ -1,0 +1,78 @@
+.container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.selects{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.selects label{
+    color: inherit;
+    font-weight: bold;
+}
+
+.group {
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Borde sutil */
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.title {
+    font-weight: bold;
+    padding: 0 10px;
+    background-color: transparent; /* ¡Ya no necesitas parche de color! */
+}
+
+::ng-deep .title{
+    background-color: var(--surface-overlay) !important;
+}
+
+.btns{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+
+.pdf{
+    background-color: red;
+    border: none;
+    border-radius: 10px;
+    height: 5vh;
+    width: 30%;
+    color: white;
+    font-weight: bold;
+}
+
+.excel{
+    background-color: green;
+    border: none;
+    border-radius: 10px;
+    height: 5vh;
+    width: 30%;
+    color: white;
+    font-weight: bold;
+}
+
+.btns button:hover{
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+::ng-deep .p-dialog-header{
+    border-bottom: 1px solid !important;
+    border-color: inherit !important;
+    height: 50px;
+}
+

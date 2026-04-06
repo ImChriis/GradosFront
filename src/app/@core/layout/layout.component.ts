@@ -4,6 +4,10 @@ import { MenuItem } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MenubarModule } from 'primeng/menubar';
 import { ReportActPlacesComponent } from '../components/modals/report-act-places/report-act-places.component';
+import { ReportInstitutionsComponent } from '../components/modals/report-institutions/report-institutions.component';
+import { ReportSpecialitiesComponent } from '../components/modals/report-specialities/report-specialities.component';
+import { ReportClientsComponent } from '../components/modals/report-clients/report-clients.component';
+
 
 @Component({
   selector: 'app-layout',
@@ -111,26 +115,53 @@ export class LayoutComponent implements OnInit{
         label: 'Reportes',
         items: [
           {
-            label: 'Especialidades'
+            label: 'Especialidades',
+            command: () => this.openModal(ReportSpecialitiesComponent, 'Reporte de Especialidades')
           },
           {
-            label: 'Institutos'
+            label: 'Institutos',
+            command: () => this.openModal(ReportInstitutionsComponent, 'Reporte de Instituciones')
           },
           {
             label: 'Lugares para Actos',
-            command: () => this.openModal(ReportActPlacesComponent)
+            command: () => this.openModal(ReportActPlacesComponent, 'Reporte de Lugares para Actos')
           },
           {
             separator: true
           },
           {
-            label: 'Clientes'
+            label: 'Clientes',
+            items: [
+              {
+                label: 'Listado de Clientes',
+                command: () => this.openModal(ReportClientsComponent, 'Reporte de Clientes')
+              }
+            ]
           },
           {
-            label: 'Contratos'
+            label: 'Contratos',
+            items: [
+              {
+                label: 'Por Estatus'
+              },
+              {
+                label: 'Datos de un contrato'
+              },
+              {
+                label: 'Lista de Anillos Prox. a Vencer Solicitud'
+              }
+            ]
           },
           {
-            label: 'Recibos'
+            label: 'Recibos',
+            items: [
+              {
+                label: 'En Rango de fechas'
+              },
+              {
+                label: 'Impresión de Recibos'
+              }
+            ]
           },
           {
             separator: true
@@ -177,9 +208,9 @@ export class LayoutComponent implements OnInit{
     ]
   }
 
-  openModal(component: any){
+  openModal(component: any, title: string){
     this.ref = this.dialogService.open(component, {
-       header: 'Reporte Lugardes de Acto',
+            header: title,
             width: '30%',
             modal: true,
             closable: true,
@@ -187,7 +218,7 @@ export class LayoutComponent implements OnInit{
               '960px': '90%',
               '640px': '100%'
             }
-    })
+    });
   }
 
   logout(){
