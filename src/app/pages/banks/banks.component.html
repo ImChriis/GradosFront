@@ -55,7 +55,7 @@
             [class.disabled]="isEnabled" 
             [class.selected]="selectedBank?.id === bank.id" >
               <td>
-                @if(bank.Codigo === "") {
+                @if(bank.Codigo === "" | | bank.Codigo === null) {
                   XXXX
                 } @else {
                   {{ bank.Codigo }}
