@@ -1,16 +1,22 @@
 <div class="container">
-    <div class="selects">
-        <div class="inputGroup">
-            <input type="radio" id="pantalla" name="reportOption" value="pantalla" checked #optPantalla>
-            <label for="pantalla">En pantalla</label>
-        </div>
+    <div class="group">
+        <label class="title">Destino</label>
 
-        <div class="inputGroup">
-            <input type="radio" id="pdf" name="reportOption" value="imprimir" #optImprimir>
-            <label for="pdf">Imprimir (Descargar)</label>
+        <div class="selects">
+            <div class="inputGroup">
+                <input type="radio" id="pantalla" name="reportOption" value="pantalla" checked #optPantalla>
+                <label for="pantalla">En pantalla</label>
+            </div>
+
+            <div class="inputGroup">
+                <input type="radio" id="pdf" name="reportOption" value="imprimir" #optImprimir>
+                <label for="pdf">Imprimir (Descargar)</label>
+            </div>
         </div>
     </div>
 
-    <button (click)="onSubmit('PDF', optPantalla.checked)">Generar Reporte PDF</button>
-    <button (click)="onSubmit('Excel', optPantalla.checked)">Generar Reporte Excel</button>
+    <div class="btns">
+        <button class="pdf" (click)="onSubmit('PDF', optPantalla.checked)">PDF</button>
+        <button class="excel" (click)="onSubmit('Excel', optPantalla.checked)">EXCEL</button>
+    </div>
 </div>

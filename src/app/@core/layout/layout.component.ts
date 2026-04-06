@@ -180,7 +180,7 @@ export class LayoutComponent implements OnInit{
   openModal(component: any){
     this.ref = this.dialogService.open(component, {
        header: 'Reporte Lugardes de Acto',
-            width: '50%',
+            width: '30%',
             modal: true,
             closable: true,
             breakpoints: {
