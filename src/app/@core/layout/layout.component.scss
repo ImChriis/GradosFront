@@ -80,6 +80,7 @@ footer{
     .p-menubar-item-link{
         color: black !important;
         height: 3vh;
+        white-space: nowrap !important; /* Evita que el texto salte de línea si el menú es pequeño */
     }
 
     .p-menubar-item-link:hover{
