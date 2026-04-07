@@ -36,7 +36,7 @@ export class BanksComponent implements OnInit{
     id: new FormControl<number | null>(null),
     Bancos: new FormControl<string | null>('', { nonNullable: true }),
     Codigo: new FormControl<string | null>(null),
-    Status: new FormControl<string | null>(null)
+    Status: new FormControl<number | null>(null)
   })
 
   ngOnInit(): void {
