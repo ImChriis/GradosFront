@@ -1,64 +1,66 @@
-<div class="container">
+<form [formGroup]="reportClientsForm">
+    <div class="container">
+            <fieldset class="group">
+            <legend class="title">Datos a imprimir</legend>
+
+            <div class="selects2">
+                <div class="inputGroup">
+                    <input type="checkbox" id="pantalla" name="reportOption" value="pantalla" #Nombre formControlName="txnombre">
+                    <label for="pantalla">Nombre y Apellido</label>
+                </div>
+
+                <div class="inputGroup">
+                    <input type="checkbox" id="cedula" name="reportOption" value="cedula" #optCedula formControlName="nucedula">
+                    <label for="cedula">Cédula</label>
+                </div>
+
+                <div class="inputGroup">
+                    <input type="checkbox" id="pdf" name="reportOption" value="pdf" #optPdf formControlName="txemail">
+                    <label for="pdf">Coreeo Electrónico</label>
+                </div>
+
+                <div class="inputGroup">
+                    <input type="checkbox" id="telefono" name="reportOption" value="telefono" #optTelefono formControlName="txcelular">
+                    <label for="telefono">Teléfono</label>
+                </div>
+
+                <div class="inputGroup">
+                    <input type="checkbox" id="direccion" name="reportOption" value="direccion" #optDireccion formControlName="txdireccion">
+                    <label for="direccion">Dirección</label>
+                </div>
+            </div>
+        </fieldset>
+
+        
         <fieldset class="group">
-        <legend class="title">Datos a imprimir</legend>
+            <legend class="title">Clientes con fecha de ingreso mayor a</legend>
 
-        <div class="selects2">
-            <div class="inputGroup">
-                <input type="checkbox" id="pantalla" name="reportOption" value="pantalla" checked #optPantalla>
-                <label for="pantalla">Nombre y Apellido</label>
+            <div class="selects">
+                <div class="inputGroup2">
+                    <input type="date" id="fechaDesde" name="fechaDesde" #optFechaDesde formControlName="fechaDesde">
+                </div>
             </div>
+        </fieldset>
 
-            <div class="inputGroup">
-                <input type="checkbox" id="cedula" name="reportOption" value="cedula" checked #optCedula>
-                <label for="cedula">Cédula</label>
-            </div>
+        <fieldset class="group">
+            <legend class="title">Destino</legend>
 
-            <div class="inputGroup">
-                <input type="checkbox" id="pdf" name="reportOption" value="pdf" #optPdf>
-                <label for="pdf">Coreeo Electrónico</label>
-            </div>
+            <div class="selects">
+                <div class="inputGroup">
+                    <input type="radio" id="pantalla" name="reportOption" value="pantalla" checked #optPantalla>
+                    <label for="pantalla">En pantalla</label>
+                </div>
 
-            <div class="inputGroup">
-                <input type="checkbox" id="telefono" name="reportOption" value="telefono" #optTelefono>
-                <label for="telefono">Teléfono</label>
+                <div class="inputGroup">
+                    <input type="radio" id="pdf" name="reportOption" value="imprimir" #optImprimir>
+                    <label for="pdf">Imprimir (Descargar)</label>
+                </div>
             </div>
+        </fieldset>
 
-            <div class="inputGroup">
-                <input type="checkbox" id="direccion" name="reportOption" value="direccion" #optDireccion>
-                <label for="direccion">Dirección</label>
-            </div>
+        <div class="btns">
+            <button class="pdf" (click)="onSubmit('PDF', optPantalla.checked)">PDF</button>
+            <button class="excel" (click)="onSubmit('EXCEL', optPantalla.checked)">EXCEL</button>
         </div>
-    </fieldset>
-
-    
-    <fieldset class="group">
-        <legend class="title">Clientes con fecha de ingreso mayor a</legend>
-
-        <div class="selects">
-            <div class="inputGroup2">
-                <input type="date" id="pantalla" name="reportOption" value="pantalla" checked #optPantalla>
-            </div>
-        </div>
-    </fieldset>
-
-    <fieldset class="group">
-        <legend class="title">Destino</legend>
-
-        <div class="selects">
-            <div class="inputGroup">
-                <input type="radio" id="pantalla" name="reportOption" value="pantalla" checked #optPantalla>
-                <label for="pantalla">En pantalla</label>
-            </div>
-
-            <div class="inputGroup">
-                <input type="radio" id="pdf" name="reportOption" value="imprimir" #optImprimir>
-                <label for="pdf">Imprimir (Descargar)</label>
-            </div>
-        </div>
-    </fieldset>
-
-    <div class="btns">
-        <button class="pdf" >PDF</button>
-        <button class="excel" >EXCEL</button>
     </div>
-</div>
+</form>

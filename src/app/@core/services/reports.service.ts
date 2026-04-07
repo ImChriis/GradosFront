@@ -32,4 +32,12 @@ export class ReportsService {
   getActPlacesExcel(usuarioReporte: string){
     return this.http.get(`${this.api}/reports/actPlacesExcel/${usuarioReporte}`, {responseType: 'blob'});
   }
+
+  getClientsPdf(body: any){
+    return this.http.post(`${this.api}/reports/clientsPdf`, body, {responseType: 'blob'});
+  }
+
+  getClientsExcel(body: any){
+    return this.http.post(`${this.api}/reports/clientsExcel`, body, {responseType: 'blob'});
+  }
 }
