@@ -1,3 +1,18 @@
+.body{
+    border: 1px solid white; /* Borde sutil */
+    border-radius: 10px;
+    padding: 20px;
+    width: 95%;
+}
+
+.title {
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    padding: 0 10px;
+    background-color: transparent; /* ¡Ya no necesitas parche de color! */
+}
+
 form{
     width: 100%;
     display: flex;
@@ -7,15 +22,16 @@ form{
 }
 
 .container{
-    width: 90%;
+    width: 100%;
     height: auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
     align-items: start;
     justify-content: center;
-    background-color: #a9a9a9;
+    background-color: #dfdcdc;
     padding: 20px;
+    border-radius: 10px;
 }
 
 .razonSocial{

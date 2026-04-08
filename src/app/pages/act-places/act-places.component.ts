@@ -1,14 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { ActsService } from '../../@core/services/acts.service';
-import { Observable, startWith, switchMap } from 'rxjs';
+import { delay, Observable, startWith, switchMap, tap } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ɵInternalFormsSharedModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ActPlace } from '../../@core/models/act.model';
 import { ActPlacesForm } from '../../@core/models/forms/act-form';
 import { UppercaseDirective } from '../../@core/directives/uppercase.directive';
+import { LoaderComponent } from '../../@core/components/loader/loader.component';
 
 @Component({
   selector: 'app-act-places',
@@ -18,7 +19,8 @@ import { UppercaseDirective } from '../../@core/directives/uppercase.directive';
     InputTextModule,
     ɵInternalFormsSharedModule,
     ReactiveFormsModule,
-    UppercaseDirective
+    UppercaseDirective,
+    LoaderComponent
 ],
   templateUrl: './act-places.component.html',
   styleUrl: './act-places.component.scss'
@@ -32,6 +34,7 @@ export class ActPlacesComponent implements OnInit{
   selectedActPlace: ActPlace | null = null;
   acts$!: Observable<ActPlace[]>;
   CodLugar!: number | null;
+  isLoading = signal(true);
 
   actPlacesForm: FormGroup<ActPlacesForm> = this.fb.group({
     CoLugar: new FormControl<number | null>(null),
@@ -45,9 +48,12 @@ export class ActPlacesComponent implements OnInit{
   ngOnInit(): void {
     this.acts$ = this.actsService.refreshObservable$.pipe(
       startWith(null),
+      tap(() => this.isLoading.set(true)),
       switchMap(() => {
         return this.actsService.getAllActsPlaces();
-      })
+      }),
+      delay(500),
+      tap(() => this.isLoading.set(false))
     )
     
     this.actPlacesForm.disable();

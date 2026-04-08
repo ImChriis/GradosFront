@@ -1,10 +1,11 @@
 <div class="container">
     <div class="clientsList">
-      <div class="title">
-        <h2>Especialidades</h2>
-      </div>
+      <fieldset class="body">
+        <legend class="title">Especialidades</legend>
 
-      <div class="body"> 
+        <div class="table-wrapper" style="position: relative; min-height: 300px;">
+          <app-loader [isLoading]="isLoading()" mode="component"></app-loader>
+                 <div class="table"> 
         @if(
       specialities$ | async
       ; as state) {
@@ -65,6 +66,10 @@
         </p-table>
       }
     </div>
+        </div>
+
+      </fieldset>
+
     </div>
 
     <div class="clientForm">

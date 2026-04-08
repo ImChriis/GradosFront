@@ -1,15 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { UsersService } from '../../@core/services/users.service';
 import { MessageService } from 'primeng/api';
-import { Observable, startWith, switchMap } from 'rxjs';
+import { delay, Observable, startWith, switchMap, tap } from 'rxjs';
 import { User } from '../../@core/models/user.mode';
 import { UserForm } from '../../@core/models/forms/users-form';
 import { InputTextModule } from 'primeng/inputtext';
 import { OnlyNumbersDirective } from '../../@core/directives/only-numbers.directive';
 import { UppercaseDirective } from '../../@core/directives/uppercase.directive';
+import { LoaderComponent } from '../../@core/components/loader/loader.component';
 
 @Component({
   selector: 'app-users',
@@ -19,7 +20,8 @@ import { UppercaseDirective } from '../../@core/directives/uppercase.directive';
     InputTextModule,
     ReactiveFormsModule,
     OnlyNumbersDirective,
-    UppercaseDirective
+    UppercaseDirective,
+    LoaderComponent
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss'
@@ -33,6 +35,7 @@ export class UsersComponent implements OnInit{
   isEnabled: boolean = false;
   isAdding: boolean = false;
   CodUser!: number;
+  isLoading = signal(true);
 
   private passwordsMatchValidator: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
     const clave = group.get('Clave')?.value;
@@ -56,9 +59,12 @@ export class UsersComponent implements OnInit{
   ngOnInit(): void {
     this.users$ = this.usersService.refreshObservavble$.pipe(
       startWith(null),
+      tap(() => this.isLoading.set(true)),
       switchMap(() => {
         return this.usersService.getUsers();
-      })
+      }),
+      delay(500),
+      tap(() => this.isLoading.set(false))
     )
 
     this.userForm.disable();

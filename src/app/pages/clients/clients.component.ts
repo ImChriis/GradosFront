@@ -1,7 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { ClientsService } from '../../@core/services/clients.service';
-import { Observable, startWith, switchMap } from 'rxjs';
+import { delay, Observable, single, startWith, switchMap, tap } from 'rxjs';
 import { Client } from '../../@core/models/client.model';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { InputText } from 'primeng/inputtext';
@@ -10,6 +10,7 @@ import { ClientForm } from '../../@core/models/forms/client-form';
 import { MessageService } from 'primeng/api';
 import { UppercaseDirective } from '../../@core/directives/uppercase.directive';
 import { OnlyNumbersDirective } from '../../@core/directives/only-numbers.directive';
+import { LoaderComponent } from '../../@core/components/loader/loader.component';
 
 @Component({
   selector: 'app-clients',
@@ -20,7 +21,8 @@ import { OnlyNumbersDirective } from '../../@core/directives/only-numbers.direct
     InputText,
     ReactiveFormsModule,
     UppercaseDirective,
-    OnlyNumbersDirective
+    OnlyNumbersDirective,
+    LoaderComponent
   ],
   templateUrl: './clients.component.html',
   styleUrl: './clients.component.scss'
@@ -35,6 +37,8 @@ export class ClientsComponent implements OnInit{
   isEnabled: boolean = false;
   isAdding: boolean = false;
   id!: number;
+  isLoading = signal(true);
+  loading = true;
 
   clientsForm: FormGroup<ClientForm> = this.fb.group({
     id: new FormControl<number | null>(null, { nonNullable: true } ),
@@ -48,11 +52,16 @@ export class ClientsComponent implements OnInit{
   })
   
   ngOnInit(): void {
+    this.isLoading.set(true);
+
     this.clients$ = this.clientsService.refreshObservavble$.pipe(
       startWith(null),
+      tap(() => this.isLoading.set(true)),
       switchMap(() => {
         return this.clientsService.findAllClients();
-      })
+      }),
+      delay(500), // Simula un retraso de 500ms para mostrar el loader
+      tap(() => this.isLoading.set(false))
     )
 
     this.clientsForm.disable();

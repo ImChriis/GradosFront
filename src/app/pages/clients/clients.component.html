@@ -1,10 +1,16 @@
 <div class="container">
     <div class="clientsList">
-      <div class="title">
+      <!-- <div class="title">
         <h2>Clientes</h2>
-      </div>
-
-      <div class="body"> 
+      </div> -->
+      
+      <fieldset class="body">
+        <legend class="title">Clientes</legend>
+        
+        
+        <div class="table-wrapper" style="position: relative; min-height: 300px;">
+          <app-loader [isLoading]="isLoading()" mode="component"></app-loader>
+           <div class="table"> 
         @if(
       clients$ | async
       ; as state) {
@@ -81,8 +87,10 @@
             </tr>
           </ng-template>
         </p-table>
-      }
-    </div>
+       }
+      </div>
+        </div>
+      </fieldset>
     </div>
 
     <div class="clientForm">

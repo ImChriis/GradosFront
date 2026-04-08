@@ -1,7 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { InstitutionsService } from '../../@core/services/institutions.service';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Observable, startWith, switchMap } from 'rxjs';
+import { delay, Observable, startWith, switchMap, tap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
@@ -9,6 +9,7 @@ import { Institution } from '../../@core/models/institution.model';
 import { InstitutionForm } from '../../@core/models/forms/institution-form';
 import { MessageService } from 'primeng/api';
 import { UppercaseDirective } from '../../@core/directives/uppercase.directive';
+import { LoaderComponent } from '../../@core/components/loader/loader.component';
 
 @Component({
   selector: 'app-institutions',
@@ -17,7 +18,8 @@ import { UppercaseDirective } from '../../@core/directives/uppercase.directive';
     ReactiveFormsModule,
     TableModule,
     InputTextModule,
-    UppercaseDirective
+    UppercaseDirective,
+    LoaderComponent
   ],
   templateUrl: './institutions.component.html',
   styleUrl: './institutions.component.scss'
@@ -31,6 +33,7 @@ export class InstitutionsComponent implements OnInit{
   isEnabled = false;
   selectedInstitution!: Institution | null;
   CodigoInst!: number;
+  isLoading = signal(true);
 
   institutionsForm: FormGroup<InstitutionForm> = this.fb.group({
     CodigoInst: new FormControl<number | null>(null, { nonNullable: true }),
@@ -42,9 +45,12 @@ export class InstitutionsComponent implements OnInit{
   ngOnInit(){
     this.institutions$ = this.institutionsService.refresObservable$.pipe(
       startWith(null),
+      tap(() => this.isLoading.set(true)),
       switchMap(() => {
         return this.institutionsService.getAllInstitutions()
-      })
+      }),
+      delay(500),
+      tap(() => this.isLoading.set(false))
     )
 
     this.institutionsForm.disable();

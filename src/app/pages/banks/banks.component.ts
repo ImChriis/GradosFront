@@ -1,14 +1,15 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { BanksService } from '../../@core/services/banks.service';
 import { Bank } from '../../@core/models/bank.model';
 import { MessageService } from 'primeng/api';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Observable, startWith, switchMap } from 'rxjs';
+import { delay, Observable, startWith, switchMap, tap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { InputText } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { BankForm } from '../../@core/models/forms/bank-form';
 import { UppercaseDirective } from '../../@core/directives/uppercase.directive';
+import { LoaderComponent } from '../../@core/components/loader/loader.component';
 
 @Component({
   selector: 'app-banks',
@@ -17,7 +18,8 @@ import { UppercaseDirective } from '../../@core/directives/uppercase.directive';
     InputText,
     TableModule,
     ReactiveFormsModule,
-    UppercaseDirective
+    UppercaseDirective,
+    LoaderComponent
   ],
   templateUrl: './banks.component.html',
   styleUrl: './banks.component.scss'
@@ -31,6 +33,7 @@ export class BanksComponent implements OnInit{
   selectedBank: Bank | null = null;
   banks$!: Observable<Bank[]>;
   id!: number | null;
+  isLoading = signal(true);
 
   banksForm: FormGroup<BankForm> = this.fb.group({
     id: new FormControl<number | null>(null),
@@ -42,9 +45,12 @@ export class BanksComponent implements OnInit{
   ngOnInit(): void {
     this.banks$ = this.banksService.refreshObservable$.pipe(
       startWith(null),
+      tap(() => this.isLoading.set(true)),
       switchMap(() => {
         return this.banksService.getAllBanks();
-      })
+      }),
+      delay(500),
+      tap(() => this.isLoading.set(false))
     )
 
     this.banksForm.disable();
@@ -63,7 +69,7 @@ export class BanksComponent implements OnInit{
       Status: bank.Status
     })
 
-    this.id = bank.id;
+    this.id = bank.id; 
   }
 
   onAdd(){

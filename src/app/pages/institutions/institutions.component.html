@@ -1,84 +1,88 @@
 <div class="container">
     <div class="clientsList">
-      <div class="title">
-        <h2>Instituciones</h2>
-      </div>
+      <fieldset class="body">
+        <legend class="title">Instituciones</legend>
 
-      <div class="body"> 
-        @if(
-      institutions$ | async
-      ; as state) {
-      <p-table
-        #dt1
-        [value]='state'
-        [rows]="10"
-        [paginator]="true"
-        [globalFilterFields]="['siglas', 'nbinstitucion', 'tpinstitucion']"
-        styleClass="ml-3 mr-3"
-        >
-        <ng-template pTemplate="caption" let-event>
-          <div class="flex-row">
-            <div class="p-toolbar-group-end">
-              <span class="p-input-icon-left ml-auto">
-                <i class=""></i>
-                <input
-                class="search"
-                #searchInput
-                pInputText
-                type="text"
-                placeholder="BUSCAR"
-                (input)="dt1.filterGlobal(searchInput.value, 'contains')"
-              />
-                </span>
+        <div class="table-wrapper" style="position: relative; min-height: 300px;">
+          <app-loader [isLoading]="isLoading()" mode="component"></app-loader>
+                       <div class="table"> 
+          @if(
+        institutions$ | async
+        ; as state) {
+        <p-table
+          #dt1
+          [value]='state'
+          [rows]="10"
+          [paginator]="true"
+          [globalFilterFields]="['siglas', 'nbinstitucion', 'tpinstitucion']"
+          styleClass="ml-3 mr-3"
+          >
+          <ng-template pTemplate="caption" let-event>
+            <div class="flex-row">
+              <div class="p-toolbar-group-end">
+                <span class="p-input-icon-left ml-auto">
+                  <i class=""></i>
+                  <input
+                  class="search"
+                  #searchInput
+                  pInputText
+                  type="text"
+                  placeholder="BUSCAR"
+                  (input)="dt1.filterGlobal(searchInput.value, 'contains')"
+                />
+                  </span>
+              </div>
             </div>
-          </div>
-          </ng-template>
-          <ng-template pTemplate="header">
-            <tr>
-              <th style="min-width: 1rem" class="border">
-                <div class="flex thstyles">SIGLAS</div>
-              </th>
-              <th style="min-width: 8rem">
-                <div class="flex thstyles">NOMBRE</div>
-              </th>
-              <th style="min-width: 8rem">
-                <div class="flex thstyles">TIPO</div>
-              </th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-institution class="p-table">
-             <tr class="table-content" 
-              (click)=" onSelectedInstitution(institution)" 
-              [class.disabled]="isEnabled" 
-              [class.selected]="selectedInstitution === institution" >
-              <td>
-                {{ institution.siglas }}
-              </td>
-              <td class="name">
-                {{ institution.nbinstitucion }}
-              </td>
-              <td>
-                @if(institution.tpinstitucion === 'Col') {
-                  COLEGIO
-                } @else if(institution.tpinstitucion === 'Uni') {
-                  UNIVERSIDAD
-                } @else if(institution.tpinstitucion === 'Tec') {
-                  TECNOLÓGICO
-                } @else if(institution.tpinstitucion === 'Emp') {
-                  EMPRESA
-                } @else if(institution.tpinstitucion === 'Par') {
-                  PARTICULAR
-                }
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="emptymessage">
-            <tr>
-              <td colspan="7">No elementos encontrados.</td>
-            </tr>
-          </ng-template>
-        </p-table>
-      }
-    </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="min-width: 1rem" class="border">
+                  <div class="flex thstyles">SIGLAS</div>
+                </th>
+                <th style="min-width: 8rem">
+                  <div class="flex thstyles">NOMBRE</div>
+                </th>
+                <th style="min-width: 8rem">
+                  <div class="flex thstyles">TIPO</div>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-institution class="p-table">
+              <tr class="table-content" 
+                (click)=" onSelectedInstitution(institution)" 
+                [class.disabled]="isEnabled" 
+                [class.selected]="selectedInstitution === institution" >
+                <td>
+                  {{ institution.siglas }}
+                </td>
+                <td class="name">
+                  {{ institution.nbinstitucion }}
+                </td>
+                <td>
+                  @if(institution.tpinstitucion === 'Col') {
+                    COLEGIO
+                  } @else if(institution.tpinstitucion === 'Uni') {
+                    UNIVERSIDAD
+                  } @else if(institution.tpinstitucion === 'Tec') {
+                    TECNOLÓGICO
+                  } @else if(institution.tpinstitucion === 'Emp') {
+                    EMPRESA
+                  } @else if(institution.tpinstitucion === 'Par') {
+                    PARTICULAR
+                  }
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="7">No elementos encontrados.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+          
+        }
+        </div>
+      </div>
+      </fieldset>
     </div>
 
     <div class="clientForm">

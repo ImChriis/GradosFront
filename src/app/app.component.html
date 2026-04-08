@@ -9,11 +9,6 @@
 
 <div class="main-app-content">
     <p-toast />
-    <div class="loader-overlay" *ngIf="isLoading">
-        <div class="image-loader-container">
-            <img src="../assets/img/logo.png" alt="Cargando..." class="center-image" />
-            <div class="loader-spinner"></div>
-        </div>
-    </div>
+    <app-loader></app-loader>
     <router-outlet></router-outlet>
 </div>

@@ -1,14 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { SpecialitiesForm } from '../../@core/models/forms/specialities-form';
 import { SpecialitiesService } from '../../@core/services/specialities.service';
-import { Observable, startWith, switchMap } from 'rxjs';
+import { delay, Observable, startWith, switchMap, tap } from 'rxjs';
 import { Speciality } from '../../@core/models/speciality.model';
 import { InputText } from 'primeng/inputtext';
 import { UppercaseDirective } from "../../@core/directives/uppercase.directive";
 import { MessageService } from 'primeng/api';
+import { LoaderComponent } from '../../@core/components/loader/loader.component';
 
 @Component({
   selector: 'app-specialities',
@@ -17,7 +18,8 @@ import { MessageService } from 'primeng/api';
     TableModule,
     InputText,
     ReactiveFormsModule,
-    UppercaseDirective
+    UppercaseDirective,
+    LoaderComponent
 ],
   templateUrl: './specialities.component.html',
   styleUrl: './specialities.component.scss'
@@ -31,6 +33,7 @@ export class SpecialitiesComponent implements OnInit{
   isEnabled = false;
   specialities$!: Observable<Speciality[]>;
   CodigoEsp!: number | null;
+  isLoading = signal(true);
 
   specialititesForm: FormGroup<SpecialitiesForm> = this.fb.group({
     CodigoEsp: new FormControl<number | null>(null),
@@ -41,9 +44,12 @@ export class SpecialitiesComponent implements OnInit{
   ngOnInit(): void {
     this.specialities$ = this.specialitiesService.refreshObservable$.pipe(
       startWith(null),
+      tap(() => this.isLoading.set(true)),
       switchMap(() => {
         return this.specialitiesService.getAllSpecialities();
-      })
+      }),
+      delay(500),
+      tap(() => this.isLoading.set(false))
     )
 
     this.specialititesForm.disable();
