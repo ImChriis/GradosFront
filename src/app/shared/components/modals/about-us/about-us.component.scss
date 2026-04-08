@@ -1,0 +1,126 @@
+::ng-deep .p-dialog-header{
+    // border-bottom: 1px solid !important;
+    // border-color: inherit !important;
+    height: 50px;
+}
+
+.container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.info-group{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.group {
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Borde sutil */
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 0 10px;
+    background-color: transparent; /* ¡Ya no necesitas parche de color! */
+}
+
+.info{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px
+}
+
+.info-img{
+    width: 50%;
+    height: auto;
+}
+
+.info-img img{
+    width: 100%;
+    height: auto;
+}
+
+.info-txt{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    white-space: nowrap !important;
+}
+
+.info-txt h1{
+    margin-bottom: 0px;
+}
+
+.info-txt h4{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.info-txt h1, .info-txt h4{
+    color: inherit;
+}
+
+.about{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.warn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+}
+
+.warn p{
+    color: inherit;
+}
+
+.acept{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    gap: 5px;
+}
+
+.acept button{
+    background-color: #133f94 !important;
+    border: none !important;
+    color: white !important;
+    text-transform: uppercase;
+    height: 3vh;
+}
+
+.acept button:hover{
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+.acept p{
+    color: inherit;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+
+

@@ -9,7 +9,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { RecalculateModalComponent } from './components/recalculate-modal/recalculate-modal.component';
 import { MessageService } from 'primeng/api';
 import { AddContractComponent } from './components/add-contract/add-contract.component';
-import { RegisterUserComponent } from '../../@core/components/register-user/register-user.component';
+import { RegisterUserComponent } from '../../shared/components/modals/register-user/register-user.component';
 import { PaymentsComponent } from './components/payments/payments.component';
 import { ActsService } from '../../@core/services/acts.service';
 import { InstitutionsService } from '../../@core/services/institutions.service';

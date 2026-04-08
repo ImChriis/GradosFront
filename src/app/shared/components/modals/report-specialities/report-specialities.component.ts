@@ -1,8 +1,9 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { ReportsService } from '../../../services/reports.service';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { PdfViewerComponent } from '../../pdf-viewer/pdf-viewer.component';
+import { ReportsService } from '../../../../@core/services/reports.service';
+import { PdfViewerComponent } from '../../../../@core/components/pdf-viewer/pdf-viewer.component';
+
 
 @Component({
   selector: 'app-report-specialities',

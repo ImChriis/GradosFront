@@ -3,10 +3,11 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MenubarModule } from 'primeng/menubar';
-import { ReportActPlacesComponent } from '../components/modals/report-act-places/report-act-places.component';
-import { ReportInstitutionsComponent } from '../components/modals/report-institutions/report-institutions.component';
-import { ReportSpecialitiesComponent } from '../components/modals/report-specialities/report-specialities.component';
-import { ReportClientsComponent } from '../components/modals/report-clients/report-clients.component';
+import { ReportInstitutionsComponent } from '../../shared/components/modals/report-institutions/report-institutions.component';
+import { ReportSpecialitiesComponent } from '../../shared/components/modals/report-specialities/report-specialities.component';
+import { ReportActPlacesComponent } from '../../shared/components/modals/report-act-places/report-act-places.component';
+import { ReportClientsComponent } from '../../shared/components/modals/report-clients/report-clients.component';
+import { AboutUsComponent } from '../../shared/components/modals/about-us/about-us.component';
 
 
 @Component({
@@ -124,15 +125,15 @@ export class LayoutComponent implements OnInit{
         items: [
           {
             label: 'Especialidades',
-            command: () => this.openModal(ReportSpecialitiesComponent, 'Reporte de Especialidades')
+            command: () => this.openModal(ReportSpecialitiesComponent, 'Reporte de Especialidades', '30%')
           },
           {
             label: 'Institutos',
-            command: () => this.openModal(ReportInstitutionsComponent, 'Reporte de Instituciones')
+            command: () => this.openModal(ReportInstitutionsComponent, 'Reporte de Instituciones', '30%')
           },
           {
             label: 'Lugares para Actos',
-            command: () => this.openModal(ReportActPlacesComponent, 'Reporte de Lugares para Actos')
+            command: () => this.openModal(ReportActPlacesComponent, 'Reporte de Lugares para Actos', '30%')
           },
           {
             separator: true
@@ -142,7 +143,7 @@ export class LayoutComponent implements OnInit{
             items: [
               {
                 label: 'Listado de Clientes',
-                command: () => this.openModal(ReportClientsComponent, 'Reporte de Clientes')
+                command: () => this.openModal(ReportClientsComponent, 'Reporte de Clientes', '30%')
               }
             ]
           },
@@ -206,7 +207,8 @@ export class LayoutComponent implements OnInit{
         label: 'Ayuda',
         items: [
           {
-            label: 'Acerca de'
+            label: 'Acerca de',
+            command: () => this.openModal(AboutUsComponent, "Acerca de Grados", "50%")
           },
           {
             separator: true
@@ -219,10 +221,10 @@ export class LayoutComponent implements OnInit{
     ]
   }
 
-  openModal(component: any, title: string){
+  openModal(component: any, title: string, width: string){
     this.ref = this.dialogService.open(component, {
             header: title,
-            width: '30%',
+            width: width,
             modal: true,
             closable: true,
             breakpoints: {

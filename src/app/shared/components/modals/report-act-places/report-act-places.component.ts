@@ -1,16 +1,17 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { ReportsService } from '../../../services/reports.service';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { PdfViewerComponent } from '../../pdf-viewer/pdf-viewer.component';
+import { ReportsService } from '../../../../@core/services/reports.service';
+import { PdfViewerComponent } from '../../../../@core/components/pdf-viewer/pdf-viewer.component';
+
 
 @Component({
-  selector: 'app-report-institutions',
+  selector: 'app-report-act-places',
   imports: [],
-  templateUrl: './report-institutions.component.html',
-  styleUrl: './report-institutions.component.scss'
+  templateUrl: './report-act-places.component.html',
+  styleUrl: './report-act-places.component.scss'
 })
-export class ReportInstitutionsComponent implements OnInit, OnDestroy{
+export class ReportActPlacesComponent implements OnInit, OnDestroy{
   private reportsService = inject(ReportsService);
   private messageService = inject(MessageService);
   private dialogService = inject(DialogService);
@@ -28,8 +29,8 @@ export class ReportInstitutionsComponent implements OnInit, OnDestroy{
 
   onSubmit(type: string, esPantalla: boolean) {
     const serviceCall = type === 'PDF' 
-      ? this.reportsService.getInstitutionsPdf(this.nombre)
-      : this.reportsService.getInstitutionsExcel(this.nombre);
+      ? this.reportsService.getActPlacesPdf(this.nombre)
+      : this.reportsService.getActPlacesExcel(this.nombre);
 
     serviceCall.subscribe({
       next: (res) => {

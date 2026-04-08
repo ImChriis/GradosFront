@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { ClientsService } from '../../services/clients.service';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ClientForm } from '../../models/forms/client-form';
 import { MessageService } from 'primeng/api';
-import { Client } from '../../models/client.model';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
-import { UppercaseDirective } from '../../directives/uppercase.directive';
+import { ClientsService } from '../../../../@core/services/clients.service';
+import { ClientForm } from '../../../../@core/models/forms/client-form';
+import { UppercaseDirective } from '../../../../@core/directives/uppercase.directive';
+import { Client } from '../../../../@core/models/client.model';
+
 
 @Component({
   selector: 'app-register-user',

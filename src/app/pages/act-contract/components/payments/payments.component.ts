@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { ActContractService } from '../../../../@core/services/act-contract.service';
-import {  CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { map, Observable } from 'rxjs';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';

@@ -4,7 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActContractService } from '../../../../@core/services/act-contract.service';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ConfirmModalComponent } from '../../../../@core/components/confirm-modal/confirm-modal.component';
+import { ConfirmModalComponent } from '../../../../shared/components/modals/confirm-modal/confirm-modal.component';
 import { ClientsService } from '../../../../@core/services/clients.service';
 
 @Component({

@@ -1,10 +1,10 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { ReportsService } from '../../../services/reports.service';
 import { MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { PdfViewerComponent } from '../../pdf-viewer/pdf-viewer.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { ReportsService } from '../../../../@core/services/reports.service';
+import { PdfViewerComponent } from '../../../../@core/components/pdf-viewer/pdf-viewer.component';
 
 @Component({
   selector: 'app-report-clients',
