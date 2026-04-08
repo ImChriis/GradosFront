@@ -100,3 +100,38 @@
 ::ng-deep .p-menubar-separator{
   border-color: inherit !important;
 }
+
+
+@media (max-width: 768px) {
+    .main-app-content {
+        display: none !important;
+    }
+
+    .mobile-blocker {
+        display: flex !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: #000000;
+        z-index: 99999;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+        color: white;
+
+        .message-container {
+            max-width: 80%;
+            font-family: sans-serif;
+            h1 { margin-bottom: 1rem; color: white; }
+            p { font-size: 1.2rem; opacity: 0.8; color: white; }
+        }
+    }
+}
+
+/* En pantallas grandes, el bloqueador no existe */
+.mobile-blocker {
+    display: none;
+}

@@ -124,6 +124,20 @@ label{
     height: 5vh;
     width: 30%;
 }
- .btn:hover{
+
+.btn:hover{
     opacity: 0.9;
- }
+}
+
+//responsive
+@media(max-width: 2560px){
+    .inputs input{
+        height: 4vh;
+    }
+}
+
+@media(max-width: 1024px){
+    form{
+        width: 50%;
+    }
+}

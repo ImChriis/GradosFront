@@ -42,6 +42,14 @@ export class LayoutComponent implements OnInit{
         label: 'Archivo',
         items: [
           {
+            label: 'Inicio',
+            routerLink: '/home',
+            icon: 'pi pi-home'
+          },
+          {
+            separator: true
+          },
+          {
             label: 'Clientes',
             routerLink: '/clients',
             icon: 'pi pi-user'
@@ -59,7 +67,7 @@ export class LayoutComponent implements OnInit{
           {
             label: 'Lugar de Actos',
             routerLink: '/actPlaces',
-            icon: 'pi pi-home'
+            icon: 'pi pi-map-marker'
           },
           {
             label: 'Bancos',
@@ -184,6 +192,9 @@ export class LayoutComponent implements OnInit{
           {
             label: 'Usuarios',
             routerLink: '/users'
+          },
+          {
+            separator: true
           },
           {
             label: 'Opciones',

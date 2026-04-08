@@ -16,6 +16,7 @@ nav{
     display: flex;
     gap: 20px;
     padding-left: 20px;
+    margin-top: 5px;
 }
 
 .icons button{
@@ -68,7 +69,8 @@ footer{
         background-color: #e5e5e5 !important;
         color: black !important;
         border: none !important;
-        height: 3vh;
+        height: 4vh;
+        border-bottom: 1px solid rgb(175, 175, 175) !important;
     }
 
     .p-menubar-item:focus{

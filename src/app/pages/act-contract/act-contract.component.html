@@ -12,12 +12,10 @@
         #dt1
         [value]='state'
         [rows]="10"
-        [showCurrentPageReport]="true"
-        [rowsPerPageOptions]="[10, 25, 50]"
         [paginator]="true"
-        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
         [globalFilterFields]="['TxLugar', 'Capacidad']"
         styleClass="ml-3 mr-3"
+        [tableStyle]="{'min-width': '50rem'}"
         >
         <ng-template pTemplate="caption" let-event>
           <div class="flex-row">
@@ -170,10 +168,11 @@
                   scrollHeight="flex"
                   scrollHeight="250px"
                   styles="mr-2"
+                  [tableStyle]="{'min-width': '10rem'}"
                   >
                     <ng-template pTemplate="header">
                       <tr>
-                        <th style="min-width: 8rem;" class="border">
+                        <th style="min-width: 1rem;" class="border">
                           <div class="flex thstyles">NO CONTRATO</div>
                         </th>
                         <th style="min-width: 10rem">

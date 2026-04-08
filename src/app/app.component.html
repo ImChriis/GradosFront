@@ -1,8 +1,19 @@
-<p-toast />
-<div class="loader-overlay" *ngIf="isLoading">
-    <div class="image-loader-container">
-        <img src="../assets/img/logo.png" alt="Cargando..." class="center-image" />
-        <div class="loader-spinner"></div>
+<div class="mobile-blocker">
+    <div class="message-container">
+        <i class="pi pi-desktop" style="font-size: 3rem; color: white;"></i>
+        <h1>Acceso restringido</h1>
+        <p>Esta aplicación solo está disponible para equipos de escritorio.</p>
+        <p>Por favor, abre la aplicación en una computadora.</p>
     </div>
 </div>
-<router-outlet></router-outlet>
+
+<div class="main-app-content">
+    <p-toast />
+    <div class="loader-overlay" *ngIf="isLoading">
+        <div class="image-loader-container">
+            <img src="../assets/img/logo.png" alt="Cargando..." class="center-image" />
+            <div class="loader-spinner"></div>
+        </div>
+    </div>
+    <router-outlet></router-outlet>
+</div>

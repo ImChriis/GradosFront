@@ -12,10 +12,7 @@
         #dt1
         [value]='state'
         [rows]="10"
-        [showCurrentPageReport]="true"
-        [rowsPerPageOptions]="[10, 25, 50]"
         [paginator]="true"
-        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
         [globalFilterFields]="['siglas', 'nbinstitucion', 'tpinstitucion']"
         styleClass="ml-3 mr-3"
         >
@@ -57,7 +54,7 @@
               <td>
                 {{ institution.siglas }}
               </td>
-              <td>
+              <td class="name">
                 {{ institution.nbinstitucion }}
               </td>
               <td>

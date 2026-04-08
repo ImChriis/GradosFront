@@ -11,6 +11,8 @@ import { filter } from 'rxjs';
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit{
+  title = 'Grados De Venezuela';
+
 private router = inject(Router);
   isLoading = false; // Empezamos en false o true según prefieras
 

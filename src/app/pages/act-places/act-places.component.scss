@@ -318,6 +318,10 @@ td{
     margin-left: 10px;
 }
 
+.estado, .tipos{
+    width: 50%;
+}
+
 .titles{
     margin-top: 10px;
     position: absolute;
@@ -332,4 +336,17 @@ td{
     top: -20px;
     background-color: #dedcdc;
     font-weight: bold;
+}
+
+//responsive 
+@media(max-width: 1439px){
+    .estado, .tipos{
+        font-size: 13px;
+    }
+}
+
+@media(max-width: 1024px){
+    .estado, .tipos{
+        font-size: 13px;
+    }
 }

@@ -2,6 +2,12 @@
     <nav>
         <p-menubar [model]="items" />
         <div class="icons">
+            <button routerLink="/home" title="Inicio">
+                <i class="pi pi-home"></i>
+            </button>
+
+            <div class="separator"></div>
+
             <button routerLink="/clients" title="Clientes">
                 <i class="pi pi-user"></i>
             </button>
@@ -15,7 +21,7 @@
             </button>
 
             <button routerLink="/actPlaces" title="Lugares de Acto">
-                <i class="pi pi-home"></i>
+                <i class="pi pi-map-marker"></i>
             </button>
 
             <button routerLink="/banks" title="Bancos">
@@ -41,6 +47,8 @@
             <button routerLink="/settings" title="Configuración">
                 <i class="pi pi-cog"></i>
             </button>
+
+            <div class="separator"></div>
 
             <button (click)="logout()" title="Cerrar sesión">
                 <i class="pi pi-sign-out"></i>
