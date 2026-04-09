@@ -19,13 +19,15 @@
     align-items: center;
     justify-content: start;
     border: 1px solid #ababab !important;
+    border-radius: 10px;
 }
 
 .body{
-    border: 1px solid black; /* Borde sutil */
+    border: 1px solid #ababab; /* Borde sutil */
     border-radius: 10px;
     padding: 20px;
     width: 95%;
+    border-radius: 10px;
 }
 
 .title {
@@ -45,9 +47,10 @@
     justify-content: start;
     border: 1px solid #949393 !important;
     padding: 10px;
-    background-color: rgb(223, 220, 220);
+    background-color: white;
     gap: 20px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
 }
 
 form{
@@ -56,7 +59,7 @@ form{
     display: flex;
     flex-direction: column;
     gap: 10px;
-    border: 1px solid black; /* Borde sutil */
+    border: 1px solid #ababab; /* Borde sutil */
     border-radius: 10px;
     padding: 10px;
 }
@@ -75,7 +78,7 @@ form{
 
 .inputGroup input{
     height: 3vh;
-    background-color: white;
+    background-color: rgb(223, 220, 220);
     border: none;
     color: black;
     border-radius: 10px;
@@ -85,7 +88,7 @@ form{
 
 .inputGroup textarea{
     height: 7vh;
-    background-color: white;
+    background-color: rgb(223, 220, 220);
     border: none;
     color: black;
     resize: none;
@@ -128,7 +131,7 @@ form{
 
 .inputGroup2 input{
     height: 3vh;
-    background-color: white;
+    background-color: rgb(223, 220, 220);
     border: none;
     color: black;
 }
@@ -141,7 +144,7 @@ form{
     justify-content: space-between;
     margin-top: auto;
     padding-top: 10px;
-    border: 1px solid black; /* Borde sutil */
+    border: 1px solid #ababab; /* Borde sutil */
     border-radius: 10px;
     padding: 10px;
 }
@@ -151,15 +154,15 @@ form{
 }
 
 .icon{
-    color: black;
-    background-color: darkgray;
+    color: white;
+    background-color: #2563EB;
     padding: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .icon:hover{
     cursor: pointer;
-    background-color: gray;
+    opacity: 0.9;
     transform: translateY(-2px);
 }
 
@@ -172,6 +175,10 @@ form{
 .icons{
     display: flex;
     gap: 20px;
+}
+
+.cancel{
+    background-color: #EF4444;
 }
 
 th{
@@ -343,7 +350,7 @@ td{
     margin-top: 10px;
     position: absolute;
     top: -20px;
-    background-color: #dedcdc;
+    background-color: white;
     font-weight: bold;
     padding: 0 10px;
 }
@@ -352,9 +359,18 @@ td{
     margin-top: 10px;
     position: absolute;
     top: -20px;
-    background-color: #dedcdc;
+    background-color: white;
     font-weight: bold;
     padding: 0 10px;
+}
+
+.select input[type="radio"] {
+  accent-color: #2563EB;
+  cursor: pointer;
+}
+
+.select input[type="checkbox"] {
+  accent-color: #2563EB;
 }
 
 //responsive 

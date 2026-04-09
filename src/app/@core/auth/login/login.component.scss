@@ -1,5 +1,7 @@
 //fondo de body solo para esta pantalla
-
+::ng-deep app-root{
+    background-color: #1E293B !important;
+}
 
 .content{
     width: 100%;
@@ -17,8 +19,8 @@ form{
     gap: 20px;
     width: 40%;
     height: 70%;
-    background-color: #727171;
-    border-radius: 20px;
+    background-color: white;
+    border-radius: 10px;
 }
 
 .logo{
@@ -32,6 +34,8 @@ form{
 img{
     width: 60%;
     height: 100%;
+    background-color: #1E293B;
+    border-radius: 10px;
 }
 
 .inputs{
@@ -48,7 +52,7 @@ img{
 }
 
 .inputs input{
-    background-color: white;
+    background-color: rgb(223, 220, 220);    
     color: black;
     border-radius: 10px;
     padding-left: 10px;
@@ -65,10 +69,6 @@ img{
   outline: none !important;
 }
 
-label{
-    color: black;
-}
-
 .password-wrapper {
     position: relative;
     width: 100%;
@@ -78,7 +78,7 @@ label{
     width: 100%;
     box-sizing: border-box;
     padding-right: 3rem;
-    background-color: white;
+    background-color: rgb(223, 220, 220);
     color: black;
     border-radius: 10px;
     padding-left: 10px;

@@ -20,6 +20,15 @@
     font-weight: bold;
 }
 
+.selects input[type="radio"] {
+  accent-color: #2563EB;
+  cursor: pointer;
+}
+
+.selects input[type="checkbox"] {
+  accent-color: #2563EB;
+}
+
 .group {
     border: 1px solid rgba(255, 255, 255, 0.2); /* Borde sutil */
     border-radius: 10px;
@@ -75,4 +84,5 @@
     border-color: inherit !important;
     height: 50px;
 }
+
 

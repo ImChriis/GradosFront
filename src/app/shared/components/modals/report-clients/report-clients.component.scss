@@ -44,6 +44,15 @@
     font-weight: bold;
 }
 
+.selects input[type="radio"] {
+  accent-color: #2563EB;
+  cursor: pointer;
+}
+
+.selects2 input[type="checkbox"] {
+  accent-color: #2563EB;
+}
+
 ::ng-deep .title{
     background-color: var(--surface-overlay) !important;
 }
