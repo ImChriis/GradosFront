@@ -8,7 +8,7 @@ form{
 }
 
 label{
-    color: inherit;
+    color: #1E293B;
     font-weight: bold;
 }
 
@@ -29,7 +29,7 @@ label{
 
 .inputGroup input{
     height: 3vh;
-    background-color: #a9a9a9;
+    background-color: rgb(222, 220, 220);
     border: none;
     color: black;
     border-radius: 10px;
@@ -53,7 +53,7 @@ label{
 .inputGroup2 input{
     width: 100%;
     height: 3vh;
-    background-color: #a9a9a9;
+    background-color: rgb(222, 220, 220);
     border: none;
     color: black;
     border-radius: 10px;
@@ -64,7 +64,7 @@ label{
 .inputGroup2 textarea{
     width: 100%;
     height: 10vh;
-    background-color: #a9a9a9;
+    background-color: rgb(222, 220, 220);
     border: none;
     color: black;
     resize: none;
@@ -85,8 +85,8 @@ label{
     display: flex;
     justify-content: center;
     align-items: center;
-    color: black;
-    background-color: darkgray;
+    color: white;
+    background-color: #2563EB;
     padding: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(255, 255, 255, 0.19);
 }
@@ -97,6 +97,6 @@ label{
 
 .icon:hover{
     cursor: pointer;
-    background-color: gray;
+    opacity: 0.9;
     transform: translateY(-2px);
 }

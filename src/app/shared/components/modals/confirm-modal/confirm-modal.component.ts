@@ -14,6 +14,8 @@ export class ConfirmModalComponent {
   ref: DynamicDialogRef | undefined;
 
   open(){
+    this.dialogRef.close();
+
     this.ref = this.dialogService.open(RegisterUserComponent, {
             header: 'Registrar Usuario',
             width: '50%',

@@ -16,7 +16,7 @@
 }
 
 .selects label{
-    color: inherit;
+    color: #1E293B;
     font-weight: bold;
 }
 
@@ -30,7 +30,7 @@
 }
 
 .group {
-    border: 1px solid rgba(255, 255, 255, 0.2); /* Borde sutil */
+    border: 1px solid #1E293B; /* Borde sutil */
     border-radius: 10px;
     padding: 20px;
 }
@@ -81,7 +81,8 @@
 
 ::ng-deep .p-dialog-header{
     border-bottom: 1px solid !important;
-    border-color: inherit !important;
+    border-color: #1E293B !important;
     height: 50px;
+    color: #1E293B;
 }
 

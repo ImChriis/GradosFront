@@ -16,12 +16,20 @@
 }
 
 .selects label{
-    color: inherit;
+    color: #1E293B;
     font-weight: bold;
 }
 
+.inputGroup2{
+    width: 100%;
+}
+
+.inputGroup2 input{
+    width: 100%;
+}
+
 .group {
-    border: 1px solid rgba(255, 255, 255, 0.2); /* Borde sutil */
+    border: 1px solid #1E293B; /* Borde sutil */
     border-radius: 10px;
     padding: 20px;
     width: 100%;
@@ -31,6 +39,7 @@
     font-weight: bold;
     padding: 0 10px;
     background-color: transparent; /* ¡Ya no necesitas parche de color! */
+    color: #1E293B;
 }
 
 .selects2 {
@@ -40,7 +49,7 @@
 }
 
 .selects2 label{
-    color: inherit;
+    color: #1E293B;
     font-weight: bold;
 }
 
@@ -93,8 +102,9 @@
 
 ::ng-deep .p-dialog-header{
     border-bottom: 1px solid !important;
-    border-color: inherit !important;
+    border-color: #1E293B !important;
     height: 50px;
+    color: #1E293B;
 }
 
 .inputGroup2{
@@ -105,7 +115,7 @@
 
 .inputGroup2 input{
     height: 3vh;
-    background-color: #a9a9a9;
+    background-color: rgb(222, 220, 220);
     border: none;
     color: black;
     border-radius: 10px;
