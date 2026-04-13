@@ -8,6 +8,7 @@ import { ReportSpecialitiesComponent } from '../../shared/components/modals/repo
 import { ReportActPlacesComponent } from '../../shared/components/modals/report-act-places/report-act-places.component';
 import { ReportClientsComponent } from '../../shared/components/modals/report-clients/report-clients.component';
 import { AboutUsComponent } from '../../shared/components/modals/about-us/about-us.component';
+import { ReportActListComponent } from '../../shared/components/modals/report-act-list/report-act-list.component';
 
 
 @Component({
@@ -179,7 +180,8 @@ export class LayoutComponent implements OnInit{
             label: 'Cierre Diario'
           },
           {
-            label: 'Exportar Lista Acto'
+            label: 'Exportar Lista Acto',
+            command:  () => this.openModal(ReportActListComponent, 'Reporte Exportar Lista Acto', '30%')
           },
           {
             label: 'Graduandos para Acto'

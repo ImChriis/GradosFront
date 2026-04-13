@@ -1,0 +1,32 @@
+<div class="container">
+     <fieldset class="group2">
+        <legend class="title">Acto</legend>
+
+        <div class="inputGroup2">
+            <label for="pdf">Código Acto</label>
+            <input type="text" id="pdf" name="reportOption" value="imprimir" #optImprimir>
+        </div>
+
+    </fieldset>
+
+    <fieldset class="group">
+        <legend class="title">Destino</legend>
+
+        <div class="selects">
+            <div class="inputGroup">
+                <input type="radio" id="pantalla" name="reportOption" value="pantalla" checked #optPantalla>
+                <label for="pantalla">En pantalla</label>
+            </div>
+
+            <div class="inputGroup">
+                <input type="radio" id="pdf" name="reportOption" value="imprimir" #optImprimir>
+                <label for="pdf">Imprimir (Descargar)</label>
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="btns">
+        <button class="pdf" (click)="onSubmit('PDF', optPantalla.checked)">PDF</button>
+        <button class="excel" (click)="onSubmit('Excel', optPantalla.checked)">EXCEL</button>
+    </div>
+</div>
