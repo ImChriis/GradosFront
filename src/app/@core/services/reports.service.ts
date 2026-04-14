@@ -40,4 +40,8 @@ export class ReportsService {
   getClientsExcel(body: any){
     return this.http.post(`${this.api}/reports/clientsExcel`, body, {responseType: 'blob'});
   }
+  
+  getActListPdf(body: any){
+    return this.http.post(`${this.api}/reports/actListPdf`, body, {responseType: 'blob'});
+  }
 }
