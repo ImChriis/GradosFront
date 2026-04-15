@@ -44,4 +44,12 @@ export class ReportsService {
   getActListPdf(body: any){
     return this.http.post(`${this.api}/reports/actListPdf`, body, {responseType: 'blob'});
   }
+
+  getActListExcel(body: any){
+    return this.http.post(`${this.api}/reports/actListExcel`, body, {responseType: 'blob'});
+  }
+
+  getActListTxt(body: any){
+    return this.http.post(`${this.api}/reports/actListTxt`, body, {responseType: 'blob'});
+  }
 }

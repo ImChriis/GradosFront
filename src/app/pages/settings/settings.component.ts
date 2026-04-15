@@ -5,6 +5,8 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angul
 import { SettingsForm } from '../../@core/models/forms/settings-form';
 import { Settings } from '../../@core/models/settings.model';
 import { MessageService } from 'primeng/api';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { BackupComponent } from '../../shared/components/modals/backup/backup.component';
 
 @Component({
   selector: 'app-settings',
@@ -19,6 +21,8 @@ export class SettingsComponent implements OnInit{
   private settingsService = inject(SettingsService);
   private fb = inject(FormBuilder);
   private messageService = inject(MessageService);
+  private dialogService = inject(DialogService);
+  ref!: DynamicDialogRef;
   id!: string;
 
   ngOnInit(): void {
@@ -81,5 +85,14 @@ export class SettingsComponent implements OnInit{
         this.messageService.add({severity:'error', summary: 'Error', detail: 'Hubo un error al actualizar la configuración'});
       }
     });
+  }
+
+  openBackUpModal(){
+    this.ref = this.dialogService.open(BackupComponent, {
+      header: 'Respaldo de Datos',
+      width: '50%',
+      modal: true,
+      closable: true,
+    })
   }
 }

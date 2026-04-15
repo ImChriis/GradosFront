@@ -1,0 +1,130 @@
+<div class="container">
+    <div class="clientsList">
+      <fieldset class="body">
+        <legend class="title">Bancos</legend>
+
+        <div class="table-wrapper" style="position: relative; min-height: 300px;">
+          <app-loader [isLoading]="isLoading()" mode="component"></app-loader>
+                <div class="table"> 
+        @if(
+      paymentMethods$ | async
+      ; as state) {
+      <p-table
+        #dt1
+        [value]='state'
+        [rows]="10"
+        [paginator]="true"
+        [globalFilterFields]="['nombreMetodoPago']"
+        styleClass="ml-3 mr-3"
+        >
+        <ng-template pTemplate="caption" let-event>
+          <div class="flex-row">
+            <div class="p-toolbar-group-end">
+              <span class="p-input-icon-left ml-auto">
+                <i class=""></i>
+                <input
+                class="search"
+                #searchInput
+                pInputText
+                type="text"
+                placeholder="BUSCAR"
+                (input)="dt1.filterGlobal(searchInput.value, 'contains')"
+              />
+                </span>
+            </div>
+          </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="min-width: 6rem" class="border">
+                <div class="flex thstyles">CODIGO</div>
+              </th>
+              <th style="min-width: 10rem" class="border">
+                <div class="flex thstyles">BANCOS</div>
+              </th>
+              <th style="min-width: 1rem" class="border">
+                <div class="flex thstyles">STATUS</div>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-paymentMethod class="p-table">
+            <tr class="table-content" 
+            (click)=" onSelectedPaymentMethod(paymentMethod)" 
+            [class.disabled]="isEnabled" 
+            [class.selected]="selectedPaymentMethod?.idMetodoPago === paymentMethod.id" >
+              <td>
+                {{ paymentMethod.idMetodoPago }}
+              </td>
+              <td>
+                {{ paymentMethod.nombreMetodoPago }}
+              </td>
+              <td>
+                @if(paymentMethod.status === 1) {
+                  ACTIVO
+                } @else {
+                  INACTIVO
+                }
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">No elementos encontrados.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      }
+    </div>
+        </div>
+      </fieldset>
+
+    </div>
+
+    <div class="clientForm">
+        <form [formGroup]="paymentMethodForm" autocomplete="off">
+            <div class="inputGroup">
+                <label for="identification">MÉTODO DE PAGO</label>
+                <input type="text" id="identification" name="identification" formControlName="nombreMetodoPago" appUppercase>
+            </div>
+
+          <div class="estado">
+              <div class="inputGroup2">
+                <label for="identification" class="titles">STATUS</label>
+                <div class="select">
+                    <input type="radio" id="active" class="checkbox" name="status" [value]="1" formControlName="status">
+                    <label for="active">ACTIVO</label>
+                </div>
+
+                <div class="select">
+                    <input type="radio" id="inactive" class="checkbox"  name="status" [value]="0" formControlName="status">
+                    <label for="inactive">INACTIVO</label>
+                </div>
+              </div>
+            </div>
+        </form>
+
+        <div class="buttons">
+          <!-- <div class="icon" title="Buscar">
+            <i class="pi pi-search searchIcon"></i>
+          </div> -->
+
+          <div class="icons">
+            <div class="icon" title="Agregar" (click)="add()" [class.disabled]="isAdding">
+              <i class="pi pi-plus add"></i>
+            </div>
+
+            <div class="icon" title="Guardar" (click)="save()" [class.disabled]="!isAdding">
+              <i class="pi pi-save save"></i>
+            </div>
+
+            <div class="icon" title="Eliminar"  [class.disabled]="!selectedPaymentMethod" >
+              <i class="pi pi-trash delete"></i>
+            </div>
+          </div>
+
+          <div class="icon cancel" title="Cancelar" (click)="cancel()">
+            <i class="pi pi-times cancel"></i>
+          </div>
+        </div>
+    </div>
+</div>

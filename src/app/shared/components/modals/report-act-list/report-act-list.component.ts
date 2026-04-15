@@ -51,8 +51,10 @@ export class ReportActListComponent implements OnInit, OnDestroy{
     }
 
      const serviceCall = type === 'PDF' 
-          ? this.reportsService.getActListPdf(payload as any) // Cast necesario si el método espera un tipo específico
-          : this.reportsService.getClientsExcel(payload as any);
+    ? this.reportsService.getActListPdf(payload as any)
+    : type === 'TXT'
+        ? this.reportsService.getActListTxt(payload as any)
+        : this.reportsService.getActListExcel(payload as any);
     
         serviceCall.subscribe({
           next: (res) => {
@@ -60,7 +62,9 @@ export class ReportActListComponent implements OnInit, OnDestroy{
     
             const mimeType = type === 'PDF' 
               ? 'application/pdf' 
-              : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+              : type === 'TXT'
+                ? 'text/plain'
+                : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
     
             const blob = new Blob([res], { type: mimeType });
             const url = window.URL.createObjectURL(blob);
@@ -84,7 +88,7 @@ export class ReportActListComponent implements OnInit, OnDestroy{
               // --- CASO: DESCARGAR ---
               const a = document.createElement('a');
               a.href = url;
-              a.download = `reporte_usuarios_${new Date().getTime()}.${type === 'PDF' ? 'pdf' : 'xlsx'}`;
+              a.download = `reporte_usuarios_${new Date().getTime()}.${type === 'PDF' ? 'pdf' : type === 'TXT' ? 'txt' : 'xlsx' }`;
               a.click();
               
               // Limpieza rápida para descargas

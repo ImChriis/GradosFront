@@ -77,6 +77,11 @@ export class LayoutComponent implements OnInit{
             icon: 'pi pi-money-bill'
           },
           {
+            label: 'Métodos de Pago',
+            routerLink: '/paymentMethods',
+            icon: 'pi pi-credit-card'
+          },
+          {
             separator: true
           },
           {
