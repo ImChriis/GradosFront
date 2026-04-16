@@ -1,4 +1,16 @@
+<app-loader *ngIf="isLoading"></app-loader>
+
 <div class="btns">
-    <button class="btn recalculate">SUBIR</button>
+    <input 
+    type="file" 
+    #fileInput 
+    (change)="onFileSelected($event)" 
+    accept=".sql" 
+    style="display: none"
+  >
+
+  <button type="button" (click)="fileInput.click()" class="btn-restore recalculate">
+    RESTAURAR
+  </button>
     <button class="btn cancel" (click)="downloadBackup()">DESCARGAR</button>
 </div>
