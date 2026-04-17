@@ -24,6 +24,12 @@ export class ActContractService {
     ));
   }
 
+  createAct(body: any){
+    return this.http.post<any>(`${this.api}/actContracts/createAct`, body).pipe(
+      tap(() => this.refresh$.next())
+    )
+  }
+
   getActTotal(CodigoActo: number){
     return this.http.get<any>(`${this.api}/actContracts/${CodigoActo}/total`);
   }

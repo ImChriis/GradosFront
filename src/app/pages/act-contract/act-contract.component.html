@@ -101,24 +101,24 @@
 
                 <div class="inputGroup">
                     <label for="identification">FECHA</label>
-                    <input type="text" id="identification" name="identification" appUppercase formControlName="Fecha">
+                    <input type="date" id="identification" name="identification" appUppercase formControlName="Fecha">
                 </div>
 
                 <div class="inputGroup">
                     <label for="identification">HORA</label>
-                    <input type="text" id="identification" name="identification" appUppercase formControlName="Hora">
+                    <input type="time" id="identification" name="identification" appUppercase formControlName="Hora">
                 </div>
             </div>
 
             <div class="inputGroup">
                 <label for="capacity">LUGAR</label>
-                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="TxLugar" list="actPlaces">
+                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="TxLugar" list="actPlaces" (change)="onLugarChange($event)">
             </div>
 
             <datalist id="actPlaces">
-              @for(place of actPlaces; track $index) {
-                <option value="{{place}}">
-              }
+              @for(place of actPlaces; track place.CoLugar) {
+                <option value="{{place.TxLugar}}">  
+              } 
             </datalist>
 
             <div class="inputGroup">
@@ -223,7 +223,7 @@
 
             <div class="inputGroup">
               <label for="capacity">POR GRADUANDO</label>
-              <input type="text" id="capacity" name="capacity"  appUppercase [value]="totalPerStudent | currency:'Bs. ':'symbol':'1.2-2'" class="input">
+              <input type="text" id="capacity" name="capacity"  appUppercase class="input" formControlName="MnCosto">
             </div>
             </div>
 
@@ -249,7 +249,7 @@
               <input type="text" id="capacity" name="capacity"  appUppercase [value]="usersAmount" >
             </div>
 
-            <div class="icon2 add2" title="Cancelar" (click)="addContract(codigoActo, total, totalPerStudent)">
+            <div class="icon2 add2" title="Cancelar" (click)="addContract(codigoActo, total)">
               <i class="pi pi-plus"></i>
             </div>
 

@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { Observable } from 'rxjs';
@@ -15,6 +15,8 @@ import { ActsService } from '../../@core/services/acts.service';
 import { InstitutionsService } from '../../@core/services/institutions.service';
 import { SpecialitiesService } from '../../@core/services/specialities.service';
 import { OnlyNumbersDirective } from '../../@core/directives/only-numbers.directive';
+import { SettingsService } from '../../@core/services/settings.service';
+import { ActPlace } from '../../@core/models/act.model';
 
 //temporal
 interface Act {
@@ -26,6 +28,8 @@ interface Act {
   siglas: string;
   nbInstitucion: string;
   titulo: string;
+  MnCosto: null;
+  CoLugar: string | null;
 
   //users data
   Nombre: string;
@@ -54,6 +58,7 @@ export class ActContractComponent implements OnInit{
   private actsService = inject(ActsService);
   private institutionsService = inject(InstitutionsService);
   private specialitiesService = inject(SpecialitiesService);
+  private settingsService = inject(SettingsService);
   acts$: Observable<Act[]> | null = null;
   actUsers$: Observable<any> | null = null;
   isAdding = true;
@@ -65,24 +70,28 @@ export class ActContractComponent implements OnInit{
   totalPaid: number | null = null;
   saldo: number | null = null;
   usersAmount: number | null = null;
-  totalPerStudent: number | null = null;
   ref: DynamicDialogRef | undefined;
   time!: string;
-  actPlaces: string[] = [];
+  actPlaces: ActPlace[] = [];
   instituctions: string[] = [];
   specialities: string[] = [];
   titulo: string[] = [];
   MnTotal!: number;
+  CodigoActoGet!: number;
 
   actForm = this.fb.group({
     CodigoActo: this.fb.control<number | null>(null),
     Fecha: [''],
     Hora: [''],
+    siglas: [''],
+    titulo: [''],
+    CoLugar: this.fb.control<number | null>(null),
+    MnCosto: [null],
     TxLugar: [''],
     especialidad: [''],
-    siglas: [''],
+    CodUser: [null],
+    Culminada: [null],
     nbInstitucion: [''],
-    titulo: [''],
 
     //users data
     Nombre: [''],
@@ -98,7 +107,7 @@ export class ActContractComponent implements OnInit{
 
     this.acts$ = this.actContractService.getActs();
     this.actsService.getAllActsPlaces().subscribe(res => {
-      this.actPlaces = res.map((act: any) => act.TxLugar);
+      this.actPlaces = res;
       // console.log("lugares: ", this.actPlaces);
     })
 
@@ -113,6 +122,12 @@ export class ActContractComponent implements OnInit{
 
       this.titulo = res.map((spec: any) => spec.Titulo);
     });
+
+    this.settingsService.getSettings().subscribe((res: any) => {
+      console.log("settings: ", res);
+      this.CodigoActoGet = res.NoActo + 1;
+      console.log("CodigoActoGet: ", this.CodigoActoGet);
+    });
   
     this.total = null;
     this.totalPaid = null;
@@ -122,6 +137,24 @@ export class ActContractComponent implements OnInit{
     this.actForm.disable();
     this.isAdding = false;
   }
+
+  onLugarChange(event: any) {
+  const nombreSeleccionado = event.target.value;
+  
+  // Buscamos el objeto completo en nuestra lista
+  const lugarEncontrado = this.actPlaces.find(p => p.TxLugar === nombreSeleccionado);
+
+  if (lugarEncontrado) {
+    // Seteamos el código en el control oculto CoLugar
+    this.actForm.patchValue({
+      CoLugar: lugarEncontrado.CoLugar
+    });
+    console.log("CoLugar seleccionado:", lugarEncontrado.CoLugar);
+  } else {
+    // Si el usuario escribe algo que no está en la lista, limpiamos el código
+    this.actForm.patchValue({ CoLugar: null });
+  }
+}
 
   onSelectActContract(act: Act){  
     this.isEnabled = true;
@@ -135,8 +168,8 @@ export class ActContractComponent implements OnInit{
       especialidad: act.especialidad,
       siglas: act.siglas,
       nbInstitucion: act.nbInstitucion,
-      titulo: act.titulo
-
+      titulo: act.titulo,
+      MnCosto: act.MnCosto
       //users data
     })
 
@@ -153,7 +186,6 @@ export class ActContractComponent implements OnInit{
     this.actContractService.getSaldo(CodigoActo).subscribe(res => this.saldo = res.saldo);
     this.actContractService.getActUsersAmount(CodigoActo).subscribe(res => {
         this.usersAmount = res.cantidadEstudiantes;
-        this.totalPerStudent = this.total! / this.usersAmount!;
     });
     // También refrescamos la lista de usuarios/contratos
     this.actUsers$ = this.actContractService.getActUsersByCodigoActo(CodigoActo);
@@ -165,6 +197,9 @@ export class ActContractComponent implements OnInit{
   }
 
   onAdd(){
+    this.actForm.patchValue({
+      CodigoActo: this.CodigoActoGet
+    })
     this.isEnabled = true;
     this.actForm.enable();
     this.isAdding = true;
@@ -178,7 +213,7 @@ export class ActContractComponent implements OnInit{
   }
 
   onSave(){
-
+    console.log(this.actForm.value);
   }
 
   onDelete(){
@@ -193,8 +228,13 @@ export class ActContractComponent implements OnInit{
     this.actForm.disable();
     this.actUsers$ = null;
     this.selectActUser = null;
+    this.total = null;
+    // this.totalPerStudent = null;
+    this.totalPaid = null;
+    this.usersAmount = null;
+    this.saldo = null;
   }
-
+  
   recalculateModal(codigoActo: number | null){
     if(codigoActo){
           this.ref = this.dialogService.open(RecalculateModalComponent, {
@@ -218,7 +258,7 @@ export class ActContractComponent implements OnInit{
     }
   }
 
-  addContract(CodigoActo: number | null, MnTotal: number | null, totalPerStudent: number | null){
+  addContract(CodigoActo: number | null, MnTotal: number | null){
     if(!CodigoActo || !MnTotal){
       this.messageService.add({ severity: 'warn', summary: 'No se ha seleccionado ningún acto para agregar un contrato.' });
     }else{
@@ -226,7 +266,7 @@ export class ActContractComponent implements OnInit{
         header: 'Incluir Contratos',
         width: '50vw',
         modal: true,
-        data: { CodigoActo, MnTotal, totalPerStudent },
+        data: { CodigoActo, MnTotal },
         closable: true,
         breakpoints: {
           '960px': '75vw',
