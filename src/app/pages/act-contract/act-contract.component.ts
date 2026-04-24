@@ -17,6 +17,7 @@ import { SpecialitiesService } from '../../@core/services/specialities.service';
 import { OnlyNumbersDirective } from '../../@core/directives/only-numbers.directive';
 import { SettingsService } from '../../@core/services/settings.service';
 import { ActPlace } from '../../@core/models/act.model';
+import { Institution } from '../../@core/models/institution.model';
 
 //temporal
 interface Act {
@@ -30,6 +31,7 @@ interface Act {
   titulo: string;
   MnCosto: null;
   CoLugar: string | null;
+  CodigoInst: string | null;
 
   //users data
   Nombre: string;
@@ -73,7 +75,7 @@ export class ActContractComponent implements OnInit{
   ref: DynamicDialogRef | undefined;
   time!: string;
   actPlaces: ActPlace[] = [];
-  instituctions: string[] = [];
+  instituctions: Institution[] = [];
   specialities: string[] = [];
   titulo: string[] = [];
   MnTotal!: number;
@@ -92,6 +94,7 @@ export class ActContractComponent implements OnInit{
     CodUser: [null],
     Culminada: [null],
     nbInstitucion: [''],
+    CodigoInst: this.fb.control<number | null>(null),
 
     //users data
     Nombre: [''],
@@ -112,7 +115,7 @@ export class ActContractComponent implements OnInit{
     })
 
     this.institutionsService.getAllInstitutions().subscribe(res => {
-      this.instituctions = res.map((inst: any) => inst.nbinstitucion);
+      this.instituctions = res;
       // console.log("instituciones: ", this.instituctions);
     });
 
@@ -138,7 +141,7 @@ export class ActContractComponent implements OnInit{
     this.isAdding = false;
   }
 
-  onLugarChange(event: any) {
+onLugarChange(event: any) {
   const nombreSeleccionado = event.target.value;
   
   // Buscamos el objeto completo en nuestra lista
@@ -156,6 +159,23 @@ export class ActContractComponent implements OnInit{
   }
 }
 
+onInstitutionChange(event: any){
+  const nombreSeleccionado = event.target.value;
+
+  const institutionSelected = this.instituctions.find(inst => inst.nbinstitucion === nombreSeleccionado);
+
+  if(institutionSelected){
+    console.log("Institución seleccionada: ", institutionSelected);
+
+    this.actForm.patchValue({
+      CodigoInst: institutionSelected.CodigoInst
+    });
+    console.log("CodigoInst seleccionado: ", institutionSelected.CodigoInst);
+  } else {
+    this.actForm.patchValue({ CodigoInst: null });
+  }
+}
+
   onSelectActContract(act: Act){  
     this.isEnabled = true;
     this.isAdding = true;
@@ -170,7 +190,7 @@ export class ActContractComponent implements OnInit{
       nbInstitucion: act.nbInstitucion,
       titulo: act.titulo,
       MnCosto: act.MnCosto
-      //users data
+      
     })
 
     console.log("selected act: ", this.selectedAct);
@@ -213,7 +233,39 @@ export class ActContractComponent implements OnInit{
   }
 
   onSave(){
-    console.log(this.actForm.value);
+    if(this.codigoActo){
+      
+    }else{
+      const formData = this.actForm.value;
+      const payload = {
+        CodigoActo: formData.CodigoActo,
+        Fecha: formData.Fecha,
+        Hora: formData.Hora,
+        siglas: formData.siglas,
+        Titulo: formData.titulo,
+        CoLugar: formData.CoLugar,
+        MnCosto: formData.MnCosto,
+        Especialidad: formData.especialidad,
+        CodUser: null,
+        Culminada: 0,
+        CodigoInst: formData.CodigoInst
+      }
+
+      console.log("Payload para crear acto: ", payload);
+
+      this.actContractService.createAct(payload).subscribe({
+        next: () => {
+          this.messageService.add({ severity: 'success', summary: 'Acto creado', detail: 'El acto ha sido creado exitosamente.' });
+          this.actForm.reset();
+          this.actForm.disable();
+          this.isEnabled = false;
+          this.isAdding = false;
+        },
+        error: () => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al crear el acto.' });
+        }
+      })
+    }
   }
 
   onDelete(){

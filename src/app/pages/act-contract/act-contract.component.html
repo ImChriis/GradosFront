@@ -123,12 +123,12 @@
 
             <div class="inputGroup">
                 <label for="capacity">INSTITUTO</label>
-                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="nbInstitucion" list="institutions">
+                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="nbInstitucion" list="institutions" (change)="onInstitutionChange($event)">
             </div>
 
             <datalist id="institutions">
               @for(instituto of instituctions; track $index) {
-                <option value="{{instituto}}">
+                <option value="{{instituto.nbinstitucion}}">
               }
             </datalist>
 
