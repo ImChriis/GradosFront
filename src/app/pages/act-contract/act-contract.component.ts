@@ -2,7 +2,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
-import { Observable } from 'rxjs';
+import { delay, Observable, startWith, switchMap, tap } from 'rxjs';
 import { ActContractService } from '../../@core/services/act-contract.service';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -80,6 +80,8 @@ export class ActContractComponent implements OnInit{
   titulo: string[] = [];
   MnTotal!: number;
   CodigoActoGet!: number;
+  siglas!: string;
+  isLoading = signal(true);
 
   actForm = this.fb.group({
     CodigoActo: this.fb.control<number | null>(null),
@@ -108,7 +110,19 @@ export class ActContractComponent implements OnInit{
       console.log(acts);
     });
 
-    this.acts$ = this.actContractService.getActs();
+    // this.acts$ = this.actContractService.getActs();
+
+    this.acts$ = this.actContractService.refreshObservable$.pipe(
+      startWith(null),
+      tap(() => this.isLoading.set(true)),
+      switchMap(() => {
+        return this.actContractService.getActs();
+      }),
+      delay(500),
+      tap(() => this.isLoading.set(false))
+    )
+
+
     this.actsService.getAllActsPlaces().subscribe(res => {
       this.actPlaces = res;
       // console.log("lugares: ", this.actPlaces);
@@ -126,11 +140,7 @@ export class ActContractComponent implements OnInit{
       this.titulo = res.map((spec: any) => spec.Titulo);
     });
 
-    this.settingsService.getSettings().subscribe((res: any) => {
-      console.log("settings: ", res);
-      this.CodigoActoGet = res.NoActo + 1;
-      console.log("CodigoActoGet: ", this.CodigoActoGet);
-    });
+   this.loadSettings();
   
     this.total = null;
     this.totalPaid = null;
@@ -139,6 +149,14 @@ export class ActContractComponent implements OnInit{
 
     this.actForm.disable();
     this.isAdding = false;
+  }
+
+  loadSettings(){
+     this.settingsService.getSettings().subscribe((res: any) => {
+      console.log("settings: ", res);
+      this.CodigoActoGet = res.NoActo + 1;
+      console.log("CodigoActoGet: ", this.CodigoActoGet);
+    });
   }
 
 onLugarChange(event: any) {
@@ -161,18 +179,24 @@ onLugarChange(event: any) {
 
 onInstitutionChange(event: any){
   const nombreSeleccionado = event.target.value;
+  console.log("Institución seleccionada: ", nombreSeleccionado);
 
-  const institutionSelected = this.instituctions.find(inst => inst.nbinstitucion === nombreSeleccionado);
+  const institutionSelected = this.instituctions.find((inst: any) => 
+    inst.nbinstitucion === nombreSeleccionado);
 
   if(institutionSelected){
+       this.siglas = institutionSelected.siglas;
+
     console.log("Institución seleccionada: ", institutionSelected);
 
     this.actForm.patchValue({
       CodigoInst: institutionSelected.CodigoInst
     });
+  
     console.log("CodigoInst seleccionado: ", institutionSelected.CodigoInst);
   } else {
     this.actForm.patchValue({ CodigoInst: null });
+    this.siglas = '';
   }
 }
 
@@ -234,14 +258,13 @@ onInstitutionChange(event: any){
 
   onSave(){
     if(this.codigoActo){
-      
     }else{
       const formData = this.actForm.value;
       const payload = {
         CodigoActo: formData.CodigoActo,
         Fecha: formData.Fecha,
         Hora: formData.Hora,
-        siglas: formData.siglas,
+        siglas: this.siglas,
         Titulo: formData.titulo,
         CoLugar: formData.CoLugar,
         MnCosto: formData.MnCosto,
@@ -260,6 +283,8 @@ onInstitutionChange(event: any){
           this.actForm.disable();
           this.isEnabled = false;
           this.isAdding = false;
+
+          this.loadSettings();
         },
         error: () => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al crear el acto.' });
@@ -355,27 +380,44 @@ onInstitutionChange(event: any){
   }
 
   formateTimeString(time: string){
-    const [hours, minutes] = time.split(':');
+    const [hours, minutes] = time.split(':'); 
     const date = new Date();
     date.setHours(parseInt(hours, 10));
     date.setMinutes(parseInt(minutes, 10));
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 
-  formateDateString(dateString: string){
-    if (!dateString) return '';
-    
-    // Suponiendo que el input viene como "DD-MM-YYYY"
-    const [day, month, year] = dateString.split('-');
-    
-    // Creamos el objeto Date (mes es 0-indexado)
-    const date = new Date(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10));
+formateDateString(dateString: string) {
+  if (!dateString || dateString === '0000-00-00') return '';
 
-    // Formateamos manualmente para evitar variaciones del navegador
-    const d = date.getDate().toString().padStart(2, '0');
-    const m = (date.getMonth() + 1).toString().padStart(2, '0');
-    const y = date.getFullYear();
+  // 1. Intentar detectar el separador (puede ser - o /)
+  const separator = dateString.includes('-') ? '-' : '/';
+  const parts = dateString.split(separator);
 
-    return `${d}-${m}-${y}`;
+  let date: Date;
+
+  // 2. Determinar si es ISO (YYYY-MM-DD) o Latino (DD-MM-YYYY)
+  if (parts[0].length === 4) {
+    // Es YYYY-MM-DD (Formato de base de datos o input date)
+    const [y, m, d] = parts;
+    date = new Date(parseInt(y, 10), parseInt(m, 10) - 1, parseInt(d, 10));
+  } else {
+    // Es DD-MM-YYYY (Formato latino)
+    const [d, m, y] = parts;
+    date = new Date(parseInt(y, 10), parseInt(m, 10) - 1, parseInt(d, 10));
   }
+
+  // 3. Validar si la fecha es válida para evitar el NaN
+  if (isNaN(date.getTime())) {
+    console.error("Fecha inválida recibida:", dateString);
+    return 'Fecha Inválida';
+  }
+
+  // 4. Formatear a DD-MM-YYYY para mostrar en la tabla
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `${day}-${month}-${year}`;
+}
 }
