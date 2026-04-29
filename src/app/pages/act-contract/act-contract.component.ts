@@ -17,7 +17,9 @@ import { SpecialitiesService } from '../../@core/services/specialities.service';
 import { OnlyNumbersDirective } from '../../@core/directives/only-numbers.directive';
 import { SettingsService } from '../../@core/services/settings.service';
 import { ActPlace } from '../../@core/models/act.model';
-import { Institution } from '../../@core/models/institution.model';
+import { Institution } from '../../@core/models/institution.model'; 
+import { UppercaseDirective } from '../../@core/directives/uppercase.directive';
+import { LoaderComponent } from '../../@core/components/loader/loader.component';
 
 //temporal
 interface Act {
@@ -30,8 +32,8 @@ interface Act {
   nbInstitucion: string;
   titulo: string;
   MnCosto: null;
-  CoLugar: string | null;
-  CodigoInst: string | null;
+  CoLugar: number | null;
+  CodigoInst: number | null;
 
   //users data
   Nombre: string;
@@ -47,7 +49,9 @@ interface Act {
     TableModule,
     InputTextModule,
     ReactiveFormsModule,
-    OnlyNumbersDirective
+    OnlyNumbersDirective,
+    UppercaseDirective,
+    LoaderComponent
   ],
   templateUrl: './act-contract.component.html',
   styleUrl: './act-contract.component.scss',
@@ -82,6 +86,8 @@ export class ActContractComponent implements OnInit{
   CodigoActoGet!: number;
   siglas!: string;
   isLoading = signal(true);
+  MnCosto!: number | null;
+  TxLugar!: string | null;
 
   actForm = this.fb.group({
     CodigoActo: this.fb.control<number | null>(null),
@@ -107,7 +113,7 @@ export class ActContractComponent implements OnInit{
 
   ngOnInit() {
     this.actContractService.getActs().subscribe(acts => {
-      console.log(acts);
+      // console.log(acts);
     });
 
     // this.acts$ = this.actContractService.getActs();
@@ -137,7 +143,9 @@ export class ActContractComponent implements OnInit{
       this.specialities = res.map((spec: any) => spec.Especialidad);
       // console.log("especialidades: ", this.specialities);
 
-      this.titulo = res.map((spec: any) => spec.Titulo);
+      const titulos = res.map((spec: any) => spec.Titulo);
+      this.titulo = [...new Set(titulos)]; // Filtra títulos únicos
+
     });
 
    this.loadSettings();
@@ -153,9 +161,9 @@ export class ActContractComponent implements OnInit{
 
   loadSettings(){
      this.settingsService.getSettings().subscribe((res: any) => {
-      console.log("settings: ", res);
+      // console.log("settings: ", res);
       this.CodigoActoGet = res.NoActo + 1;
-      console.log("CodigoActoGet: ", this.CodigoActoGet);
+      // console.log("CodigoActoGet: ", this.CodigoActoGet);
     });
   }
 
@@ -168,8 +176,9 @@ onLugarChange(event: any) {
   if (lugarEncontrado) {
     // Seteamos el código en el control oculto CoLugar
     this.actForm.patchValue({
-      CoLugar: lugarEncontrado.CoLugar
-    });
+      CoLugar: lugarEncontrado.CoLugar,
+      TxLugar: lugarEncontrado.TxLugar // Asegura que el texto permanezca en el form
+    }, { emitEvent: false }); // Evita que se dispare otro evento de cambio
     console.log("CoLugar seleccionado:", lugarEncontrado.CoLugar);
   } else {
     // Si el usuario escribe algo que no está en la lista, limpiamos el código
@@ -185,7 +194,11 @@ onInstitutionChange(event: any){
     inst.nbinstitucion === nombreSeleccionado);
 
   if(institutionSelected){
-       this.siglas = institutionSelected.siglas;
+    CodigoInst: institutionSelected.CodigoInst;
+    nbInstitucion: institutionSelected.nbinstitucion;
+    this.siglas = institutionSelected.siglas;
+    
+    
 
     console.log("Institución seleccionada: ", institutionSelected);
 
@@ -204,6 +217,13 @@ onInstitutionChange(event: any){
     this.isEnabled = true;
     this.isAdding = true;
     this.selectedAct  = act;
+    this.actForm.enable();
+
+    this.codigoActo = act.CodigoActo;
+    this.MnCosto = act.MnCosto
+    this.siglas = act.siglas;
+    this.TxLugar = act.TxLugar;
+    
     this.actForm.patchValue({
       CodigoActo: act.CodigoActo,
       Fecha: this.formateDateString(act.Fecha),
@@ -213,13 +233,12 @@ onInstitutionChange(event: any){
       siglas: act.siglas,
       nbInstitucion: act.nbInstitucion,
       titulo: act.titulo,
-      MnCosto: act.MnCosto
-      
+      MnCosto: act.MnCosto,
+      CodigoInst: act.CodigoInst,
+      CoLugar: act.CoLugar
     })
 
     console.log("selected act: ", this.selectedAct);
-
-    this.codigoActo = act.CodigoActo;
     this.actUsers$ = this.actContractService.getActUsersByCodigoActo(act.CodigoActo!);
     this.updateTotals(act.CodigoActo!);
   }
@@ -258,6 +277,35 @@ onInstitutionChange(event: any){
 
   onSave(){
     if(this.codigoActo){
+      const formData = this.actForm.value;
+        const payload = {
+        CodigoActo: formData.CodigoActo,
+        Fecha: formData.Fecha,
+        Hora: formData.Hora,
+        siglas: this.siglas || formData.siglas,
+        Titulo: formData.titulo,
+        CoLugar: formData.CoLugar,
+        Especialidad: formData.especialidad,
+        CodUser: null,
+        Culminada: 0,
+        CodigoInst: formData.CodigoInst,
+        TxLugar: this.TxLugar || formData.TxLugar
+      }
+
+      this.actContractService.updateAct(this.codigoActo, payload).subscribe({
+        next: () => {
+          this.messageService.add({ severity: 'success', summary: 'Acto actualizado', detail: 'El acto ha sido actualizado exitosamente.' });
+          this.actForm.reset();
+          this.actForm.disable();
+          this.isEnabled = false;
+          this.isAdding = false;
+          this.selectedAct = null;
+          this.loadSettings();
+        },
+        error: () => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al actualizar el acto.' });
+        }
+      })
     }else{
       const formData = this.actForm.value;
       const payload = {
@@ -283,7 +331,6 @@ onInstitutionChange(event: any){
           this.actForm.disable();
           this.isEnabled = false;
           this.isAdding = false;
-
           this.loadSettings();
         },
         error: () => {
@@ -312,13 +359,13 @@ onInstitutionChange(event: any){
     this.saldo = null;
   }
   
-  recalculateModal(codigoActo: number | null){
+  recalculateModal(codigoActo: number | null, MnCosto: number | null){
     if(codigoActo){
           this.ref = this.dialogService.open(RecalculateModalComponent, {
       header: 'Estas seguro de recalcular el monto del acto por estudiante?',
       width: '50vw',
       modal: true,
-      data: { actContractId: codigoActo },
+      data: { actContractId: codigoActo, MnCosto },
       breakpoints: {
         '960px': '75vw',
         '640px': '90vw'
@@ -335,15 +382,18 @@ onInstitutionChange(event: any){
     }
   }
 
-  addContract(CodigoActo: number | null, MnTotal: number | null){
-    if(!CodigoActo || !MnTotal){
+  addContract(CodigoActo: number | null, MnCosto: number | null){
+    console.log("Código de acto al agregar contrato: ", CodigoActo);
+    console.log("Monto por estudiante al agregar contrato: ", MnCosto);
+
+    if(!CodigoActo || !MnCosto){
       this.messageService.add({ severity: 'warn', summary: 'No se ha seleccionado ningún acto para agregar un contrato.' });
     }else{
         this.ref = this.dialogService.open(AddContractComponent, {
         header: 'Incluir Contratos',
         width: '50vw',
         modal: true,
-        data: { CodigoActo, MnTotal },
+        data: { CodigoActo, MnCosto },
         closable: true,
         breakpoints: {
           '960px': '75vw',

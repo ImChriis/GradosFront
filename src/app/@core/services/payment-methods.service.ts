@@ -15,7 +15,7 @@ export class PaymentMethodsService {
   getPaymentMethods() {
     return this.http.get<any>(`${this.api}/metodoPago`).pipe(
       tap((res: any) => {
-        console.log('Raw response:', res);
+        // console.log('Raw response:', res);
       })
     )
   }

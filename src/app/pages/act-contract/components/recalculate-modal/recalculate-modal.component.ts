@@ -18,9 +18,11 @@ export class RecalculateModalComponent implements OnInit{
   private messageService = inject(MessageService);
   private dynamicDialogRef = inject(DynamicDialogRef);
   actContractId = this.dialogConfig.data.actContractId;
+  MnCosto = this.dialogConfig.data.MnCosto;
 
   ngOnInit(): void {
     console.log('Act Contract ID received in modal:', this.actContractId);
+    console.log('MnCosto received in modal:', this.MnCosto);
   }
 
   recalculate(){

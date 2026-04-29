@@ -17,7 +17,7 @@ export class ActsService {
   getAllActsPlaces(){{
     return this.http.get<ActPlace[]>(`${this.api}/actPlaces`).pipe(
       map((res: ActPlace[] = []) => {
-       console.log("Raw response: ", res);
+      //  console.log("Raw response: ", res);
        const items = res ?? [];
        const sorted = res.slice().sort((a: any, b: any) => (b.id ?? 0) - (a.id ?? 0)) ;
        return sorted.map((act: any) => ({ ...act }));

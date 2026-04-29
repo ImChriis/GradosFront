@@ -16,7 +16,7 @@ export class SpecialitiesService {
   getAllSpecialities(){
     return this.http.get<Speciality[]>(`${this.api}/specialities`).pipe(
       map((res: Speciality[] = []) => {
-        console.log('Raw response:', res);
+        // console.log('Raw response:', res);
         const items = res ?? [];
         const sorted = items.slice().sort((a: any, b: any) => (b.CodigoEsp ?? 0) - (a.CodigoEsp ?? 0));
         return sorted.map((specility: any) => ({ ...specility }));

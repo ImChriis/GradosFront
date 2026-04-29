@@ -16,7 +16,7 @@ export class BanksService {
   getAllBanks(){
     return this.http.get<Bank[]>(`${this.api}/banks`).pipe(
       map((res: Bank[] = []) => {
-        console.log("Raw response: ", res);
+        // console.log("Raw response: ", res);
         const items = res ?? [];
         const sorted = items.slice().sort((a: Bank, b: Bank) => (b.id ?? 0) - (a.id ?? 0));
         return sorted.map((bank: Bank) => ({ ...bank }));

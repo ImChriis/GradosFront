@@ -15,7 +15,7 @@ export class AuthService {
     const headers = { 'Content-Type': 'application/json' };
     return this.http.post(`${this.api}/auth/login`,body, { headers }).pipe(
       map((res: any) => {
-        console.log('Login response:', res);
+        // console.log('Login response:', res);
         localStorage.setItem('User', JSON.stringify(res));
         return res;
       })

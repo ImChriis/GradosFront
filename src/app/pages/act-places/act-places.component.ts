@@ -10,6 +10,7 @@ import { ActPlace } from '../../@core/models/act.model';
 import { ActPlacesForm } from '../../@core/models/forms/act-form';
 import { UppercaseDirective } from '../../@core/directives/uppercase.directive';
 import { LoaderComponent } from '../../@core/components/loader/loader.component';
+import { OnlyNumbersDirective } from '../../@core/directives/only-numbers.directive';
 
 @Component({
   selector: 'app-act-places',
@@ -20,7 +21,8 @@ import { LoaderComponent } from '../../@core/components/loader/loader.component'
     ɵInternalFormsSharedModule,
     ReactiveFormsModule,
     UppercaseDirective,
-    LoaderComponent
+    LoaderComponent,
+    OnlyNumbersDirective
 ],
   templateUrl: './act-places.component.html',
   styleUrl: './act-places.component.scss'

@@ -16,7 +16,7 @@ export class InstitutionsService {
   getAllInstitutions(){
     return this.http.get<Institution[]>(`${this.api}/institutions`).pipe(
       map((res: Institution[] = []) => {
-        console.log("Raw Response: ", res);
+        // console.log("Raw Response: ", res);
         const items = res ?? [];
         const sorted = items.slice().sort((a: Institution, b: Institution) => (b.CodigoInst ?? 0) - (a.CodigoInst ?? 0));
         return sorted.map((institution: Institution) => ({ ...institution }));

@@ -16,7 +16,7 @@ export class UsersService {
   getUsers(){
     return this.http.get<User[]>(`${this.api}/users`).pipe(
       map((res: User[] = []) => {
-        console.log('Raw response:', res);
+        // console.log('Raw response:', res);
         const items = res ?? [];
         const sorted = items.slice().sort((a: User, b: User) => (b.CodUsuario ?? 0) - (a.CodUsuario ?? 0));
         return sorted.map((user: User) => ({ ...user }));

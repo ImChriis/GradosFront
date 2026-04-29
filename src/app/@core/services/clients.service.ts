@@ -16,7 +16,7 @@ export class ClientsService {
   findAllClients(){
     return this.http.get<Client[]>(`${this.api}/clients`).pipe(
       map((res: Client[] = []) => {
-        console.log('Raw response:', res);
+        // console.log('Raw response:', res);
         const items = res ?? [];
         const sorted = items.slice().sort((a: any, b: any) => (b.id ?? 0) - (a.id ?? 0));
         return sorted.map((client: any) => ({ ...client }));

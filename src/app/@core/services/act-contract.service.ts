@@ -19,13 +19,19 @@ export class ActContractService {
   getActUsersByCodigoActo(codigoActo: number){
     return this.http.get<any>(`${this.api}/actContracts/${codigoActo}/users`).pipe(
       tap((res) => {
-        console.log(res)
+        // console.log(res)
       }
     ));
   }
 
   createAct(body: any){
     return this.http.post<any>(`${this.api}/actContracts/createAct`, body).pipe(
+      tap(() => this.refresh$.next())
+    )
+  }
+
+  updateAct(codigoActo: number, body: any){
+    return this.http.put<any>(`${this.api}/actContracts/updateAct/${codigoActo}`, body).pipe(
       tap(() => this.refresh$.next())
     )
   }
