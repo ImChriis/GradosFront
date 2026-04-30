@@ -1,8 +1,8 @@
   <div class="container">
     <div class="clientsList">
 
-     <fieldset class="body">
-              <legend class="title">Clientes</legend>
+     <div class="body">
+              <legend class="title">Contrato de acto</legend>
         
         
         <div class="table-wrapper" style="position: relative; min-height: 300px;">
@@ -93,7 +93,7 @@
       }
     </div>
   </div>
-     </fieldset>
+     </div>
     </div>
 
     <div class="clientForm">
@@ -106,18 +106,18 @@
 
                 <div class="inputGroup">
                     <label for="identification">FECHA</label>
-                    <input type="date" id="identification" name="identification" appUppercase formControlName="Fecha">
+                    <input type="date" id="identification" name="identification" formControlName="Fecha">
                 </div>
 
                 <div class="inputGroup">
-                    <label for="identification">HORA</label>
-                    <input type="time" id="identification" name="identification" appUppercase formControlName="Hora">
+                    <label for="time">HORA</label>
+                    <input type="time" id="time" name="time" formControlName="Hora">
                 </div>
             </div>
 
             <div class="inputGroup">
-                <label for="capacity">LUGAR</label>
-                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="TxLugar" list="actPlaces" (change)="onLugarChange($event)">
+                <label for="place">LUGAR</label>
+                <input type="text" id="place" name="place"  appUppercase formControlName="TxLugar" list="actPlaces" (change)="onLugarChange($event)">
             </div>
 
             <datalist id="actPlaces">
@@ -127,8 +127,8 @@
             </datalist>
 
             <div class="inputGroup">
-                <label for="capacity">INSTITUTO</label>
-                <input type="text" id="capacity" name="capacity"  appUppercase formControlName="nbInstitucion" list="institutions" (change)="onInstitutionChange($event)">
+                <label for="institution">INSTITUTO</label>
+                <input type="text" id="institution" name="institution"  appUppercase formControlName="nbInstitucion" list="institutions" (change)="onInstitutionChange($event)">
             </div>
 
             <datalist id="institutions">
@@ -171,7 +171,7 @@
                   [rows]="5"
                   [scrollable]="true"
                   scrollHeight="flex"
-                  scrollHeight="235px"
+                  scrollHeight="200px"
                   styles="mr-2"
                   [tableStyle]="{'min-width': '10rem'}"
                   >
@@ -234,11 +234,11 @@
 
             <div class="btnsInput">
                 <div class="icon2 recalculate" title="Recalcular" (click)="recalculateModal(this.codigoActo, MnCosto)">
-                <i class="pi pi-calculator cancel"></i>
+                <i class="pi pi-calculator"></i>
               </div>
 
               <div class="icon2 refresh" title="Refrescar" (click)="onCancel()">
-                <i class="pi pi-sync cancel"></i>
+                <i class="pi pi-sync"></i>
             </div>
             </div>
           </div>
@@ -303,7 +303,7 @@
             </div>
           </div>
           
-          <div class="icon" title="Cancelar" (click)="onCancel()">
+          <div class="icon cancel" title="Cancelar" (click)="onCancel()">
             <i class="pi pi-times cancel"></i>
           </div>
         </div>

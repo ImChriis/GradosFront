@@ -25,13 +25,16 @@
     align-items: center;
     justify-content: start;
     border: 1px solid #ababab !important;
+    border-radius: 10px;
 }
 
 .body{
     border: 1px solid #ababab; /* Borde sutil */
     border-radius: 10px;
-    padding: 20px;
+    padding: 10px;
     width: 95%;
+    margin-top: 20px;
+    position: relative;
 }
 
 .title {
@@ -40,6 +43,10 @@
     font-weight: bold;
     padding: 0 10px;
     background-color: transparent; /* ¡Ya no necesitas parche de color! */
+    position: absolute;
+    top: -20px; /* Ajusta según el tamaño de tu título */
+    background-color: white;
+    margin-left: 10px;
 }
 
 .table{
@@ -50,7 +57,7 @@
 }
 
 .table p-table{
-    width: 85% !important;
+    width: 100% !important;
 
 }
 
@@ -64,9 +71,10 @@
     justify-content: start;
     border: 1px solid #949393 !important;
     padding: 10px;
-    background-color: rgb(223, 220, 220);
+    background-color: white;
     gap: 20px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
 }
 
 form{
@@ -74,6 +82,9 @@ form{
     display: flex;
     flex-direction: column;
     gap: 10px;
+    border: 1px solid #ababab; /* Borde sutil */
+    border-radius: 10px;
+    padding: 10px;
 }
 
 .inputGroup{
@@ -90,7 +101,7 @@ form{
 
 .inputGroup input{
     height: 3vh;
-    background-color: white;
+    background-color: rgb(223, 220, 220);
     border: none;
     color: black;
     border-radius: 10px;
@@ -218,6 +229,9 @@ form{
     align-items: center;
     justify-content: space-between;
     margin-top: auto;
+    border: 1px solid #ababab; /* Borde sutil */
+    border-radius: 10px;
+    padding: 10px;
 }
 
 .buttons i{
@@ -225,17 +239,22 @@ form{
 }
 
     .icon{
-        color: black;
-        background-color: darkgray;
-        padding: 10px;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+          color: #FFFFFF;
+    // background-color: darkgray;
+    background-color: #2563EB;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 
     .icon:hover{
         cursor: pointer;
-        background-color: gray;
+        opacity: 0.9;
         transform: translateY(-2px);
     }
+
+    .cancel{
+    background-color: #EF4444;
+}
 
 .icon2{
     display: flex;
@@ -259,7 +278,7 @@ form{
 }
 
 .icon2 i{
-    font-size: 30px;
+    font-size: 25px;
 }
 
 .icon2:hover{
@@ -481,7 +500,7 @@ td{
     align-items: center;
     gap: 10px;
     width: 30%;
-    margin-right: -6px;
+    margin-right: -2px;
 }
 
 .input{

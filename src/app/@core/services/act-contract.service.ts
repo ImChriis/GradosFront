@@ -13,7 +13,11 @@ export class ActContractService {
   public refreshObservable$ = this.refresh$.asObservable();
  
   getActs(){
-    return this.http.get<any>(`${this.api}/actContracts`);
+    return this.http.get<any>(`${this.api}/actContracts`).pipe(
+      tap((res) => {
+        // console.log(res)
+      })
+    )
   }
 
   getActUsersByCodigoActo(codigoActo: number){

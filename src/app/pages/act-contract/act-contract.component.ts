@@ -87,7 +87,6 @@ export class ActContractComponent implements OnInit{
   siglas!: string;
   isLoading = signal(true);
   MnCosto!: number | null;
-  TxLugar!: string | null;
 
   actForm = this.fb.group({
     CodigoActo: this.fb.control<number | null>(null),
@@ -168,49 +167,25 @@ export class ActContractComponent implements OnInit{
   }
 
 onLugarChange(event: any) {
-  const nombreSeleccionado = event.target.value;
-  
-  // Buscamos el objeto completo en nuestra lista
-  const lugarEncontrado = this.actPlaces.find(p => p.TxLugar === nombreSeleccionado);
+  const nombre = event.target.value;
+  const lugar = this.actPlaces.find(p => p.TxLugar === nombre);
 
-  if (lugarEncontrado) {
-    // Seteamos el código en el control oculto CoLugar
-    this.actForm.patchValue({
-      CoLugar: lugarEncontrado.CoLugar,
-      TxLugar: lugarEncontrado.TxLugar // Asegura que el texto permanezca en el form
-    }, { emitEvent: false }); // Evita que se dispare otro evento de cambio
-    console.log("CoLugar seleccionado:", lugarEncontrado.CoLugar);
-  } else {
-    // Si el usuario escribe algo que no está en la lista, limpiamos el código
-    this.actForm.patchValue({ CoLugar: null });
-  }
+  this.actForm.patchValue({
+    CoLugar: lugar?.CoLugar ?? null,
+    TxLugar: lugar?.TxLugar ?? nombre
+  }, { emitEvent: false });
 }
 
-onInstitutionChange(event: any){
-  const nombreSeleccionado = event.target.value;
-  console.log("Institución seleccionada: ", nombreSeleccionado);
+onInstitutionChange(event: any) {
+  const nombre = event.target.value;
+  const institucion = this.instituctions.find(inst => inst.nbinstitucion === nombre);
 
-  const institutionSelected = this.instituctions.find((inst: any) => 
-    inst.nbinstitucion === nombreSeleccionado);
+  this.siglas = institucion?.siglas ?? '';
 
-  if(institutionSelected){
-    CodigoInst: institutionSelected.CodigoInst;
-    nbInstitucion: institutionSelected.nbinstitucion;
-    this.siglas = institutionSelected.siglas;
-    
-    
-
-    console.log("Institución seleccionada: ", institutionSelected);
-
-    this.actForm.patchValue({
-      CodigoInst: institutionSelected.CodigoInst
-    });
-  
-    console.log("CodigoInst seleccionado: ", institutionSelected.CodigoInst);
-  } else {
-    this.actForm.patchValue({ CodigoInst: null });
-    this.siglas = '';
-  }
+  this.actForm.patchValue({
+    CodigoInst: institucion?.CodigoInst ?? null,
+    nbInstitucion: institucion?.nbinstitucion ?? nombre
+  }, { emitEvent: false });
 }
 
   onSelectActContract(act: Act){  
@@ -222,11 +197,10 @@ onInstitutionChange(event: any){
     this.codigoActo = act.CodigoActo;
     this.MnCosto = act.MnCosto
     this.siglas = act.siglas;
-    this.TxLugar = act.TxLugar;
     
     this.actForm.patchValue({
       CodigoActo: act.CodigoActo,
-      Fecha: this.formateDateString(act.Fecha),
+      Fecha: this.formateDateToInput(act.Fecha),
       Hora: this.formateTimeString(act.Hora),
       TxLugar: act.TxLugar,
       especialidad: act.especialidad,
@@ -289,18 +263,18 @@ onInstitutionChange(event: any){
         CodUser: null,
         Culminada: 0,
         CodigoInst: formData.CodigoInst,
-        TxLugar: this.TxLugar || formData.TxLugar
+        TxLugar: formData.TxLugar
       }
 
       this.actContractService.updateAct(this.codigoActo, payload).subscribe({
         next: () => {
           this.messageService.add({ severity: 'success', summary: 'Acto actualizado', detail: 'El acto ha sido actualizado exitosamente.' });
+          this.loadSettings();
           this.actForm.reset();
           this.actForm.disable();
           this.isEnabled = false;
           this.isAdding = false;
           this.selectedAct = null;
-          this.loadSettings();
         },
         error: () => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al actualizar el acto.' });
@@ -326,12 +300,13 @@ onInstitutionChange(event: any){
 
       this.actContractService.createAct(payload).subscribe({
         next: () => {
+          console.log("Acto creado exitosamente", payload);
           this.messageService.add({ severity: 'success', summary: 'Acto creado', detail: 'El acto ha sido creado exitosamente.' });
+          this.loadSettings();
           this.actForm.reset();
           this.actForm.disable();
           this.isEnabled = false;
           this.isAdding = false;
-          this.loadSettings();
         },
         error: () => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al crear el acto.' });
@@ -429,13 +404,24 @@ onInstitutionChange(event: any){
     }
   }
 
-  formateTimeString(time: string){
-    const [hours, minutes] = time.split(':'); 
-    const date = new Date();
-    date.setHours(parseInt(hours, 10));
-    date.setMinutes(parseInt(minutes, 10));
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+formateDateToInput(dateString: string){
+  if (!dateString) return '';
+
+  const separator = dateString.includes('-') ? '-' : '/';
+  const [a, b, c] = dateString.split(separator);
+
+  if (a.length === 4) {
+    return `${a}-${b.padStart(2, '0')}-${c.padStart(2, '0')}`;
   }
+
+  return `${c}-${b.padStart(2, '0')}-${a.padStart(2, '0')}`;
+}
+
+formateTimeString(time: string) {
+  if (!time) return '';
+  const [hours = '00', minutes = '00'] = time.split(':');
+  return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+}
 
 formateDateString(dateString: string) {
   if (!dateString || dateString === '0000-00-00') return '';
