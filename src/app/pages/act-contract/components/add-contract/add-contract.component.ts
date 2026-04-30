@@ -55,6 +55,8 @@ export class AddContractComponent implements OnInit{
         this.actForm.patchValue({ NoContrato: this.NoContrato });
       }
     })
+
+    console.log(this.MnCosto);
   }
 
   searchUserByCedula(event: any){

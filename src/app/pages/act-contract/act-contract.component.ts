@@ -2,7 +2,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
-import { delay, Observable, startWith, switchMap, tap } from 'rxjs';
+import { delay, finalize, Observable, startWith, switchMap, tap } from 'rxjs';
 import { ActContractService } from '../../@core/services/act-contract.service';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -20,6 +20,7 @@ import { ActPlace } from '../../@core/models/act.model';
 import { Institution } from '../../@core/models/institution.model'; 
 import { UppercaseDirective } from '../../@core/directives/uppercase.directive';
 import { LoaderComponent } from '../../@core/components/loader/loader.component';
+import { RefreshComponent } from './components/refresh/refresh.component';
 
 //temporal
 interface Act {
@@ -153,7 +154,6 @@ export class ActContractComponent implements OnInit{
     this.totalPaid = null;
     this.saldo = null;
     this.usersAmount = null;
-
     this.actForm.disable();
     this.isAdding = false;
   }
@@ -251,7 +251,7 @@ onInstitutionChange(event: any) {
 
   onSave(){
     if(this.codigoActo){
-      const formData = this.actForm.value;
+        const formData = this.actForm.value;
         const payload = {
         CodigoActo: formData.CodigoActo,
         Fecha: formData.Fecha,
@@ -275,6 +275,11 @@ onInstitutionChange(event: any) {
           this.isEnabled = false;
           this.isAdding = false;
           this.selectedAct = null;
+          this.actUsers$ = null;
+          this.usersAmount = null;
+          this.totalPaid = null;
+          this.saldo = null;
+          this.total = null;
         },
         error: () => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al actualizar el acto.' });
@@ -328,19 +333,20 @@ onInstitutionChange(event: any) {
     this.actUsers$ = null;
     this.selectActUser = null;
     this.total = null;
-    // this.totalPerStudent = null;
     this.totalPaid = null;
     this.usersAmount = null;
     this.saldo = null;
+    this.codigoActo = null;
   }
   
   recalculateModal(codigoActo: number | null, MnCosto: number | null){
+    const formData = this.actForm.value;
     if(codigoActo){
           this.ref = this.dialogService.open(RecalculateModalComponent, {
       header: 'Estas seguro de recalcular el monto del acto por estudiante?',
       width: '50vw',
       modal: true,
-      data: { actContractId: codigoActo, MnCosto },
+      data: { actContractId: codigoActo, MnCosto: formData.MnCosto },
       breakpoints: {
         '960px': '75vw',
         '640px': '90vw'
@@ -358,8 +364,7 @@ onInstitutionChange(event: any) {
   }
 
   addContract(CodigoActo: number | null, MnCosto: number | null){
-    console.log("Código de acto al agregar contrato: ", CodigoActo);
-    console.log("Monto por estudiante al agregar contrato: ", MnCosto);
+    const formData = this.actForm.value
 
     if(!CodigoActo || !MnCosto){
       this.messageService.add({ severity: 'warn', summary: 'No se ha seleccionado ningún acto para agregar un contrato.' });
@@ -368,7 +373,7 @@ onInstitutionChange(event: any) {
         header: 'Incluir Contratos',
         width: '50vw',
         modal: true,
-        data: { CodigoActo, MnCosto },
+        data: { CodigoActo, MnCosto: formData.MnCosto },
         closable: true,
         breakpoints: {
           '960px': '75vw',
@@ -376,8 +381,8 @@ onInstitutionChange(event: any) {
         }    
       });
 
-      this.ref.onClose.subscribe((res) => {
-        this.updateTotals(CodigoActo!);
+      this.ref.onClose.subscribe(() => {
+        this.updateTotals(CodigoActo!); // Actualizamos los totales al cerrar el modal, ya sea que se haya agregado un contrato o no, para reflejar cualquier cambio.
       })
     }
   }
@@ -400,8 +405,49 @@ onInstitutionChange(event: any) {
             '960px': '90%',
             '640px': '100%'
         }
+      });
+
+      this.ref.onClose.subscribe(() => {
+          this.updateTotals(this.selectedAct.CodigoActo);
       })
     }
+  }
+
+  refresh(codigoActo: number | null){
+    let header = "";
+
+    if(!codigoActo){
+      header =  "Quieres refrescar los actos?"
+    }else{
+       header =  "Quieres refrescar los usuarios y contratos de este acto?"
+    }
+
+   this.ref = this.dialogService.open(RefreshComponent, {
+        header: header,
+        width: '50vw',
+        modal: true,
+        data: { codigoActo },
+        breakpoints: {
+          '960px': '75vw',
+          '640px': '90vw'
+        }    
+      });
+
+      this.ref.onClose.subscribe((res) => {
+      if (res === 'users' && codigoActo) {
+        this.isLoading.set(true);
+        this.actUsers$ = this.actContractService.getActUsersByCodigoActo(codigoActo).pipe(
+          delay(500),
+          finalize(() => this.isLoading.set(false))
+        );
+      } else if (res === 'acts') {
+        this.isLoading.set(true);
+        this.acts$ = this.actContractService.getActs().pipe(
+          delay(500),
+          finalize(() => this.isLoading.set(false))
+        );
+      }
+    });
   }
 
 formateDateToInput(dateString: string){

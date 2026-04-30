@@ -211,9 +211,15 @@
                       </tr>
                     </ng-template>
                     <ng-template pTemplate="emptymessage">
+                      @if(!codigoActo){
                       <tr>
-                        <td colspan="7"></td>
+                        <td colspan="7">Por favor seleccione un acto para ver los contratos.</td>
                       </tr>
+                      }@else{
+                      <tr>
+                        <td colspan="7">No hay contratos disponibles.</td>
+                      </tr>
+                      }
                     </ng-template>
                   </p-table>
                 <!-- } -->
@@ -237,7 +243,7 @@
                 <i class="pi pi-calculator"></i>
               </div>
 
-              <div class="icon2 refresh" title="Refrescar" (click)="onCancel()">
+              <div class="icon2 refresh" title="Refrescar" (click)="refresh(this.codigoActo)">
                 <i class="pi pi-sync"></i>
             </div>
             </div>

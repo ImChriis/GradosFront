@@ -44,8 +44,8 @@ export class ActContractService {
     return this.http.get<any>(`${this.api}/actContracts/${CodigoActo}/total`);
   }
 
-  recalculateTotal(CodigoActo: number){
-    return this.http.post<any>(`${this.api}/actContracts/recalculateTotal`, { CodigoActo });
+  recalculateTotal(body: any){
+    return this.http.post<any>(`${this.api}/actContracts/recalculateTotal`, body);
   }
 
   getTotalPaid(CodigoActo: number){

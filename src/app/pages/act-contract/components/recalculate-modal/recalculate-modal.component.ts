@@ -26,12 +26,21 @@ export class RecalculateModalComponent implements OnInit{
   }
 
   recalculate(){
-    this.actContractService.recalculateTotal(this.actContractId).subscribe({
+    const body = {
+      codigoActo: this.actContractId,
+      nuevoMonto: this.MnCosto
+    }
+
+    this.actContractService.recalculateTotal(body).subscribe({ 
       next: (response) => {
+            console.log('Act Contract ID received in modal:', this.actContractId);
+    console.log('MnCosto received in modal:', this.MnCosto);
         this.messageService.add({ severity: 'success', summary: 'Recalculated', detail: 'The act contract has been recalculated successfully.' });
         this.dynamicDialogRef.close(response);
       },
       error: (error) => {
+            console.log('Act Contract ID received in modal:', this.actContractId);
+    console.log('MnCosto received in modal:', this.MnCosto);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to recalculate the act contract.' });
         console.error('Error recalculating act contract:', error);
       }
