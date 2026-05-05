@@ -9,6 +9,7 @@ import { BanksService } from '../../../../@core/services/banks.service';
 import { SettingsService } from '../../../../@core/services/settings.service';
 import { UppercaseDirective } from '../../../../@core/directives/uppercase.directive';
 import { OnlyNumbersDirective } from '../../../../@core/directives/only-numbers.directive';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-payments',
@@ -27,6 +28,7 @@ export class PaymentsComponent implements OnInit{
   private dialogConfig = inject(DynamicDialogConfig);
   private banksService = inject(BanksService);
   private settingsService = inject(SettingsService);
+  private messageService = inject(MessageService);
   private fb = inject(FormBuilder);
   actUser = this.dialogConfig.data.actUser;
   codigoActo = this.dialogConfig.data.codigoActo;
@@ -125,9 +127,11 @@ export class PaymentsComponent implements OnInit{
     this.actContractService.addARecibo(formData).subscribe({
       next: (response) => {
         console.log('Recibo agregado:', response);
+        this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Recibo agregado correctamente'});
       },
       error: (error) => {
         console.error('Error al agregar recibo:', error);
+        this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al agregar recibo'});
       }
     });
     
