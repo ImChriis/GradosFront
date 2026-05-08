@@ -43,13 +43,14 @@ export class PaymentsComponent implements OnInit{
   MnInicial!: number;
   montoPagado!: number;
   montoSaldo!: number;
-  NoRecibo: number = 0;
+  NoRecibo!: number;
   fechaSelectedRecibo: string = '';
   montoSelectedRecibo: number | null = null;
   observacion: string = '';
   metodosPago: String[] = [];
   banks: String[] = [];
   isAdding: boolean = false;
+  selectedRecibo!: number;
 
   reciboPagoForm = this.fb.group({
     NoRecibo: [null as number | null],
@@ -114,32 +115,39 @@ export class PaymentsComponent implements OnInit{
         console.log('Bancos:', this.banks);
       }
     })
+
+    this.reciboPagoForm.disable();
   }
 
   onSubmit(){
-    const formData = this.reciboPagoForm.value;
-    formData.CodigoActo = this.codigoActo;
-    formData.NoContrato = this.NoContrato;
-    formData.NuCedula = this.NuCedula;
-    formData.ferecibo = new Date().toISOString(); // Asignar la fecha actual en formato ISO
-    formData.mnsaldorec = this.montoSelectedRecibo;
+    if(this.selectedRecibo){
+      console.log(this.NoRecibo);
+    }else{
+      const formData = this.reciboPagoForm.value;
+      formData.CodigoActo = this.codigoActo;
+      formData.NoContrato = this.NoContrato;
+      formData.NuCedula = this.NuCedula;
+      formData.ferecibo = new Date().toISOString(); // Asignar la fecha actual en formato ISO
+      formData.mnsaldorec = this.montoSelectedRecibo;
 
-    this.actContractService.addARecibo(formData).subscribe({
-      next: (response) => {
-        console.log('Recibo agregado:', response);
-        this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Recibo agregado correctamente'});
-      },
-      error: (error) => {
-        console.error('Error al agregar recibo:', error);
-        this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al agregar recibo'});
-      }
-    });
-    
+      this.actContractService.addARecibo(formData).subscribe({
+        next: (response) => {
+          console.log('Recibo agregado:', response);
+          this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Recibo agregado correctamente'});
+        },
+        error: (error) => {
+          console.error('Error al agregar recibo:', error);
+          this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al agregar recibo'});
+        }
+      });
+      
+    }
   }
 
   selectRecibo(recibo: any){
     console.log('Selected recibo:', recibo);
     this.NoRecibo = recibo.NoRecibo;
+    this.selectedRecibo = recibo.NoRecibo;
     this.fechaSelectedRecibo = recibo.ferecibo;
     this.montoSelectedRecibo = recibo.mnrecibo;
     this.observacion = recibo.TxConcepRec;
@@ -158,6 +166,7 @@ export class PaymentsComponent implements OnInit{
   }
 
   add(){
+      this.reciboPagoForm.enable();
         setTimeout(() => {
       const el = document.querySelector<HTMLInputElement>(
         'input[formcontrolname="mnrecibo"]'
