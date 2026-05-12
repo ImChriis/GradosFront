@@ -83,4 +83,10 @@ export class ActContractService {
       tap(() =>  this.refresh$.next())
     )
   }
+
+  addDeposito(body: any){
+    return this.http.post<any>(`${this.api}/actContracts/createDeposito`, body).pipe(
+      tap(() =>  this.refresh$.next())
+    )
+  }
 }

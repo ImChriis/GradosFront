@@ -68,7 +68,11 @@ export class PaymentsComponent implements OnInit{
     CodigoActo: [null as number | null],
     MaFormPag: [''],
     TxBanco: [''],
-    NuRefDocBan: [null as number | null]
+    NuRefDocBan: [null as number | null],
+    Fecha: [''],
+    TipoOperacion: [''],
+    NuDeposito: [null as number | null],
+    MnDeposito: [null as number | null],
   })
 
   ngOnInit(): void {
@@ -121,7 +125,27 @@ export class PaymentsComponent implements OnInit{
 
   onSubmit(){
     if(this.selectedRecibo){
-      console.log(this.NoRecibo);
+      const formData = this.reciboPagoForm.value;
+      formData.NoContrato = this.NoContrato;
+      formData.NuCedula = this.NuCedula;
+      formData.NoRecibo = this.selectedRecibo;
+      formData.Fecha = new Date().toISOString();
+      formData.TipoOperacion = formData.MaFormPag;
+      formData.TxBanco = formData.TxBanco;
+      formData.NuDeposito = formData.NuDeposito;
+      formData.MnDeposito = formData.MnDeposito;
+      
+      this.actContractService.addDeposito(formData).subscribe({
+        next: (response) => {
+          console.log('Depósito agregado:', response);
+          this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Depósito agregado correctamente'});
+        },
+        error: (error) => {
+          console.error('Error al agregar depósito:', error);
+          this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al agregar depósito'});
+        }
+      });
+
     }else{
       const formData = this.reciboPagoForm.value;
       formData.CodigoActo = this.codigoActo;
@@ -129,6 +153,9 @@ export class PaymentsComponent implements OnInit{
       formData.NuCedula = this.NuCedula;
       formData.ferecibo = new Date().toISOString(); // Asignar la fecha actual en formato ISO
       formData.mnsaldorec = this.montoSelectedRecibo;
+      formData.NoRecibo = this.NoRecibo;
+
+      console.log("datos form", formData);
 
       this.actContractService.addARecibo(formData).subscribe({
         next: (response) => {
@@ -140,7 +167,6 @@ export class PaymentsComponent implements OnInit{
           this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al agregar recibo'});
         }
       });
-      
     }
   }
 
