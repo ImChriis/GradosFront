@@ -71,7 +71,11 @@ export class ActContractService {
   }
   
   getRecibosByUserContract(NoContrato: number){
-    return this.http.get<any>(`${this.api}/actContracts/${NoContrato}`);
+    return this.http.get<any>(`${this.api}/actContracts/${NoContrato}`).pipe(
+      tap((res) => {
+        console.log("recibos recibidos:", res);
+      })
+    )
   }
 
   getAbonosByUserContract(NoContrato: string, NuCedula: string, NoRecibo: number){

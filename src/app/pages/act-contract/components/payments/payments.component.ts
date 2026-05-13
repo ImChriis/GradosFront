@@ -3,7 +3,7 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { ActContractService } from '../../../../@core/services/act-contract.service';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
-import { map, Observable } from 'rxjs';
+import { map, Observable, startWith, switchMap } from 'rxjs';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { BanksService } from '../../../../@core/services/banks.service';
 import { SettingsService } from '../../../../@core/services/settings.service';
@@ -102,9 +102,19 @@ export class PaymentsComponent implements OnInit{
       }
     });
 
-    this.recibos$ = this.actContractService.getRecibosByUserContract(this.NoContrato).pipe(
-      map(response => response.data)
-    );
+    // this.recibos$ = this.actContractService.getRecibosByUserContract(this.NoContrato).pipe(
+    //   map(response => response.data)
+    // );
+
+    this.actContractService.getRecibosByUserContract(this.NoContrato);
+
+    this.recibos$ = this.actContractService.refreshObservable$.pipe(
+      startWith(null),
+      switchMap(() => {
+        console.log('Fetching recibos for contract:', this.NoContrato);
+        return this.actContractService.getRecibosByUserContract(this.NoContrato);
+      })
+    )
 
     this.banksService.getMetodoPago().subscribe({
       next: (response) => {
