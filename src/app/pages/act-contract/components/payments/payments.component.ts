@@ -112,8 +112,8 @@ export class PaymentsComponent implements OnInit{
       startWith(null),
       switchMap(() => {
         console.log('Fetching recibos for contract:', this.NoContrato);
-        return this.actContractService.getRecibosByUserContract(this.NoContrato);
-      })
+        return this.actContractService.getRecibosByUserContract(this.NoContrato)
+      }),
     )
 
     this.banksService.getMetodoPago().subscribe({
@@ -143,7 +143,6 @@ export class PaymentsComponent implements OnInit{
       formData.TipoOperacion = formData.MaFormPag;
       formData.TxBanco = formData.TxBanco;
       formData.NuDeposito = formData.NuDeposito;
-      formData.MnDeposito = formData.MnDeposito;
       
       this.actContractService.addDeposito(formData).subscribe({
         next: (response) => {
@@ -164,6 +163,7 @@ export class PaymentsComponent implements OnInit{
       formData.ferecibo = new Date().toISOString(); // Asignar la fecha actual en formato ISO
       formData.mnsaldorec = this.montoSelectedRecibo;
       formData.NoRecibo = this.NoRecibo;
+      formData.MnDeposito = formData.mnrecibo;
 
       console.log("datos form", formData);
 

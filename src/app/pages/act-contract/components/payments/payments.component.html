@@ -27,10 +27,12 @@
         [value]='recibos$ | async'
         [rows]="10"
         styleClass="ml-3 mr-3"
+        scrollable="true"
+        scrollHeight="250px"
         >
           <ng-template pTemplate="header">
             <tr>
-              <th style="min-width: 10rem" class="border">
+              <th style="min-width: 1rem" class="border">
                 <div class="flex thstyles">NO. RECIBO</div>
               </th>
               <th style="min-width: 10rem">

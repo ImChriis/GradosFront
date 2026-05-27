@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
-import { Subject, tap } from 'rxjs';
+import { map, Subject, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -74,7 +74,8 @@ export class ActContractService {
     return this.http.get<any>(`${this.api}/actContracts/${NoContrato}`).pipe(
       tap((res) => {
         console.log("recibos recibidos:", res);
-      })
+      }),
+      map(response => [...response].sort((a, b) => b.NoRecibo - a.NoRecibo))  // Ordenar por NoRecibo de mayor a menor
     )
   }
 
