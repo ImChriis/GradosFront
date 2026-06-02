@@ -142,7 +142,8 @@ export class PaymentsComponent implements OnInit{
       formData.Fecha = new Date().toISOString();
       formData.TipoOperacion = formData.MaFormPag;
       formData.TxBanco = formData.TxBanco;
-      formData.NuDeposito = formData.NuDeposito;
+      formData.NuDeposito = formData.NuRefDocBan;
+      formData.MnDeposito = formData.mnrecibo;
       
       this.actContractService.addDeposito(formData).subscribe({
         next: (response) => {
@@ -186,7 +187,8 @@ export class PaymentsComponent implements OnInit{
     this.selectedRecibo = recibo.NoRecibo;
     this.fechaSelectedRecibo = recibo.ferecibo;
     this.montoSelectedRecibo = recibo.mnrecibo;
-    this.observacion = recibo.TxConcepRec;
+    this.observacion = recibo.TxConcepRec
+    this.reciboPagoForm.enable();;
     this.abonos$ = this.actContractService.getAbonosByUserContract(
       String(this.NoContrato),
       String(this.NuCedula),
