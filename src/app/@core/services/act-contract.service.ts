@@ -11,7 +11,13 @@ export class ActContractService {
   private http = inject(HttpClient);
   private refresh$ = new Subject<void>();
   public refreshObservable$ = this.refresh$.asObservable();
- 
+
+  private refreshRecibos$ = new Subject<void>();
+  private refreshAbonos$ = new Subject<void>();
+
+  public refreshRecibosObservable$ = this.refreshRecibos$.asObservable();
+  public refreshAbonosObservable$ = this.refreshAbonos$.asObservable();
+  
   getActs(){
     return this.http.get<any>(`${this.api}/actContracts`).pipe(
       tap((res) => {
@@ -85,13 +91,13 @@ export class ActContractService {
 
   addARecibo(body: any){  // recibo y abono es lo mismo
     return this.http.post<any>(`${this.api}/actContracts/createRecibo`, body).pipe(
-      tap(() =>  this.refresh$.next())
+      tap(() =>  this.refreshRecibos$.next())
     )
   }
 
   addDeposito(body: any){
     return this.http.post<any>(`${this.api}/actContracts/createDeposito`, body).pipe(
-      tap(() =>  this.refresh$.next())
+      tap(() =>  this.refreshAbonos$.next())
     )
   }
 }

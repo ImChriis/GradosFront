@@ -108,7 +108,7 @@ export class PaymentsComponent implements OnInit{
 
     this.actContractService.getRecibosByUserContract(this.NoContrato);
 
-    this.recibos$ = this.actContractService.refreshObservable$.pipe(
+    this.recibos$ = this.actContractService.refreshRecibosObservable$.pipe(
       startWith(null),
       switchMap(() => {
         console.log('Fetching recibos for contract:', this.NoContrato);
