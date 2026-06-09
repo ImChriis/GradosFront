@@ -89,13 +89,13 @@ export class ActContractService {
     return this.http.get<any>(`${this.api}/actContracts/abonos/${NoContrato}/${NuCedula}/${NoRecibo}`);
   }
 
-  addARecibo(body: any){  // recibo y abono es lo mismo
+  addARecibo(body: any){  
     return this.http.post<any>(`${this.api}/actContracts/createRecibo`, body).pipe(
       tap(() =>  this.refreshRecibos$.next())
     )
   }
 
-  addDeposito(body: any){
+  addDeposito(body: any){ //deposito y abono es lo mismo
     return this.http.post<any>(`${this.api}/actContracts/createDeposito`, body).pipe(
       tap(() =>  this.refreshAbonos$.next())
     )

@@ -3,7 +3,7 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { ActContractService } from '../../../../@core/services/act-contract.service';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
-import { map, Observable, startWith, switchMap } from 'rxjs';
+import { map, Observable, startWith, switchMap, tap } from 'rxjs';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { BanksService } from '../../../../@core/services/banks.service';
 import { SettingsService } from '../../../../@core/services/settings.service';
@@ -51,6 +51,8 @@ export class PaymentsComponent implements OnInit{
   banks: String[] = [];
   isAdding: boolean = false;
   selectedRecibo!: number;
+  totalAbonos: number = 0;
+  saldoRestante: number = 0;
 
   reciboPagoForm = this.fb.group({
     NoRecibo: [null as number | null],
@@ -133,9 +135,37 @@ export class PaymentsComponent implements OnInit{
     this.reciboPagoForm.disable();
   }
 
+  private refreshPaymentData() {
+  this.actContractService.getPaymentDataByUser(
+    this.codigoActo,
+    String(this.NoContrato),
+    String(this.NuCedula)
+  ).subscribe({
+    next: (res: any) => {
+      // Ajusta según la forma exacta de la respuesta
+      this.montoPagado = res.MnPagado ?? this.montoPagado;
+      this.montoSaldo = res.MnSaldo ?? this.montoSaldo;
+      // Si quieres actualizar montoSelectedRecibo también, recarga recibos o encontrar el recibo
+    },
+    error: (err) => console.error('Error refresh payment data', err)
+  });
+}
+
   onSubmit(){
     if(this.selectedRecibo){
       const formData = this.reciboPagoForm.value;
+      const nuevoMonto = Number(formData.mnrecibo ?? 0);
+      const montoRecibo = Number(this.montoSelectedRecibo ?? 0);
+
+       if (this.totalAbonos + nuevoMonto > montoRecibo) {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'No permitido',
+            detail: 'La suma de los abonos supera el monto del recibo'
+          });
+          return;
+      }
+
       formData.NoContrato = this.NoContrato;
       formData.NuCedula = this.NuCedula;
       formData.NoRecibo = this.selectedRecibo;
@@ -149,6 +179,9 @@ export class PaymentsComponent implements OnInit{
         next: (response) => {
           console.log('Depósito agregado:', response);
           this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Depósito agregado correctamente'});
+          this.reciboPagoForm.reset();
+          this.loadAbonos();
+          this.refreshPaymentData();
         },
         error: (error) => {
           console.error('Error al agregar depósito:', error);
@@ -172,6 +205,8 @@ export class PaymentsComponent implements OnInit{
         next: (response) => {
           console.log('Recibo agregado:', response);
           this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Recibo agregado correctamente'});
+          this.reciboPagoForm.reset();
+          this.refreshPaymentData(); //opcional
         },
         error: (error) => {
           console.error('Error al agregar recibo:', error);
@@ -181,6 +216,28 @@ export class PaymentsComponent implements OnInit{
     }
   }
 
+ private loadAbonos() {
+  this.abonos$ = this.actContractService.refreshAbonosObservable$.pipe(
+    startWith(null),
+    switchMap(() =>
+      this.actContractService.getAbonosByUserContract(
+        String(this.NoContrato),
+        String(this.NuCedula),
+        this.NoRecibo
+      )
+    ),
+    map(response => response.data),
+      tap(abonos => {
+      this.totalAbonos = abonos.reduce(
+        (total: number, abono: any) => total + Number(abono.MnDeposito ?? 0),
+        0
+      );
+
+      this.saldoRestante = Number(this.montoSelectedRecibo ?? 0) - this.totalAbonos;
+    })
+  );
+}
+
   selectRecibo(recibo: any){
     console.log('Selected recibo:', recibo);
     this.NoRecibo = recibo.NoRecibo;
@@ -189,16 +246,7 @@ export class PaymentsComponent implements OnInit{
     this.montoSelectedRecibo = recibo.mnrecibo;
     this.observacion = recibo.TxConcepRec
     this.reciboPagoForm.enable();;
-    this.abonos$ = this.actContractService.getAbonosByUserContract(
-      String(this.NoContrato),
-      String(this.NuCedula),
-      this.NoRecibo
-    ).pipe(
-      map(response => {
-        console.log('Abonos for recibo:', response.data)
-        return response.data
-      })
-    );
+    this.loadAbonos();
     
     console.log(this.abonos$)
   }
@@ -228,6 +276,7 @@ export class PaymentsComponent implements OnInit{
     this.fechaSelectedRecibo = '';
     this.montoSelectedRecibo = null;
     this.observacion = '';
+    this.selectedRecibo = 0;
     this.abonos$ = new Observable();
   }
 }
