@@ -53,6 +53,11 @@ label{
     width: 100%;
 }
 
+.inputGroup input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    margin-right: 5px;
+}
+
 .top{
     width: 100%;
     height: auto;

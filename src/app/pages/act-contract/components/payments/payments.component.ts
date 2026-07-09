@@ -53,6 +53,7 @@ export class PaymentsComponent implements OnInit{
   selectedRecibo!: number;
   totalAbonos: number = 0;
   saldoRestante: number = 0;
+  totalRecibos: number = 0;
 
   reciboPagoForm = this.fb.group({
     NoRecibo: [null as number | null],
@@ -118,6 +119,12 @@ export class PaymentsComponent implements OnInit{
         console.log('Fetching recibos for contract:', this.NoContrato);
         return this.actContractService.getRecibosByUserContract(this.NoContrato)
       }),
+      tap((recibos: any[]) => {
+          this.totalRecibos = recibos.reduce(
+            (total, recibo) => total + Number(recibo.mnrecibo ?? 0),
+            0
+          );
+      })
     )
 
     this.banksService.getMetodoPago().subscribe({
@@ -163,7 +170,7 @@ export class PaymentsComponent implements OnInit{
           this.messageService.add({
             severity: 'warn',
             summary: 'No permitido',
-            detail: 'La suma de los abonos supera el monto del recibo'
+            detail: 'El total de abonos excede el monto del recibo seleccionado'
           });
           return;
       }
@@ -203,6 +210,17 @@ export class PaymentsComponent implements OnInit{
 
       console.log("datos form", formData);
 
+      const nuevoMonto = Number(formData.mnrecibo ?? 0);
+
+      if (!this.addReciboCheck(nuevoMonto)) {
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'No permitido',
+          detail: 'El nuevo recibo excede el monto del contrato'
+        });
+        return;
+      }
+
       this.actContractService.addARecibo(formData).subscribe({
         next: (response) => {
           console.log('Recibo agregado:', response);
@@ -217,6 +235,11 @@ export class PaymentsComponent implements OnInit{
       });
     }
   }
+
+ private addReciboCheck(nuevoMonto: number): boolean {
+  const montoContrato = Number(this.montoContrato ?? 0);
+  return this.totalRecibos + nuevoMonto <= montoContrato;
+}
 
  private loadAbonos() {
   this.abonos$ = this.actContractService.refreshAbonosObservable$.pipe(
