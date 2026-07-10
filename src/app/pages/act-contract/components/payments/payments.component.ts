@@ -100,7 +100,7 @@ export class PaymentsComponent implements OnInit{
       String(this.NuCedula)
     ).subscribe({
       next: (response) => {
-        console.log('Payment data for user:', response);
+        console.log('Payment data for user:', response.data[0]);
       },
       error: (error) => {
         console.error('Error fetching payment data for user:', error);
@@ -303,6 +303,14 @@ export class PaymentsComponent implements OnInit{
     this.observacion = '';
     this.selectedRecibo = 0;
     this.abonos$ = new Observable();
+  }
+
+  close(){
+
+  }
+
+  facturar(){
+    
   }
 }
  
