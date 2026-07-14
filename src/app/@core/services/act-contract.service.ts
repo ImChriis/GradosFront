@@ -29,7 +29,7 @@ export class ActContractService {
   getActUsersByCodigoActo(codigoActo: number){
     return this.http.get<any>(`${this.api}/actContracts/${codigoActo}/users`).pipe(
       tap((res) => {
-        // console.log(res)
+        console.log(res)
       }
     ));
   }

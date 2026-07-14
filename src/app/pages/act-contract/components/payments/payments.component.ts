@@ -56,6 +56,7 @@ export class PaymentsComponent implements OnInit{
   saldoRestante: number = 0;
   totalRecibos: number = 0;
   puedeCerrar: boolean = false;
+  facturado: boolean = false;
 
   reciboPagoForm = this.fb.group({
     NoRecibo: [null as number | null],
@@ -115,19 +116,7 @@ export class PaymentsComponent implements OnInit{
 
     this.actContractService.getRecibosByUserContract(this.NoContrato);
 
-    this.recibos$ = this.actContractService.refreshRecibosObservable$.pipe(
-      startWith(null),
-      switchMap(() => {
-        console.log('Fetching recibos for contract:', this.NoContrato);
-        return this.actContractService.getRecibosByUserContract(this.NoContrato)
-      }),
-      tap((recibos: any[]) => {
-          this.totalRecibos = recibos.reduce(
-            (total, recibo) => total + Number(recibo.mnrecibo ?? 0),
-            0
-          );
-      })
-    )
+    this.loadRecibos();
 
     this.banksService.getMetodoPago().subscribe({
       next: (response) => {
@@ -144,6 +133,22 @@ export class PaymentsComponent implements OnInit{
     })
 
     this.reciboPagoForm.disable();
+  }
+
+  private loadRecibos(){
+     this.recibos$ = this.actContractService.refreshRecibosObservable$.pipe(
+      startWith(null),
+      switchMap(() => {
+        console.log('Fetching recibos for contract:', this.NoContrato);
+        return this.actContractService.getRecibosByUserContract(this.NoContrato)
+      }),
+      tap((recibos: any[]) => {
+          this.totalRecibos = recibos.reduce(
+            (total, recibo) => total + Number(recibo.mnrecibo ?? 0),
+            0
+          );
+      })
+    )
   }
 
   private refreshPaymentData() {
@@ -229,6 +234,10 @@ export class PaymentsComponent implements OnInit{
           this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Recibo agregado correctamente'});
           this.reciboPagoForm.reset();
           this.refreshPaymentData(); //opcional
+          this.loadRecibos();
+          this.NoRecibo = null as any;
+          this.fechaSelectedRecibo = null as any;
+
         },
         error: (error) => {
           console.error('Error al agregar recibo:', error);
@@ -272,15 +281,30 @@ export class PaymentsComponent implements OnInit{
     this.selectedRecibo = recibo.NoRecibo;
     this.fechaSelectedRecibo = recibo.ferecibo;
     this.montoSelectedRecibo = recibo.mnrecibo;
-    this.observacion = recibo.TxConcepRec
-    this.reciboPagoForm.enable();;
+    this.observacion = recibo.TxConcepRec;
+
+    
+    this.facturado = false;
+    this.puedeCerrar = false
+
+    this.reciboPagoForm.enable();
     this.loadAbonos();
     this.actualizarEstadoCierre();
     
     console.log(this.abonos$)
   }
 
+  get tieneReciboPendiente(): boolean {
+    return !!this.selectedRecibo && this.saldoRestante > 0 && !this.facturado;
+  }
+
   add(){
+    if (this.bloquearSiReciboPendiente(
+      'Debes terminar primero el proceso de facturación antes de agregar un nuevo recibo'
+    )) {
+      return;
+    }
+
       this.reciboPagoForm.enable();
         setTimeout(() => {
       const el = document.querySelector<HTMLInputElement>(
@@ -306,6 +330,8 @@ export class PaymentsComponent implements OnInit{
     this.montoSelectedRecibo = null;
     this.observacion = '';
     this.selectedRecibo = 0;
+    this.facturado = false;
+    this.puedeCerrar = false;
     this.abonos$ = new Observable();
   }
 
@@ -313,8 +339,20 @@ export class PaymentsComponent implements OnInit{
     this.puedeCerrar = Number(this.montoSelectedRecibo ?? 0) > 0 && this.saldoRestante <= 0;
   }
 
+  
+  get bloquearAcciones(): boolean {    
+    return this.tieneReciboPendiente;
+  }
+
 
   close() {
+      if (this.bloquearSiReciboPendiente(
+      'Debes completar y facturar antes de cerrar'
+    )) {
+      return;
+    }
+
+
     if (!this.puedeCerrar) {
       this.messageService.add({
         severity: 'warn',
@@ -328,6 +366,13 @@ export class PaymentsComponent implements OnInit{
   }
 
 facturar() {
+    if (this.bloquearSiReciboPendiente(
+    'Primero debes completar los abonos del recibo actual'
+  )) {
+    return;
+  }
+
+
   if (this.saldoRestante > 0) {
     this.messageService.add({
       severity: 'warn',
@@ -346,7 +391,20 @@ facturar() {
   // llamar servicio de facturación aquí
   // si responde bien:
   this.puedeCerrar = true;
+  this.facturado = true;
   // this.ref.close();
 }
+
+  private bloquearSiReciboPendiente(mensaje: string){
+    if(this.tieneReciboPendiente){
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'No permitido',
+        detail: mensaje
+      });
+      return true;
+    }
+
+    return false;
+  }
 }
- 
