@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ActContractService } from '../../../../@core/services/act-contract.service';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
@@ -30,6 +30,7 @@ export class PaymentsComponent implements OnInit{
   private settingsService = inject(SettingsService);
   private messageService = inject(MessageService);
   private fb = inject(FormBuilder);
+  private ref = inject(DynamicDialogRef);
   actUser = this.dialogConfig.data.actUser;
   codigoActo = this.dialogConfig.data.codigoActo;
   totalPerStudent = this.dialogConfig.data.MnCosto;
@@ -54,6 +55,7 @@ export class PaymentsComponent implements OnInit{
   totalAbonos: number = 0;
   saldoRestante: number = 0;
   totalRecibos: number = 0;
+  puedeCerrar: boolean = false;
 
   reciboPagoForm = this.fb.group({
     NoRecibo: [null as number | null],
@@ -259,6 +261,7 @@ export class PaymentsComponent implements OnInit{
       );
 
       this.saldoRestante = Number(this.montoSelectedRecibo ?? 0) - this.totalAbonos;
+      this.actualizarEstadoCierre();
     })
   );
 }
@@ -272,6 +275,7 @@ export class PaymentsComponent implements OnInit{
     this.observacion = recibo.TxConcepRec
     this.reciboPagoForm.enable();;
     this.loadAbonos();
+    this.actualizarEstadoCierre();
     
     console.log(this.abonos$)
   }
@@ -305,12 +309,44 @@ export class PaymentsComponent implements OnInit{
     this.abonos$ = new Observable();
   }
 
-  close(){
-
+  private actualizarEstadoCierre() {
+    this.puedeCerrar = Number(this.montoSelectedRecibo ?? 0) > 0 && this.saldoRestante <= 0;
   }
 
-  facturar(){
-    
+
+  close() {
+    if (!this.puedeCerrar) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'No permitido',
+        detail: 'Debes completar el monto y facturar antes de cerrar'
+      });
+      return;
+    }
+
+    this.ref.close();
   }
+
+facturar() {
+  if (this.saldoRestante > 0) {
+    this.messageService.add({
+      severity: 'warn',
+      summary: 'Pendiente',
+      detail: 'Aún falta completar el valor total'
+    });
+    return;
+  }
+
+  this.messageService.add({
+    severity: 'success',
+    summary: 'Facturación',
+    detail: 'Se ha realizado la facturación correctamente'
+  })
+
+  // llamar servicio de facturación aquí
+  // si responde bien:
+  this.puedeCerrar = true;
+  // this.ref.close();
+}
 }
  
