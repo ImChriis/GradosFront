@@ -397,7 +397,7 @@ onInstitutionChange(event: any) {
           height: '100%',
           modal: true,
           data: {
-            actUser,
+            actUser, 
             codigoActo: this.selectedAct.CodigoActo,
             MnCosto: this.MnCosto,
            },
@@ -430,7 +430,7 @@ onInstitutionChange(event: any) {
         breakpoints: {
           '960px': '75vw',
           '640px': '90vw'
-        }    
+        }     
       });
 
       this.ref.onClose.subscribe((res) => {

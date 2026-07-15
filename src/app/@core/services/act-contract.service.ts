@@ -100,4 +100,8 @@ export class ActContractService {
       tap(() =>  this.refreshAbonos$.next())
     )
   }
+
+  updateTotals(CodigoActo: number, NuCedula: number, body: any){
+    return this.http.put<any>(`${this.api}/actContracts/updateTotals/${CodigoActo}/${NuCedula}`, body);
+  }
 }

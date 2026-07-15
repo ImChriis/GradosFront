@@ -57,6 +57,8 @@ export class PaymentsComponent implements OnInit{
   totalRecibos: number = 0;
   puedeCerrar: boolean = false;
   facturado: boolean = false;
+  montoPagadoBase: number = 0;
+  montoSaldoBase: number = 0;
 
   reciboPagoForm = this.fb.group({
     NoRecibo: [null as number | null],
@@ -88,8 +90,11 @@ export class PaymentsComponent implements OnInit{
     this.montoContrato = this.actUser.MnContrato;
     this.descuento = this.actUser.MnDescuento;
     this.MnInicial = this.actUser.MnInicial;
-    this.montoPagado = this.actUser.MnPagado;
-    this.montoSaldo = this.actUser.MnSaldo;
+    this.montoPagadoBase = Number(this.actUser.MnPagado ?? 0);
+    this.montoSaldoBase = Number(this.actUser.MnSaldo ?? 0);
+
+    this.montoPagado = this.montoPagadoBase;
+    this.montoSaldo = this.montoSaldoBase;
 
     console.log(this.codigoActo, this.NoContrato, this.NuCedula);
 
@@ -151,17 +156,40 @@ export class PaymentsComponent implements OnInit{
     )
   }
 
-  private refreshPaymentData() {
+//   private refreshPaymentData() {
+//   this.actContractService.getPaymentDataByUser(
+//     this.codigoActo,
+//     String(this.NoContrato),
+//     String(this.NuCedula)
+//   ).subscribe({
+//     next: (res: any) => {
+//       // Ajusta según la forma exacta de la respuesta
+//       this.montoPagado = res.MnPagado ?? this.montoPagado;
+//       this.montoSaldo = res.MnSaldo ?? this.montoSaldo;
+//       // Si quieres actualizar montoSelectedRecibo también, recarga recibos o encontrar el recibo
+//     },
+//     error: (err) => console.error('Error refresh payment data', err)
+//   });
+// }
+
+private refreshPaymentData() {
   this.actContractService.getPaymentDataByUser(
     this.codigoActo,
     String(this.NoContrato),
     String(this.NuCedula)
   ).subscribe({
     next: (res: any) => {
-      // Ajusta según la forma exacta de la respuesta
-      this.montoPagado = res.MnPagado ?? this.montoPagado;
-      this.montoSaldo = res.MnSaldo ?? this.montoSaldo;
-      // Si quieres actualizar montoSelectedRecibo también, recarga recibos o encontrar el recibo
+      const data = res?.data?.[0] ?? res;
+
+      this.montoContrato = Number(data?.MnContrato ?? this.montoContrato);
+      this.descuento = Number(data?.MnDescuento ?? this.descuento);
+      this.MnInicial = Number(data?.MnInicial ?? this.MnInicial);
+
+      this.montoPagadoBase = Number(data?.MnPagado ?? this.montoPagadoBase);
+      this.montoSaldoBase = Number(data?.MnSaldo ?? this.montoSaldoBase);
+
+      this.montoPagado = this.montoPagadoBase + this.totalAbonos;
+      this.montoSaldo = this.montoSaldoBase - this.totalAbonos;
     },
     error: (err) => console.error('Error refresh payment data', err)
   });
@@ -194,10 +222,16 @@ export class PaymentsComponent implements OnInit{
       this.actContractService.addDeposito(formData).subscribe({
         next: (response) => {
           console.log('Depósito agregado:', response);
-          this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Depósito agregado correctamente'});
           this.reciboPagoForm.reset();
+
+          this.totalAbonos += nuevoMonto;
+          this.montoPagado = this.montoPagadoBase + this.totalAbonos;
+          this.montoSaldo = this.montoSaldoBase - this.totalAbonos;
+          this.saldoRestante = Number(this.montoSelectedRecibo ?? 0) - this.totalAbonos;
+
           this.loadAbonos();
           this.refreshPaymentData();
+          this.actualizarEstadoCierre();
         },
         error: (error) => {
           console.error('Error al agregar depósito:', error);
@@ -232,11 +266,23 @@ export class PaymentsComponent implements OnInit{
         next: (response) => {
           console.log('Recibo agregado:', response);
           this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Recibo agregado correctamente'});
+          const montoNuevoRecibo = Number(formData.mnrecibo ?? 0);
+          const noReciboNuevo = Number(formData.NoRecibo ?? this.NoRecibo ?? 0);
+          this.NoRecibo = noReciboNuevo;
+          this.selectedRecibo = noReciboNuevo;
+          this.montoSelectedRecibo = montoNuevoRecibo;
+          this.totalAbonos = 0;
+          this.saldoRestante = montoNuevoRecibo;
+          this.facturado = false;
+          this.puedeCerrar = false;
+          this.isAdding = false;
+
           this.reciboPagoForm.reset();
-          this.refreshPaymentData(); //opcional
+
           this.loadRecibos();
-          this.NoRecibo = null as any;
-          this.fechaSelectedRecibo = null as any;
+          this.loadAbonos();
+          this.actualizarEstadoCierre();
+          this.refreshPaymentData();
 
         },
         error: (error) => {
@@ -269,7 +315,13 @@ export class PaymentsComponent implements OnInit{
         0
       );
 
-      this.saldoRestante = Number(this.montoSelectedRecibo ?? 0) - this.totalAbonos;
+      
+      const montoSeleccionado = Number(this.montoSelectedRecibo ?? 0);
+
+      this.saldoRestante = montoSeleccionado - this.totalAbonos;
+
+      this.montoPagado = this.montoPagadoBase + this.totalAbonos;
+      this.montoSaldo = this.montoSaldoBase - this.totalAbonos;
       this.actualizarEstadoCierre();
     })
   );
@@ -325,6 +377,12 @@ export class PaymentsComponent implements OnInit{
   }
   
   cancel(){
+    if (this.bloquearSiReciboPendiente(
+      'Debes completar y facturar antes de cancelar la operación'
+    )) {
+      return;
+    }
+
     this.NoRecibo = 0;
     this.fechaSelectedRecibo = '';
     this.montoSelectedRecibo = null;
@@ -366,33 +424,57 @@ export class PaymentsComponent implements OnInit{
   }
 
 facturar() {
-    if (this.bloquearSiReciboPendiente(
+  if (this.bloquearSiReciboPendiente(
     'Primero debes completar los abonos del recibo actual'
   )) {
     return;
   }
 
-
   if (this.saldoRestante > 0) {
     this.messageService.add({
       severity: 'warn',
       summary: 'Pendiente',
-      detail: 'Aún falta completar el valor total'
+      detail: 'Aun falta completar el valor total'
     });
     return;
   }
 
-  this.messageService.add({
-    severity: 'success',
-    summary: 'Facturación',
-    detail: 'Se ha realizado la facturación correctamente'
-  })
+  const payload = {
+    MnContrato: this.montoContrato,
+    MnDescuento: this.descuento,
+    MnInicial: this.MnInicial,
+    MnPagado: this.montoPagado,
+    MnSaldo: this.montoSaldo
+  };
 
-  // llamar servicio de facturación aquí
-  // si responde bien:
-  this.puedeCerrar = true;
-  this.facturado = true;
-  // this.ref.close();
+  this.actContractService.updateTotals(this.codigoActo, this.NuCedula, payload).subscribe({
+    next: (res: any) => {
+      const data = res?.data?.[0] ?? res;
+
+      this.montoContrato = Number(data?.MnContrato ?? this.montoContrato);
+      this.descuento = Number(data?.MnDescuento ?? this.descuento);
+      this.MnInicial = Number(data?.MnInicial ?? this.MnInicial);
+      this.montoPagado = Number(data?.MnPagado ?? this.montoPagado);
+      this.montoSaldo = Number(data?.MnSaldo ?? this.montoSaldo);
+
+      this.puedeCerrar = true;
+      this.facturado = true;
+
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Facturación',
+        detail: 'Se ha actualizado el pago correctamente'
+      });
+    },
+    error: (err) => {
+      console.error('Error al actualizar los totales:', err);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'No se pudieron actualizar los totales'
+      });
+    }
+  });
 }
 
   private bloquearSiReciboPendiente(mensaje: string){

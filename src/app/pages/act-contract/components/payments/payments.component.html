@@ -144,11 +144,11 @@
         </div>
 
         <div class="buttons">
-            <div class="icon" title="Nueva Operación" [class.disabled]="bloquearAcciones" (click)="!bloquearAcciones && add()">
+            <div class="icon" title="Nueva Operación" [class.disabled]="bloquearAcciones" (click)="add()">
                 <i class="pi pi-file new"></i>
             </div>
 
-            <div class="icon" title="Caja" [class.disabled]="bloquearAcciones" (click)="!bloquearAcciones && facturar()">
+            <div class="icon" title="Caja" [class.disabled]="bloquearAcciones" (click)="facturar()">
                 <i class="pi pi-money-bill pay"></i>
             </div>
 
@@ -160,11 +160,11 @@
                 <i class="pi pi-refresh refresh"></i>
             </div>
 
-            <div class="icon" title="Cancelar" [class.disabled]="bloquearAcciones" (click)="!bloquearAcciones && cancel()">
+            <div class="icon" title="Cancelar" [class.disabled]="bloquearAcciones" (click)="cancel()">
                 <i class="pi pi-times times"></i>
             </div>
 
-            <div class="icon" title="Salida" [class.disabled]="bloquearAcciones" (click)="!bloquearAcciones && close()">
+            <div class="icon" title="Salida" [class.disabled]="bloquearAcciones" (click)="close()">
                 <i class="pi pi-sign-out exit"></i>
             </div>
         </div>
