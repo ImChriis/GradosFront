@@ -104,4 +104,8 @@ export class ActContractService {
   updateTotals(CodigoActo: number, NuCedula: number, body: any){
     return this.http.put<any>(`${this.api}/actContracts/updateTotals/${CodigoActo}/${NuCedula}`, body);
   }
+
+  printReciboPdf(NoRecibo: number, usuarioReporte: string, body: any){
+    return this.http.post(`${this.api}/actContracts/printReciboPdf/${NoRecibo}/${usuarioReporte}`, body, { responseType: 'blob' });
+  }
 }

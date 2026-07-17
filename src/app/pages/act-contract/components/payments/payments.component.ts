@@ -59,6 +59,7 @@ export class PaymentsComponent implements OnInit{
   facturado: boolean = false;
   montoPagadoBase: number = 0;
   montoSaldoBase: number = 0;
+  nombre!: string;
 
   reciboPagoForm = this.fb.group({
     NoRecibo: [null as number | null],
@@ -138,6 +139,12 @@ export class PaymentsComponent implements OnInit{
     })
 
     this.reciboPagoForm.disable();
+
+     const user = localStorage.getItem('User');
+    if(user){
+      this.nombre = JSON.parse(user).user.nombre;
+      console.log(this.nombre);
+    }
   }
 
   private loadRecibos(){
@@ -488,5 +495,34 @@ facturar() {
     }
 
     return false;
+  }
+
+  print(NoRecibo: number){
+    const body = '';
+
+    this.actContractService.printReciboPdf(NoRecibo, this.nombre, body).subscribe({
+      next: (blob) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Éxito',
+          detail: 'PDF del recibo generado correctamente'
+        });
+
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `recibo_${NoRecibo}.pdf`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err) => {
+        console.error('Error al generar el PDF del recibo:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudo generar el PDF del recibo'
+        });
+      }
+    });
   }
 }

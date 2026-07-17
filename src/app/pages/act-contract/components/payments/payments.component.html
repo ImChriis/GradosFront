@@ -152,7 +152,7 @@
                 <i class="pi pi-money-bill pay"></i>
             </div>
 
-            <div class="icon" title="Imprimir" >
+            <div class="icon" title="Imprimir" [class.disabled]="bloquearAcciones" (click)="print(NoRecibo)">
                 <i class="pi pi-print print"></i>
             </div>
 

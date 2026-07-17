@@ -395,6 +395,7 @@ onInstitutionChange(event: any) {
           width: '62%',
           height: '100%',
           modal: true,
+          closeOnEscape: false,
           data: {
             actUser, 
             codigoActo: this.selectedAct.CodigoActo,
