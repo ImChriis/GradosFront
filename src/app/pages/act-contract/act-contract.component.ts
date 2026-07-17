@@ -244,10 +244,10 @@ onInstitutionChange(event: any) {
   }
 
   onSave(){
-    if(!this.actForm.valid){
-      this.messageService.add({ severity: 'warn', summary: 'Formulario inválido', detail: 'Por favor, complete todos los campos requeridos.' });
-      return;
-    }
+    // if(!this.actForm.valid){
+    //   this.messageService.add({ severity: 'warn', summary: 'Formulario inválido', detail: 'Por favor, complete todos los campos requeridos.' });
+    //   return;
+    // }
 
     if(this.codigoActo){
         const formData = this.actForm.value;
