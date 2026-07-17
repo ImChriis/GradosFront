@@ -4,7 +4,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { delay, finalize, Observable, startWith, switchMap, tap } from 'rxjs';
 import { ActContractService } from '../../@core/services/act-contract.service';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { RecalculateModalComponent } from './components/recalculate-modal/recalculate-modal.component';
 import { MessageService } from 'primeng/api';
@@ -90,25 +90,19 @@ export class ActContractComponent implements OnInit{
   MnCosto!: number | null;
 
   actForm = this.fb.group({
-    CodigoActo: this.fb.control<number | null>(null),
-    Fecha: [''],
-    Hora: [''],
-    siglas: [''],
-    titulo: [''],
-    CoLugar: this.fb.control<number | null>(null),
-    MnCosto: [null],
-    TxLugar: [''],
-    especialidad: [''],
+    CodigoActo: this.fb.control<number | null>(null, Validators.required),
+    Fecha: ['', Validators.required],
+    Hora: ['', Validators.required],
+    siglas: ['', Validators.required],
+    titulo: ['', Validators.required],
+    CoLugar: this.fb.control<number | null>(null, Validators.required),
+    MnCosto: [null, Validators.required],
+    TxLugar: ['', Validators.required],
+    especialidad: ['', Validators.required],
     CodUser: [null],
     Culminada: [null],
-    nbInstitucion: [''],
-    CodigoInst: this.fb.control<number | null>(null),
-
-    //users data
-    Nombre: [''],
-    NoContrato: [null],
-    MnPagado: [null],
-    MnSaldo: [null]
+    nbInstitucion: ['', Validators.required],
+    CodigoInst: this.fb.control<number | null>(null, Validators.required),
   })
 
   ngOnInit() {
@@ -250,6 +244,11 @@ onInstitutionChange(event: any) {
   }
 
   onSave(){
+    if(!this.actForm.valid){
+      this.messageService.add({ severity: 'warn', summary: 'Formulario inválido', detail: 'Por favor, complete todos los campos requeridos.' });
+      return;
+    }
+
     if(this.codigoActo){
         const formData = this.actForm.value;
         const payload = {
