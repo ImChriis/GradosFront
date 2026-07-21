@@ -229,7 +229,7 @@
             <div class="actInputs">
               <div class="inputGroup">
               <label for="capacity">TOTAL</label>
-              <input type="text" id="capacity" name="capacity" appOnlyNumbers appUppercase [value]="total | currency:'Bs. ':'symbol':'1.2-2'" class="input">
+              <input type="text" id="capacity" readonly name="capacity" appOnlyNumbers appUppercase [value]="total | currency:'Bs. ':'symbol':'1.2-2'" class="input">
             </div>
 
             <div class="inputGroup">
@@ -252,12 +252,12 @@
             <div class="inputGroup4 pago">
             <div class="inputGroup">
               <label for="capacity">PAGADO</label>
-              <input type="text" id="capacity" name="capacity" appOnlyNumbers appUppercase [value]="totalPaid | currency: 'Bs. ': 'symbol':'1.2-2' " >
+              <input type="text" id="capacity" readonly name="capacity" appOnlyNumbers appUppercase [value]="totalPaid | currency: 'Bs. ': 'symbol':'1.2-2' " >
             </div>
 
             <div class="inputGroup">
               <label for="capacity">CANTIDAD</label>
-              <input type="text" id="capacity" name="capacity"  appOnlyNumbers appUppercase [value]="usersAmount" >
+              <input type="text" id="capacity" readonly name="capacity"  appOnlyNumbers appUppercase [value]="usersAmount" >
             </div>
 
             <div class="icon2 add2" title="Cancelar" (click)="addContract(codigoActo, MnCosto)">
@@ -280,7 +280,7 @@
           <div class="inputGroup3">
             <div class="inputGroup">
               <label for="capacity">SALDO</label>
-              <input type="text" id="capacity" name="capacity" appOnlyNumbers appUppercase [value]="saldo | currency:'Bs. ':'symbol':'1.2-2'" class="input">
+              <input type="text" id="capacity" readonly name="capacity" appOnlyNumbers appUppercase [value]="saldo | currency:'Bs. ':'symbol':'1.2-2'" class="input">
             </div>
 
             <div class="select">

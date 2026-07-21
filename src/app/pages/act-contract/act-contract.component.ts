@@ -87,7 +87,7 @@ export class ActContractComponent implements OnInit{
   CodigoActoGet!: number;
   siglas!: string;
   isLoading = signal(true);
-  MnCosto!: number | null;
+  MnCosto: number | null = 0;
 
   actForm = this.fb.group({
     CodigoActo: this.fb.control<number | null>(null, Validators.required),
@@ -363,6 +363,8 @@ onInstitutionChange(event: any) {
   }
 
   addContract(CodigoActo: number | null, MnCosto: number | null){
+    console.log("CodigoActo: ", CodigoActo, "MnCosto: ", MnCosto);
+
     const formData = this.actForm.value
 
     if(!CodigoActo || !MnCosto){

@@ -81,7 +81,7 @@ export class PaymentsComponent implements OnInit{
 
   reciboPagoForm = this.fb.group({
     NoRecibo: [null as number | null],
-    ferecibo: [''],
+    ferecibo: [new Date().toISOString()],
     NuCedula: [null as number | null],
     CodSucursal: [null as number | null],
     NoContrato: [null as number | null],
@@ -405,7 +405,13 @@ onSubmit() {
   this.sincronizarEstadoReciboSeleccionado();
 
   // Limpiar el formulario de las formas de pago para la siguiente entrada
-  this.reciboPagoForm.reset();
+  this.reciboPagoForm.patchValue({
+    MaFormPag: '',
+    TxBanco: '',
+    NuRefDocBan: null,
+    ferecibo: new Date().toISOString(),
+    mnrecibo: null
+  })
 }
 
 
@@ -462,7 +468,7 @@ onSubmit() {
   //   console.log(this.abonos$)
   // }
 
-  private loadAbonos() {
+ private loadAbonos() {
   this.abonos$ = this.actContractService.refreshAbonosObservable$.pipe(
     startWith(null),
     switchMap(() =>
@@ -475,7 +481,7 @@ onSubmit() {
     map(response => {
       const abonosBD = response?.data ?? [];
 
-      // Filtrar abonos pendientes en memoria para el recibo actualmente seleccionado
+      // Filtrar abonos pendientes en memoria SOLO para el recibo actualmente seleccionado
       const abonosMemoria = this.pendingAbonos.filter(
         (abono: any) => Number(abono.NoRecibo) === Number(this.NoRecibo)
       );
@@ -484,36 +490,35 @@ onSubmit() {
       return [...abonosBD, ...abonosMemoria];
     }),
     tap(abonos => {
-      // Calcular total sumando los abonos traídos
+      // 1. Total abonos de ESTE recibo en particular
       this.totalAbonos = abonos.reduce(
         (total: number, abono: any) => total + Number(abono.MnDeposito ?? 0),
         0
       );
 
-      // Si tenemos recibo seleccionado en pendingRecibos o BD, usamos su monto real
+      // 2. Obtener el monto seleccionado
       const reciboActual = this.pendingRecibos.find(
         r => Number(r.NoRecibo) === Number(this.NoRecibo)
       );
 
-      // Si el recibo se creó localmente, su meta inicial era mnrecibo; de lo contrario, usas totalAbonos
       if (reciboActual) {
         this.montoSelectedRecibo = Number(reciboActual.mnrecibo ?? this.totalAbonos);
-      } else if (this.montoSelectedRecibo === 0 || !this.montoSelectedRecibo) {
+      } else if (!this.montoSelectedRecibo || this.montoSelectedRecibo === 0) {
         this.montoSelectedRecibo = this.totalAbonos;
       }
 
       const montoSeleccionado = Number(this.montoSelectedRecibo ?? 0);
-
       this.saldoRestante = Math.max(0, montoSeleccionado - this.totalAbonos);
 
-      // Calcular montos acumulados globales del contrato
-      const totalAbonosTodosMemoria = this.pendingAbonos.reduce(
+      // 3. RECALCULAR PAGADO Y SALDO GLOBAL DEL CONTRATO
+      // Solo sumamos/restamos los abonos temporales que están en memoria (sin guardar en BD aún)
+      const totalAbonosEnMemoria = this.pendingAbonos.reduce(
         (total: number, abono: any) => total + Number(abono.MnDeposito ?? 0),
         0
       );
 
-      this.montoPagado = this.montoPagadoBase + this.totalAbonos + totalAbonosTodosMemoria;
-      this.montoSaldo = Math.max(0, this.montoSaldoBase - (this.totalAbonos + totalAbonosTodosMemoria));
+      this.montoPagado = this.montoPagadoBase + totalAbonosEnMemoria;
+      this.montoSaldo = Math.max(0, this.montoSaldoBase - totalAbonosEnMemoria);
 
       this.actualizarEstadoCierre();
     })
@@ -574,7 +579,15 @@ selectRecibo(recibo: any) {
     return;
   }
 
-        this.reciboPagoForm.enable();
+      this.reciboPagoForm.enable();
+
+      const hoy = new Date();
+      const fechaFormateada = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}-${String(hoy.getDate()).padStart(2, '0')}`;
+
+      this.reciboPagoForm.patchValue({
+        ferecibo: fechaFormateada, // "2026-07-21"
+      });
+
         setTimeout(() => {
       const el = document.querySelector<HTMLInputElement>(
         'textarea[formcontrolname="TxConcepRec"]'
