@@ -1,0 +1,22 @@
+<div class="container">
+    <fieldset class="group">
+        <legend class="title">Destino</legend>
+
+        <div class="selects">
+            <div class="inputGroup">
+                <input type="radio" id="pantalla" name="reportOption" value="pantalla" checked #optPantalla>
+                <label for="pantalla">En pantalla</label>
+            </div>
+
+            <div class="inputGroup">
+                <input type="radio" id="pdf" name="reportOption" value="imprimir" #optImprimir>
+                <label for="pdf">Imprimir (Descargar)</label>
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="btns">
+        <button class="pdf" (click)="onSubmitPrint('PDF', optPantalla.checked, this.NoRecibo)">PDF</button>
+        <button class="correo" (click)="onSubmitPrint('CORREO', optPantalla.checked, this.NoRecibo)">CORREO</button>
+    </div>
+</div>

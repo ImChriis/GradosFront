@@ -108,4 +108,8 @@ export class ActContractService {
   printReciboPdf(NoRecibo: number, usuarioReporte: string, body: any){
     return this.http.post(`${this.api}/actContracts/printReciboPdf/${NoRecibo}/${usuarioReporte}`, body, { responseType: 'blob' });
   }
+
+  sendReciboEmail(NoRecibo: number, usuarioReporte: string, body: any){
+    return this.http.post(`${this.api}/actContracts/sendReciboEmail/${NoRecibo}/${usuarioReporte}`, body, { responseType: 'blob' });
+  }
 }

@@ -24,7 +24,7 @@
       ; as state) { -->
       <p-table
         #dt1
-        [value]='recibos$ | async'
+        [value]='(recibos$ | async) ?? []'
         [rows]="10"
         styleClass="ml-3 mr-3"
         scrollable="true"
@@ -127,7 +127,7 @@
 
                 <div class="inputGroup">
                     <label for="pago">PAGO</label>
-                    <input type="text" id="pago" name="pago" [readOnly]="!isAdding" [value]="montoSelectedRecibo | currency: 'Bs. ': 'symbol':'1.2-2'" formControlName="mnrecibo" appOnlyNumbers>
+                    <input type="text" id="pago" name="pago" [readOnly]="!isAdding" [value]="montoSelectedRecibo | currency: 'Bs. ': 'symbol':'1.2-2'" appOnlyNumbers>
                 </div>
             </div>
 
@@ -178,7 +178,7 @@
       ; as state) { -->
       <p-table
         #dt1
-        [value]='abonos$ | async'
+        [value]='(abonos$ | async) ?? []'
         [rows]="10"
         styleClass="ml-3 mr-3"
         class="tableAbonos"
