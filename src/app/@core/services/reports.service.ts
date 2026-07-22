@@ -52,4 +52,8 @@ export class ReportsService {
   getActListTxt(body: any){
     return this.http.post(`${this.api}/reports/actListTxt`, body, {responseType: 'blob'});
   }
+
+  generateClosingPdf(body: any){
+    return this.http.post(`${this.api}/reports/generateClosingPdf`, body, {responseType: 'blob'});
+  }
 }

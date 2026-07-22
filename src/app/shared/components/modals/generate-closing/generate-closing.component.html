@@ -1,0 +1,45 @@
+<form [formGroup]="generateClosingForm" >
+    <div class="container">
+        <fieldset class="group">
+            <legend class="title">Fecha del Cierre</legend>
+
+            <div class="selects">
+                <div class="inputGroup2">
+                    <input type="date" id="ferecibo" name="ferecibo" formControlName="ferecibo">
+                </div>
+            </div>
+        </fieldset>
+
+        
+        <fieldset class="group">
+            <legend class="title">No. Cierre a Generar</legend>
+
+            <div class="selects">
+                <div class="inputGroup2">
+                    <input type="text" id="NoCierre" name="NoCierre" formControlName="NoCierre" appOnlyNumbers>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="group">
+            <legend class="title">Destino</legend>
+
+            <div class="selects">
+                <div class="inputGroup">
+                    <input type="radio" id="pantalla" name="reportOption" value="pantalla" checked #optPantalla>
+                    <label for="pantalla">En pantalla</label>
+                </div>
+
+                <div class="inputGroup">
+                    <input type="radio" id="pdf" name="reportOption" value="imprimir" #optImprimir>
+                    <label for="pdf">Imprimir (Descargar)</label>
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="btns">
+            <button class="pdf" (click)="onSubmit('PDF', optPantalla.checked)">PDF</button>
+            <button class="excel" (click)="onSubmit('EXCEL', optPantalla.checked)">EXCEL</button>
+        </div>
+    </div>
+</form>

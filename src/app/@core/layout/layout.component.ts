@@ -9,6 +9,7 @@ import { ReportActPlacesComponent } from '../../shared/components/modals/report-
 import { ReportClientsComponent } from '../../shared/components/modals/report-clients/report-clients.component';
 import { AboutUsComponent } from '../../shared/components/modals/about-us/about-us.component';
 import { ReportActListComponent } from '../../shared/components/modals/report-act-list/report-act-list.component';
+import { GenerateClosingComponent } from '../../shared/components/modals/generate-closing/generate-closing.component';
 
 
 @Component({
@@ -122,7 +123,8 @@ export class LayoutComponent implements OnInit{
             separator: true
           },
           {
-            label: 'Generar Cierre'
+            label: 'Generar Cierre',
+            command: () => this.openModal(GenerateClosingComponent, 'Generar Cierre', '30%')
           }
         ]
       },
