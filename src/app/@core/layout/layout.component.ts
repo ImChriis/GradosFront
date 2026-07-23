@@ -98,9 +98,10 @@ export class LayoutComponent implements OnInit{
           {
             label: 'Contratos',
             items: [
-              // {
-              //   label: 'Anillos',
-              // },
+              {
+                label: 'Anillos',
+                routerLink: '/ringContracts'
+              },
               {
                 label: 'Actos de Grado',
                 routerLink: '/actContracts'

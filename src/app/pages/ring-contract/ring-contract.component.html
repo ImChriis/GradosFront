@@ -1,0 +1,110 @@
+  <div class="container">
+    <div class="clientsList">
+
+     <div class="body">
+              <legend class="title">Contrato de Anillos</legend>
+        
+        
+        <div class="table-wrapper" style="position: relative; min-height: 300px;">
+          <app-loader [isLoading]="isLoading()" mode="component"></app-loader>
+
+       <div class="table"> 
+        <!-- @if(
+      acts$ | async
+      ; as state) { -->
+      <p-table
+        #dt1
+        [rows]="10"
+        [paginator]="true"
+        [globalFilterFields]="['TxLugar', 'Capacidad']"
+        [tableStyle]="{'min-width': '50rem'}"
+        >
+        <ng-template pTemplate="caption" let-event>
+          <div class="flex-row">
+            <div class="p-toolbar-group-end">
+              <span class="p-input-icon-left ml-auto">
+                <i class=""></i>
+                <input
+                class="search"
+                #searchInput
+                pInputText
+                type="text"
+                placeholder="BUSCAR"
+                (input)="dt1.filterGlobal(searchInput.value, 'contains')"
+              />
+                </span>
+            </div>
+          </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="min-width: 1rem" class="border">
+                <div class="flex thstyles">NO. CONTRATO</div>
+              </th>
+              <th style="min-width: 1rem">
+                <div class="flex thstyles">NO. CEDULA</div>
+              </th>
+              <th style="min-width: 1rem">
+                <div class="flex thstyles">CLIENTE</div>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-act class="p-table">
+            <!-- <tr class="table-content" 
+            (click)=" onSelectActContract(act)" 
+            [class.disabled]="isEnabled" 
+            [class.selected]="selectedAct?.CodigoActo === act.CodigoActo" > 
+              <td>
+                {{ act.CodigoActo }}
+              </td>
+              <td>
+                {{ formateDateString(act.Fecha) }}
+              </td>
+              <td>
+                {{ formateTimeString(act.Hora) }}
+              </td>
+            </tr> -->
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">No elementos encontrados.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      <!-- } -->
+    </div>
+  </div>
+     </div>
+    </div>
+
+    <div class="clientForm">
+        <form  autocomplete="off">
+            <div class="inputGroup3">
+                <div class="inputGroup">
+                    <label for="">NO. CONTRATO</label>
+                    <input type="text" pInputText />
+                </div>
+
+                <div class="inputGroup">
+                    <label for="">NO. CEDULA</label>
+                    <input type="text" pInputText />
+                </div>
+            </div>
+
+            <div class="inputGroup3">
+                <div class="inputGroup2">
+                    <label for="cliente">CLIENTE</label>
+                    <input type="text" />
+                </div>
+
+            <div class="icon2" title="Agregar">
+                <i class="pi pi-search add"></i>
+            </div>
+            </div>
+
+            <div class="inputGroup3">
+                
+            </div>
+        </form>
+    </div>
+</div>

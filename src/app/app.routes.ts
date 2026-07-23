@@ -43,6 +43,10 @@ export const routes: Routes = [
                 loadComponent: () => import('./pages/act-contract/act-contract.component').then(m => m.ActContractComponent),
             },
             {
+                path: 'ringContracts',
+                loadComponent: () => import('./pages/ring-contract/ring-contract.component').then(m => m.RingContractComponent),
+            },
+            {
                 path: 'settings',
                 loadComponent: () => import('./pages/settings/settings.component').then(m => m.SettingsComponent),
             },

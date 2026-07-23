@@ -1,0 +1,523 @@
+.container {
+    width: 100%;
+    height: 81vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 3vh;
+    font-size: 12px !important;
+}
+
+// .title{
+//     height:40px;
+//     margin-top: -5px;
+// }
+
+.clientsList{
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    border: 1px solid #ababab !important;
+    border-radius: 10px;
+}
+
+.body{
+    border: 1px solid #ababab; /* Borde sutil */
+    border-radius: 10px;
+    padding: 10px;
+    width: 95%;
+    margin-top: 20px;
+    position: relative;
+}
+
+.title {
+    color: black;
+    font-size: 30px;
+    font-weight: bold;
+    padding: 0 10px;
+    background-color: transparent; /* ¡Ya no necesitas parche de color! */
+    position: absolute;
+    top: -20px; /* Ajusta según el tamaño de tu título */
+    background-color: white;
+    margin-left: 10px;
+}
+
+.table{
+    width: 100% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.table p-table{
+    width: 100% !important;
+
+}
+
+
+.clientForm{
+    width: 40%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    border: 1px solid #949393 !important;
+    padding: 10px;
+    background-color: white;
+    gap: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
+}
+
+form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid #ababab; /* Borde sutil */
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.inputGroup{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 3px;
+}
+
+.inputGroup label{
+    color: black;
+    font-weight: bold;
+}
+
+.inputGroup input{
+    height: 3vh;
+    background-color: rgb(223, 220, 220);
+    border: none;
+    color: black;
+    border-radius: 10px;
+    padding-left: 10px;
+    text-transform: uppercase;
+}
+
+.inputGroup textarea{
+    height: 15vh;
+    background-color: white;
+    border: none;
+    color: black;
+    resize: none;
+    border-radius: 10px;
+    padding-left: 10px;
+    text-transform: uppercase;
+}
+
+.inputGroup2{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.inputGroup2 input{
+    height: 3vh;
+    background-color: rgb(223, 220, 220);
+    border: none;
+    color: black;
+    border-radius: 10px;
+    padding-left: 10px;
+    text-transform: uppercase;
+}
+
+.select{
+    width: 100%;
+    display: flex;
+    align-items: end;
+    margin-bottom: 5px;
+}
+
+.inputGroup3{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    border: 1px solid #ababab; /* Borde sutil */
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.inputGroup3 .inputGroup{
+    width: 50%;
+}
+
+.inputGroup3 .inputGroup input, .inputGroup3 .inputGroup2 input{
+    background-color: rgb(223, 220, 220);
+   width: 100%;
+}
+
+.inputGroup4{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+}
+
+.inputGroup4 p-table{
+    width: 100% !important;
+}
+
+// ::ng-deep{
+//     .inputGroup4 .p-datatable-table-container{
+//         overflow-x: hidden !important;
+//     }
+// }
+
+:host ::ng-deep .table .p-datatable-table-container::-webkit-scrollbar {
+  width: 10px;               /* Grosor vertical (el que se ve en tu imagen) */
+  height: 10px;              /* Grosor horizontal */
+}
+
+:host ::ng-deep .p-datatable-table-container::-webkit-scrollbar-track {
+  background: black;  /* Fondo transparente */
+      /* Bordes redondeados para el track */
+}
+
+:host ::ng-deep .p-datatable-table-container::-webkit-scrollbar-thumb {
+  background: #969696;      /* Color de la barra */
+    /* Bordes redondeados para la barra */
+}
+
+:host ::ng-deep .p-datatable-table-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;      /* Color al pasar el mouse */
+}
+
+
+
+.inputGroup4 input{
+    width: 100%;
+}
+
+.identification{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.date{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.inputGroup2 input{
+    height: 3vh;
+    background-color: white;
+    border: none;
+    color: black;
+}
+
+.inputGroup input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    margin-right: 5px;
+}
+
+.inputGroup input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    margin-right: 5px;
+}
+
+
+.buttons{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    border: 1px solid #ababab; /* Borde sutil */
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.buttons i{
+    font-size: 30px;
+}
+
+    .icon{
+          color: #FFFFFF;
+    // background-color: darkgray;
+    background-color: #2563EB;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .icon:hover{
+        cursor: pointer;
+        opacity: 0.9;
+        transform: translateY(-2px);
+    }
+
+    .cancel{
+    background-color: #EF4444;
+}
+
+.icon2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    background-color: darkgray;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.icon.disabled{
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: default;
+}
+
+.icons{
+    display: flex;
+    gap: 20px;
+}
+
+.icon2 i{
+    font-size: 25px;
+}
+
+.icon2:hover{
+    cursor: pointer;
+    background-color: gray;
+    transform: translateY(-2px);
+}
+
+.recalculate{
+    color: blue;
+}
+
+.refresh{
+    color: orangered;
+}
+
+.add2{
+    color: green;
+}
+
+.delete2{
+    color: red;
+}
+
+.pay{
+    color: greenyellow;
+}
+
+.print{
+    color: cyan;
+}
+
+th{
+    background-color: darkgray !important;
+    color: black !important;
+    border: none !important;
+    font-size: 12px;;
+}
+
+td{
+    border: none !important;
+    font-size: 12px;
+}
+
+  :host ::ng-deep p-table tr:nth-child(odd) {
+    background-color: rgb(245, 243, 243) !important;
+    color: black !important;
+    border: none !important;
+  }
+  
+  
+  :host ::ng-deep p-table tr:nth-child(even) {
+    background-color: rgb(190, 190, 190) !important;
+    color: black !important;
+    border: none !important;
+  }
+
+  td{
+    border: 1px solid black !important; //bordes negros de prueba
+  }
+
+.search{
+    background-color: lightgray;
+    color: black;
+    border: none;
+    width: 103.5%;
+    margin-left: -15px;
+    text-transform: uppercase;
+}
+
+.search::placeholder{
+    color: black;
+}
+
+.name{
+    font-size: 14px;
+}
+
+.email{
+    font-size: 16px;
+    //todo en miniscula
+    text-transform: lowercase;
+}
+
+.table-content:hover{
+    background-color: gray !important;
+    cursor: pointer;
+}
+
+.table-content.disabled {
+  pointer-events: none;
+}
+
+.table-content.selected {
+    background-color: #acd4f5 !important;
+    cursor: pointer;
+}
+
+.table-content2:hover{
+    background-color: gray !important;
+    cursor: pointer;
+}
+
+.table-content2.selected {
+    background-color: #acd4f5 !important;
+    cursor: pointer;
+}
+
+::ng-deep{
+    .p-table{
+        width: 90% !important;
+    }
+
+    .p-datatable-header{
+        background-color: white !important;
+        border: none !important;
+        font-size: 12px !important;
+    }
+    
+    .p-paginator{
+        background-color: darkgray !important;
+        border: none;
+        color: black !important;
+    }
+
+    .p-paginator-current{
+        color: black !important;
+        background-color: darkgray !important;
+    }
+    
+    .p-paginator-first{
+        background-color: darkgray !important;
+        color: black !important;
+    }
+
+    .p-paginator-last{
+        background-color: darkgray !important;
+        color: black !important;
+    }
+
+    .p-paginator-prev{
+        background-color: darkgray !important;
+        color: black !important;
+    }
+
+    .p-paginator-next{
+        background-color: darkgray !important;
+        color: black !important;
+    }
+
+    .p-paginator-page{
+        color: black !important;
+        background-color: darkgray !important;
+        border: none;
+    }
+
+    .p-paginator-rpp-dropdown{
+        color: black !important;
+        background-color: darkgray !important;
+        border: none;
+    }
+
+    .p-select{
+        border: 1px solid black !important;
+    }
+
+    .p-select-label{
+        color: black !important;
+    }
+
+    .p-select-dropdown-icon{
+        color: black !important;
+    }
+
+    .p-select-list{
+        background-color: #ababab !important;
+    }
+
+    .p-select-option{
+        background-color: darkgray !important;
+        color: black !important;
+    }
+
+    .p-select-option:hover{
+        background-color: gray !important;
+        color: black !important;
+    }
+
+}
+
+.pago input{
+    width: 120px !important;
+}
+
+
+.actData{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.actData .actInputs{
+    display: flex;
+    gap: 10px;
+    width: 70%;
+}
+
+.actData .inputGroup{
+    width: 36%;
+}
+
+.actData .inputGroup input{
+    width: 120px;
+}
+
+.btnsInput{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 10px;
+    width: 30%;
+    margin-right: -2px;
+}
+
+.input{
+    width: 57%;
+}
