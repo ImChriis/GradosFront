@@ -9,15 +9,15 @@
           <app-loader [isLoading]="isLoading()" mode="component"></app-loader>
 
        <div class="table"> 
-        <!-- @if(
-      acts$ | async
-      ; as state) { -->
+        @if(
+      contracts$ | async
+      ; as state) {
       <p-table
         #dt1
         [rows]="10"
+        [value]="state"
         [paginator]="true"
         [globalFilterFields]="['TxLugar', 'Capacidad']"
-        [tableStyle]="{'min-width': '50rem'}"
         >
         <ng-template pTemplate="caption" let-event>
           <div class="flex-row">
@@ -38,32 +38,29 @@
           </ng-template>
           <ng-template pTemplate="header">
             <tr>
-              <th style="min-width: 1rem" class="border">
+              <th style="min-width: 6rem" class="border">
                 <div class="flex thstyles">NO. CONTRATO</div>
               </th>
-              <th style="min-width: 1rem">
+              <th style="min-width: 6rem">
                 <div class="flex thstyles">NO. CEDULA</div>
               </th>
-              <th style="min-width: 1rem">
+              <th style="min-width: 18rem">
                 <div class="flex thstyles">CLIENTE</div>
               </th>
             </tr>
           </ng-template>
-          <ng-template pTemplate="body" let-act class="p-table">
-            <!-- <tr class="table-content" 
-            (click)=" onSelectActContract(act)" 
-            [class.disabled]="isEnabled" 
-            [class.selected]="selectedAct?.CodigoActo === act.CodigoActo" > 
+          <ng-template pTemplate="body" let-contract class="p-table">
+            <tr class="table-content"  > 
               <td>
-                {{ act.CodigoActo }}
+                {{ contract.NoContrato }}
               </td>
               <td>
-                {{ formateDateString(act.Fecha) }}
+                {{ contract.NuCedula }}
               </td>
               <td>
-                {{ formateTimeString(act.Hora) }}
+                {{ contract.txnombre }}
               </td>
-            </tr> -->
+            </tr>
           </ng-template>
           <ng-template pTemplate="emptymessage">
             <tr>
@@ -71,7 +68,7 @@
             </tr>
           </ng-template>
         </p-table>
-      <!-- } -->
+      }
     </div>
   </div>
      </div>
@@ -103,8 +100,33 @@
             </div>
 
             <div class="inputGroup3">
-                
+                <div class="inputGroup24">
+                  <input type="radio" name="anillo" id="anillo"/>
+                    <label for="anillo">ANILLO</label>
+                </div>
+
+                <div class="inputGroup24">
+                  <input type="radio" name="reconocimiento" id="reconocimiento"/>
+                    <label for="reconocimiento">RECONOCIMIENTO</label>
+                </div>
+
+                <div class="inputGroup24">
+                  <input type="radio" name="reparacion" id="reparacion"/>
+                    <label for="reparacion">REPARACIÓN</label>
+                </div>
+
+                <div class="inputGroup24">
+                  <input type="radio" name="jostens" id="jostens"/>
+                    <label for="jostens">JOSTENS</label>
+                </div>
+
+                <div class="inputGroup24">
+                  <input type="radio" name="otros" id="otros"/>
+                    <label for="otros">OTROS</label>
+                </div>
             </div>
+
+            
         </form>
     </div>
 </div>
