@@ -56,14 +56,14 @@
                 @if(bank.Codigo === "" || bank.Codigo === null) {
                   XXXX
                 } @else {
-                  {{ bank.Codigo }}
+                  {{ bank.codigo }}
                 }
               </td>
               <td>
-                {{ bank.Bancos }}
+                {{ bank.bancos }}
               </td>
               <td>
-                @if(bank.Status === 1) {
+                @if(bank.status === 1) {
                   ACTIVO
                 } @else {
                   INACTIVO
