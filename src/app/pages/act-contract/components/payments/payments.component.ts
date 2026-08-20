@@ -152,7 +152,7 @@ export class PaymentsComponent implements OnInit{
 
     this.banksService.getAllBanks().subscribe({
       next: (response) => {
-        this.banks = response.map((item: any) => item.Bancos);
+        this.banks = response.map((item: any) => item.bancos);
         console.log('Bancos:', this.banks);
       }
     })
