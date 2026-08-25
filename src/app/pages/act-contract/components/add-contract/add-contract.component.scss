@@ -59,6 +59,18 @@
     outline: none;
 }
 
+input.ng-invalid.ng-touched,
+select.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched,
+.p-inputtext.ng-invalid.ng-touched {
+  border: 1px solid #e24c4c !important;
+  box-shadow: 0 0 0 0.2rem rgba(226, 76, 76, 0.2) !important;
+}
+
+.inputError{
+  border: 2px solid red
+}
+
 h2{
     color: #1E293B;
 }

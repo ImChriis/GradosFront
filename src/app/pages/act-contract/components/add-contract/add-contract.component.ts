@@ -34,9 +34,9 @@ export class AddContractComponent implements OnInit{
   actForm = this.fb.group({
     CodigoActo: this.fb.control<number | null>(null, Validators.required),
     NoContrato: this.fb.control<string | null>(null, Validators.required),
-    NuCedula: this.fb.control<string | null>(null),
-    Nombre: this.fb.control<string | null>(null),
-    Txcontacto: this.fb.control<string | null>(null),
+    NuCedula: this.fb.control<string | null>(null, Validators.required),
+    Nombre: this.fb.control<string | null>(null, Validators.required),
+    Txcontacto: this.fb.control<string | null>(null, Validators.required),
     MnPagado: this.fb.control<number | null>(null),
     MnSaldo: this.fb.control<number | null>(null),
     MnInicial: this.fb.control<number | null>(null),
@@ -104,6 +104,12 @@ export class AddContractComponent implements OnInit{
     this.actForm.patchValue({ MnInicial: 0 });
     this.actForm.patchValue({ MnPagado: 0 });
 
+   if(!this.actForm.valid){
+      this.actForm.markAllAsTouched();
+      this.messageService.add({ severity: 'warn', summary: 'Formulario inválido', detail: 'Por favor, complete todos los campos requeridos.' });
+      return;
+    }
+
 
     if(this.actForm.valid){
        this.actContractService.addUserToAct(this.actForm.value).subscribe({
@@ -129,5 +135,10 @@ export class AddContractComponent implements OnInit{
     }else{
       this.messageService.add({ severity: 'error', summary: 'Por favor complete los campos' });
     }
+  }
+
+    hasError(controlName: string): boolean {
+    const control = this.actForm.get(controlName);
+    return !!(control && control.invalid && (control.dirty || control.touched));
   }
 }

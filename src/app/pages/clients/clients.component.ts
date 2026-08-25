@@ -45,8 +45,8 @@ export class ClientsComponent implements OnInit{
     nucedula: new FormControl<string | null>('', { nonNullable: true, validators: [Validators.required] }),
     txnombre: new FormControl<string | null>('', { nonNullable: true, validators: [Validators.required] }),
     txdireccion: new FormControl<string | null>('', { nonNullable: true, validators: [Validators.required] }),
-    txtelefono: new FormControl<string | null>('', { nonNullable: true, validators:[Validators.required] }),
-    txcelular: new FormControl<string | null>('', { nonNullable: true }),
+    txtelefono: new FormControl<string | null>('', { nonNullable: true }),
+    txcelular: new FormControl<string | null>('', { nonNullable: true, validators: [Validators.required] }),
     txemail: new FormControl<string | null>('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
     codUser: new FormControl<string | null>('', { nonNullable: true }),
   })
@@ -102,6 +102,12 @@ export class ClientsComponent implements OnInit{
   }
 
   onSave(){
+
+    if(!this.clientsForm.valid) {
+      this.messageService.add({ severity: 'warn', summary: 'Formulario inválido', detail: 'Por favor, complete todos los campos requeridos.' });
+      return
+    }
+    
     if(this.selectedClient){
       console.log(this.id + ' updating');
       this.clientsService.updateClient(this.id, this.clientsForm.value as Client).subscribe({

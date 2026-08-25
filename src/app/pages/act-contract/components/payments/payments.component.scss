@@ -22,6 +22,7 @@
 label{
     font-size: 12px;
     color: #1E293B;
+    font-weight: bold;
 }
 
 .user{
@@ -67,6 +68,26 @@ label{
 
 .table{
     width: 60%;
+    background-color: #e0e0e0;
+    border: 1px solid black; /* Borde sutil */
+}
+
+:host ::ng-deep {
+  .tableAbonos,
+  .tableRecibos {
+    .p-datatable-tbody > tr > td {
+      border: 1px solid black !important;
+      height: 35px !important;
+      min-height: 35px !important;
+      vertical-align: middle !important;
+      box-sizing: border-box;
+    }
+
+    .p-datatable-tbody > tr.row-placeholder {
+      pointer-events: none;
+      cursor: default;
+    }
+  }
 }
 
 .table-content:hover{
@@ -281,7 +302,6 @@ th{
 
 .abonosTable{
     width: 60%;
-    height: auto;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -290,6 +310,63 @@ th{
 
 .abonosTable th, .abonosTable td{
     font-size: 12px
+}
+
+.tableAbonos{
+    background-color: #e0e0e0;
+    height: 230px;
+    border: 1px solid black; /* Borde sutil */
+}
+
+:host ::ng-deep {
+  .tableAbonos {
+    background-color: #e0e0e0;
+    border: 1px solid black;
+    /* Evita que el contenedor raíz fuerce alturas de sus hijos */
+    height: auto !important;
+
+    /* El wrapper crece SOLO si hay contenido, con un tope de 230px */
+    .p-datatable-wrapper {
+      height: auto !important;
+      max-height: 230px !important;
+      overflow-y: auto;
+      background-color: #e0e0e0;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      table-layout: fixed;
+      height: auto !important; /* La tabla no debe intentar ocupar la altura del padre */
+    }
+
+    .p-datatable-tbody {
+      vertical-align: top;
+      height: auto !important;
+    }
+
+    /* Filas con altura fija estricta */
+    .p-datatable-tbody > tr {
+      height: 35px !important;
+      max-height: 35px !important;
+    }
+
+    /* Celdas fijas sin estiramiento */
+    .p-datatable-tbody > tr > td {
+      height: 35px !important;
+      max-height: 35px !important;
+      line-height: 20px !important; /* Mantiene el texto centrado verticalmente sin deformar la celda */
+      border: 1px solid black !important;
+      box-sizing: border-box !important;
+      padding: 0 8px !important;
+      vertical-align: middle;
+    }
+  }
+}
+.tableAbonos td {
+  border: 1px solid black !important;
+  height: 35px; /* Evita que las celdas vacías colapsen su altura */
+  vertical-align: middle;
 }
 
 .payments{

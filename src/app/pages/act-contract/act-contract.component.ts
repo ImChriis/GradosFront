@@ -320,7 +320,7 @@ onInstitutionChange(event: any) {
   }
 
   onDelete(){
-
+  
   }
 
   onCancel(){
@@ -341,7 +341,7 @@ onInstitutionChange(event: any) {
   recalculateModal(codigoActo: number | null, MnCosto: number | null){
     const formData = this.actForm.value;
     if(codigoActo){
-          this.ref = this.dialogService.open(RecalculateModalComponent, {
+      this.ref = this.dialogService.open(RecalculateModalComponent, {
       header: 'Estas seguro de recalcular el monto del acto por estudiante?',
       width: '50vw',
       modal: true,
@@ -355,6 +355,8 @@ onInstitutionChange(event: any) {
     this.ref.onClose.subscribe((res) => {
       if(res){
         this.updateTotals(codigoActo!);
+        this.actForm.patchValue({ MnCosto: formData.MnCosto });
+        this.acts$ = this.actContractService.getActs();
       }
     })
     }else{
@@ -388,6 +390,23 @@ onInstitutionChange(event: any) {
     }
   }
 
+  deleteContract(actUser: any){
+    const codigoActo = this.selectedAct?.CodigoActo;
+    const NuCedula = actUser?.NuCedula;
+
+    this.actContractService.removeUserFromAct(codigoActo!, NuCedula).subscribe({
+      next: () => {
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'El contrato se eliminó correctamente.' });
+        this.actUsers$ = this.actContractService.getActUsersByCodigoActo(codigoActo!);
+        this.updateTotals(codigoActo!); 
+      },
+      error: (err) => {
+        console.error("Error al eliminar el contrato: ", err);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al eliminar el contrato.' });
+      }
+    })
+  }
+
   payments(actUser: any){
     if(!this.selectActUser){
       this.messageService.add({ severity: 'warn', summary: 'No se ha seleccionado ningún contrato para ver los pagos.' });
@@ -395,7 +414,7 @@ onInstitutionChange(event: any) {
       this.ref = this.dialogService.open(PaymentsComponent, {
           header: 'Pagos',
           width: '62%',
-          height: '100%',
+          height: 'auto',
           modal: true,
           closeOnEscape: false,
           data: {

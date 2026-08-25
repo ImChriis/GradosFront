@@ -3,7 +3,7 @@
             <div class="group">
             <div class="inputGroup2">
                 <label for="cedula">NO. CÉDULA</label>
-                <input type="text" id="cedula" name="cedula" appUppercase formControlName="NuCedula" (keydown.enter)="searchUserByCedula($event)">
+                <input type="text" [class.inputError]="hasError('NuCedula')" id="cedula" name="cedula" appUppercase formControlName="NuCedula" (keydown.enter)="searchUserByCedula($event)">
             </div>
 
             <div class="inputGroup2">
@@ -14,12 +14,12 @@
 
         <div class="inputGroup3">
             <label for="client">CLIENTE</label>
-            <input type="text" id="client" name="client" appUppercase formControlName="Nombre">
+            <input type="text" [class.inputError]="hasError('Nombre')" id="client" name="client" appUppercase formControlName="Nombre">
         </div>
 
         <div class="inputGroup3">
             <label for="contact">CONTACTO</label>
-            <input type="text" id="contact" name="contact" appUppercase formControlName="Txcontacto">
+            <input type="text" [class.inputError]="hasError('Txcontacto')" id="contact" name="contact" appUppercase formControlName="Txcontacto">
         </div>
 
         <h2>Detalles</h2>

@@ -26,9 +26,10 @@
         #dt1
         [value]='(recibos$ | async) ?? []'
         [rows]="10"
+        class="tableRecibos"
         styleClass="ml-3 mr-3"
         scrollable="true"
-        scrollHeight="230px"
+        scrollHeight="200px"
         >
           <ng-template pTemplate="header">
             <tr>
@@ -46,24 +47,36 @@
           <ng-template pTemplate="body" let-recibo class="p-table">
             <tr class="table-content"
             (click)="selectRecibo(recibo)"
-            [class.selected]="NoRecibo === recibo.NoRecibo"
+            [class.selected]="!recibo.isPlaceholder && NoRecibo && NoRecibo === recibo.NoRecibo"
             > 
               <td>
-                {{ recibo.NoRecibo }}
+                @if(!recibo.isPlaceholder) {
+                  {{ recibo.NoRecibo }}
+                } @else {
+                  &nbsp;
+                }
               </td>
               <td>
-                {{ recibo.ferecibo | date: 'dd/MM/yyyy' }}
+                @if(!recibo.isPlaceholder) {
+                  {{ recibo.ferecibo | date: 'dd/MM/yyyy' }}
+                } @else {
+                  &nbsp;
+                }
               </td>
               <td>
-                {{ recibo.mnrecibo | currency: 'Bs. ': 'symbol':'1.2-2' }}
+                @if(!recibo.isPlaceholder) {
+                  {{ recibo.mnrecibo | currency: 'Bs. ': 'symbol':'1.2-2' }}
+                } @else {
+                  &nbsp;
+                }
               </td>
             </tr>
           </ng-template>
-          <ng-template pTemplate="emptymessage">
+          <!-- <ng-template pTemplate="emptymessage">
             <tr>
               <td colspan="7">No elementos encontrados.</td>
             </tr>
-          </ng-template>
+          </ng-template> -->
         </p-table>
       <!-- } -->
         </div>
@@ -171,8 +184,8 @@
     </div>
 
     <div class="bot">
-        <div class="abonosTable">
-            <label for="abonos">ABONOS</label>
+      <div class="abonosTable">
+          <label for="abonos">ABONOS</label>
                           <!-- @if(
       abonos$ | async
       ; as state) { -->
@@ -205,23 +218,33 @@
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-abono class="p-table">
-            <tr class="table-content tableAbonos"> 
-              <td>
+           <tr class="table-content tableAbonos"> 
+            <td>
+              @if (!abono.isPlaceholder) {
                 {{ abono.Fecha | date: 'dd/MM/yyyy' }}
-              </td>
-              <td>
+              }
+            </td>
+            <td>
+              @if (!abono.isPlaceholder) {
                 {{ abono.TipoOperacion }}
-              </td>
-              <td>
+              }
+            </td>
+            <td>
+              @if (!abono.isPlaceholder) {
                 {{ abono.TxBanco }}
-              </td>
-              <td>
+              }
+            </td>
+            <td>
+              @if (!abono.isPlaceholder) {
                 {{ abono.NuDeposito }}
-              </td>
-              <td>
+              }
+            </td>
+            <td>
+              @if (!abono.isPlaceholder) {
                 {{ abono.MnDeposito | currency: 'Bs. ': 'symbol':'1.2-2' }}
-              </td>
-            </tr>
+              }
+            </td>
+          </tr>
           </ng-template>
         </p-table>
       <!-- } -->
@@ -247,8 +270,8 @@
            <div class="paymentsBot">
                 <div class="inputs-col">
                     <div class="inputGroup">
-                        <label for="cheque">NO. REFERENCIA</label>
-                        <input type="text" id="cheque" name="cheque" formControlName="NuRefDocBan" appOnlyNumbers>
+                        <label for="cheque">REFERENCIA</label>
+                        <input type="text" id="cheque" name="cheque" formControlName="NuRefDocBan" appUppercase appOnlyAlphanumerics>
                     </div>
                     <div class="inputGroup">
                         <label for="fecha">FECHA</label>

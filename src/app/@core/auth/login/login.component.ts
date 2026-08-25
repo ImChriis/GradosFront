@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, Renderer2, signal } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -9,6 +9,7 @@ import { Router, RouterLink } from '@angular/router';
 import { DOCUMENT, UpperCasePipe } from '@angular/common';
 import { UppercaseDirective } from "../../directives/uppercase.directive";
 import { User } from '../../models/user.mode';
+import { LoaderComponent } from '../../components/loader/loader.component';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,7 @@ import { User } from '../../models/user.mode';
     ButtonModule,
     ReactiveFormsModule,
     UppercaseDirective,
+    LoaderComponent
     // RouterLink
 ],
   templateUrl: './login.component.html',
@@ -29,6 +31,7 @@ export class LoginComponent implements OnInit, OnDestroy{
   private router = inject(Router);
   private renderer = inject(Renderer2);
   private document = inject(DOCUMENT);
+  isLoading = signal(false);
 
   LoginForm: FormGroup<LoginForm> = this.fb.group({
     usuario: new FormControl<string>('', { nonNullable: true }),
@@ -60,15 +63,18 @@ export class LoginComponent implements OnInit, OnDestroy{
   }
 
   onSubmit(){
+    this.isLoading.set(true);
     if(this.LoginForm.valid){
       this.authService.login(this.LoginForm.value as User).subscribe({
         next: (res) => {
           this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Inicio de sesión exitoso'});
           // console.log(res);
           this.router.navigateByUrl('/home');
+          this.isLoading.set(false);
         },
         error: (err) => {
           this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al iniciar sesión | ' + err.error.message});
+          this.isLoading.set(false);
         }
       }
       )

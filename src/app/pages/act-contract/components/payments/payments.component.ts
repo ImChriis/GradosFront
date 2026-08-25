@@ -4,7 +4,7 @@ import { ActContractService } from '../../../../@core/services/act-contract.serv
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { BehaviorSubject, map, Observable, startWith, switchMap, tap } from 'rxjs';
-import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BanksService } from '../../../../@core/services/banks.service';
 import { SettingsService } from '../../../../@core/services/settings.service';
 import { UppercaseDirective } from '../../../../@core/directives/uppercase.directive';
@@ -13,6 +13,7 @@ import { MessageService } from 'primeng/api';
 import { forkJoin, of } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
 import { PrintModalComponent } from '../print-modal/print-modal.component';
+import { OnlyAlphanumericsDirective } from '../../../../shared/directives/only-alphanumerics.directive';
 
 @Component({
   selector: 'app-payments',
@@ -21,7 +22,8 @@ import { PrintModalComponent } from '../print-modal/print-modal.component';
     TableModule,
     ReactiveFormsModule,
     UppercaseDirective,
-    OnlyNumbersDirective
+    OnlyNumbersDirective,
+    OnlyAlphanumericsDirective
   ],
   templateUrl: './payments.component.html',
   styleUrl: './payments.component.scss'
@@ -95,7 +97,7 @@ export class PaymentsComponent implements OnInit{
     CodigoActo: [null as number | null],
     MaFormPag: [''],
     TxBanco: [''],
-    NuRefDocBan: [null as number | null],
+    NuRefDocBan: [null as number | null, { validators: [Validators.pattern('^[a-zA-Z0-9]*$')] }],
     Fecha: [''],
     TipoOperacion: [''],
     NuDeposito: [null as number | null],
@@ -142,6 +144,7 @@ export class PaymentsComponent implements OnInit{
     this.actContractService.getRecibosByUserContract(this.NoContrato);
 
     this.loadRecibos();
+    this.loadAbonos();
 
     this.banksService.getMetodoPago().subscribe({
       next: (response) => {
@@ -152,7 +155,7 @@ export class PaymentsComponent implements OnInit{
 
     this.banksService.getAllBanks().subscribe({
       next: (response) => {
-        this.banks = response.map((item: any) => item.bancos);
+        this.banks = response.filter((item: any) => item.status === 1).map((item: any) => item.bancos);
         console.log('Bancos:', this.banks);
       }
     })
@@ -356,7 +359,7 @@ onSubmit() {
       NoRecibo: nuevoNoRecibo,
       ferecibo: formData.ferecibo || new Date().toISOString(),
       mnrecibo: montoInput, // Inicia con el valor del primer abono
-      mnsaldorec: montoInput,
+      mnsaldorec: this.montoSaldo - montoInput, // Saldo restante después del primer abono
       TxConcepRec: formData.TxConcepRec ?? '',
       NoContrato: this.NoContrato,
       NuCedula: this.NuCedula,
@@ -628,6 +631,8 @@ selectRecibo(recibo: any) {
 
   this.reciboPagoForm.reset();
   this.reciboPagoForm.disable();
+
+  this.abonos$ = of([]);
 }
 
   private actualizarEstadoCierre() {
@@ -777,6 +782,7 @@ facturar() {
       this.montoSaldo = Number(data?.MnSaldo ?? this.montoSaldo);
 
       this.guardarRecibosYAbonosEnBD();
+      this.refreshPaymentData();
 
       this.puedeCerrar = true;
       this.facturado = true;
@@ -786,6 +792,7 @@ facturar() {
         summary: 'Facturación',
         detail: 'Se ha actualizado el pago correctamente'
       });
+
 
       const reciboAImprimir = Number(this.selectedRecibo || this.NoRecibo);
 

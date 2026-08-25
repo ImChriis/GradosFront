@@ -72,6 +72,12 @@ export class ActContractService {
      );
   }
 
+  removeUserFromAct(CodigoActo: number, NuCedula: string){
+    return this.http.post<any>(`${this.api}/actContracts/removeUser/${CodigoActo}/${NuCedula}`, null).pipe(
+      tap(() => this.refresh$.next())
+    );
+  }
+
   getPaymentDataByUser(CodigoActo: number, NoContrato: string, NuCedula: string){
     return this.http.get<any>(`${this.api}/actContracts/${CodigoActo}/${NuCedula}/${NoContrato}`);
   }

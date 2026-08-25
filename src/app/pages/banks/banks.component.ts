@@ -37,9 +37,9 @@ export class BanksComponent implements OnInit{
 
   banksForm: FormGroup<BankForm> = this.fb.group({
     id: new FormControl<number | null>(null),
-    Bancos: new FormControl<string | null>('', { nonNullable: true }),
-    Codigo: new FormControl<string | null>(null),
-    Status: new FormControl<number | null>(null)
+    bancos: new FormControl<string | null>('', { nonNullable: true }),
+    codigo: new FormControl<string | null>(null),
+    status: new FormControl<number | null>(null)
   })
 
   ngOnInit(): void {
@@ -64,9 +64,9 @@ export class BanksComponent implements OnInit{
     this.banksForm.enable();
     this.banksForm.patchValue({
       id: bank.id,
-      Bancos: bank.Bancos,
-      Codigo: bank.Codigo,
-      Status: bank.Status
+      bancos: bank.bancos,
+      codigo: bank.codigo,
+      status: bank.status
     })
 
     this.id = bank.id; 
