@@ -387,7 +387,7 @@ onInstitutionChange(event: any) {
       this.ref.onClose.subscribe(() => {
         this.updateTotals(CodigoActo!); // Actualizamos los totales al cerrar el modal, ya sea que se haya agregado un contrato o no, para reflejar cualquier cambio.
       })
-    }
+    } 
   }
 
   deleteContract(actUser: any){
@@ -402,7 +402,7 @@ onInstitutionChange(event: any) {
       },
       error: (err) => {
         console.error("Error al eliminar el contrato: ", err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al eliminar el contrato.' });
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error.message });
       }
     })
   }
