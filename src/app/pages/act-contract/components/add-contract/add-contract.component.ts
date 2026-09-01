@@ -28,6 +28,9 @@ export class AddContractComponent implements OnInit{
   private fb = inject(FormBuilder);
   codigoActo = this.dialogConfig.data.CodigoActo;
   MnCosto = this.dialogConfig.data.MnCosto;
+  selectedUser = this.dialogConfig.data.selectedUser;
+  edit = this.dialogConfig.data.edit;
+  nuCedula = this.selectedUser?.NuCedula ?? '';
   ref: DynamicDialogRef | undefined;
   NoContrato: string | null = null;
 
@@ -56,7 +59,13 @@ export class AddContractComponent implements OnInit{
       }
     })
 
+    if(this.edit === true){
+      this.actForm.patchValue(this.selectedUser);
+    }
+
     console.log(this.MnCosto);
+    console.log(this.selectedUser);
+    console.log(this.nuCedula);
   }
 
   searchUserByCedula(event: any){
@@ -98,42 +107,61 @@ export class AddContractComponent implements OnInit{
   }
 
   onSubmit(){
-    this.actForm.patchValue({ CodigoActo: this.codigoActo });
-    this.actForm.patchValue({ MnContrato: this.MnCosto });
-    this.actForm.patchValue({ MnSaldo: this.MnCosto });
-    this.actForm.patchValue({ MnInicial: 0 });
-    this.actForm.patchValue({ MnPagado: 0 });
-
-   if(!this.actForm.valid){
-      this.actForm.markAllAsTouched();
-      this.messageService.add({ severity: 'warn', summary: 'Formulario inválido', detail: 'Por favor, complete todos los campos requeridos.' });
-      return;
-    }
-
-
-    if(this.actForm.valid){
-       this.actContractService.addUserToAct(this.actForm.value).subscribe({
-      next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'Usuario agregado al acto correctamente' });
-        // console.log(res);
-        // console.log(this.actForm.value)
-        this.dialogRef.close();
-      },
-      error: (err) => {
-         if(err.status == 400){
-          this.messageService.add({ severity: 'warn', summary: err.error.message });
-         }else if(err.status == 404){
-          this.messageService.add({ severity: 'warn', summary: err.error.message});
-          // console.log(err);
-         }
-         else{
-          this.messageService.add({ severity: 'error', summary: 'Error al agregar usuario al acto' });
-          // console.error(err);
-         }
+    if(this.edit === true){
+      const payload = {
+        NoContrato: this.actForm.value.NoContrato,
+        Chemise: this.actForm.value.Chemise,
       }
-    })
+
+      this.actContractService.updateActUser(this.codigoActo, this.nuCedula, payload).subscribe({
+        next: (res) => {
+          this.messageService.add({ severity: 'success', summary: 'Usuario actualizado correctamente' });
+          this.dialogRef.close();
+        },
+        error: (err) => {
+          this.messageService.add({ severity: 'error', summary: 'Error al actualizar usuario' });
+          console.error(err);
+        }
+      })
+
     }else{
-      this.messageService.add({ severity: 'error', summary: 'Por favor complete los campos' });
+      this.actForm.patchValue({ CodigoActo: this.codigoActo });
+      this.actForm.patchValue({ MnContrato: this.MnCosto });
+      this.actForm.patchValue({ MnSaldo: this.MnCosto });
+      this.actForm.patchValue({ MnInicial: 0 });
+      this.actForm.patchValue({ MnPagado: 0 });
+
+    if(!this.actForm.valid){
+        this.actForm.markAllAsTouched();
+        this.messageService.add({ severity: 'warn', summary: 'Formulario inválido', detail: 'Por favor, complete todos los campos requeridos.' });
+        return;
+      }
+
+
+      if(this.actForm.valid){
+        this.actContractService.addUserToAct(this.actForm.value).subscribe({
+        next: (res) => {
+          this.messageService.add({ severity: 'success', summary: 'Usuario agregado al acto correctamente' });
+          // console.log(res);
+          // console.log(this.actForm.value)
+          this.dialogRef.close();
+        },
+        error: (err) => {
+          if(err.status == 400){
+            this.messageService.add({ severity: 'warn', summary: err.error.message });
+          }else if(err.status == 404){
+            this.messageService.add({ severity: 'warn', summary: err.error.message});
+            // console.log(err);
+          }
+          else{
+            this.messageService.add({ severity: 'error', summary: 'Error al agregar usuario al acto' });
+            // console.error(err);
+          }
+        }
+      })
+      }else{
+        this.messageService.add({ severity: 'error', summary: 'Por favor complete los campos' });
+      }
     }
   }
 

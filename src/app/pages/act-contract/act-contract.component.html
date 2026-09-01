@@ -193,7 +193,8 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-user class="p-table">
                       <tr class="table-content2" 
-                      (click)=" selectedUser(user)" 
+                      (click)=" selectActUser = user"
+                      (dblclick)="editUser(user, codigoActo, MnCosto)" 
                       [class.selected]="selectActUser?.NoContrato === user.NoContrato"
                       > 
                         <td>

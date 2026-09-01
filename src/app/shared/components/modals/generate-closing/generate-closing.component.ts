@@ -6,6 +6,7 @@ import { ReportsService } from '../../../../@core/services/reports.service';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { PdfViewerComponent } from '../../../../@core/components/pdf-viewer/pdf-viewer.component';
+import { SettingsService } from '../../../../@core/services/settings.service';
 
 
 @Component({
@@ -22,18 +23,29 @@ export class GenerateClosingComponent implements OnInit, OnDestroy{
   private reportsService = inject(ReportsService);
   private messageService = inject(MessageService);
   private dialogService = inject(DialogService);
+  private settingsService = inject(SettingsService);
   private fb = inject(FormBuilder);
   private currentBlobUrl: string | null = null;
   ref!: DynamicDialogRef;
   nombre!: string;
+  NoCierre!: string;
 
   ngOnInit(){
-    const user = localStorage.getItem('user');
+    const user = localStorage.getItem('User');
 
     if(user){
       const userData = JSON.parse(user);
-      this.nombre = userData.nombre;
+      this.nombre = userData.user.nombre;
     }
+
+    this.settingsService.getSettings().subscribe({
+      next: (res: any) => {
+        this.NoCierre = res.NoCierre;
+        this.generateClosingForm.patchValue({ NoCierre: this.NoCierre });
+      }
+    })
+
+    console.log('Número de cierre actual:', this.NoCierre);
   }
 
   generateClosingForm = this.fb.group({

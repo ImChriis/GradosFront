@@ -47,7 +47,7 @@ export class ClientsComponent implements OnInit{
     txdireccion: new FormControl<string | null>('', { nonNullable: true, validators: [Validators.required] }),
     txtelefono: new FormControl<string | null>('', { nonNullable: true }),
     txcelular: new FormControl<string | null>('', { nonNullable: true, validators: [Validators.required] }),
-    txemail: new FormControl<string | null>('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
+    txemail: new FormControl<string | null>('', { nonNullable: true, validators: [Validators.email] }),
     codUser: new FormControl<string | null>('', { nonNullable: true }),
   })
   
@@ -120,7 +120,11 @@ export class ClientsComponent implements OnInit{
           this.clientsForm.disable();
         },
         error: (err) => {
-          this.messageService.add({severity:'error', summary: 'Error', detail: 'Error updating client'});
+          if (err.status === 409) {
+            this.messageService.add({severity:'error', summary: 'Error', detail: err.error.error});
+          }else{
+            this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al actualizar el cliente'});
+          }
         }
       });
     }else{
@@ -134,7 +138,11 @@ export class ClientsComponent implements OnInit{
         this.clientsForm.disable();
       },
       error: (err) => {
-        this.messageService.add({severity:'error', summary: 'Error', detail: 'Error adding client'});
+        if (err.status === 409) {
+          this.messageService.add({severity:'error', summary: 'Error', detail: err.error.error});
+        }else{
+          this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al agregar el cliente'});
+        }
       }
     })
     }

@@ -523,4 +523,32 @@ formateDateString(dateString: string) {
 
   return `${day}-${month}-${year}`;
 }
+
+editUser(user: any, CodigoActo: number | null, MnCosto: number | null){
+  this.selectedUser = user;
+
+  console.log("CodigoActo: ", CodigoActo, "MnCosto: ", MnCosto);
+
+    const formData = this.actForm.value
+
+    if(!CodigoActo || !MnCosto){
+      this.messageService.add({ severity: 'warn', summary: 'No se ha seleccionado ningún acto para agregar un contrato.' });
+    }else{
+        this.ref = this.dialogService.open(AddContractComponent, {
+        header: 'Modificar Contratos',
+        width: '50vw',
+        modal: true,
+        data: { CodigoActo, MnCosto: formData.MnCosto, edit: true, selectedUser: this.selectActUser },
+        closable: true,
+        breakpoints: {
+          '960px': '75vw',
+          '640px': '90vw'
+        }    
+      });
+
+      this.ref.onClose.subscribe(() => {
+        this.updateTotals(CodigoActo!); // Actualizamos los totales al cerrar el modal, ya sea que se haya agregado un contrato o no, para reflejar cualquier cambio.
+      })
+    } 
+}
 }

@@ -4,19 +4,35 @@
 
         <div class="selects">
             <div class="inputGroup">
-                <input type="radio" id="pantalla" name="reportOption" value="pantalla" checked #optPantalla>
-                <label for="pantalla">En pantalla</label>
+                <input type="radio" id="destinoPantalla" name="destOption" value="pantalla" checked #optPantalla>
+                <label for="destinoPantalla">En pantalla</label>
             </div>
 
             <div class="inputGroup">
-                <input type="radio" id="pdf" name="reportOption" value="imprimir" #optImprimir>
-                <label for="pdf">Imprimir (Descargar)</label>
+                <input type="radio" id="destinoImprimir" name="destOption" value="imprimir" #optImprimir>
+                <label for="destinoImprimir">Imprimir (Descargar)</label>
+            </div>
+        </div>
+
+        <div class="selects">
+            <div class="inputGroup">
+                <input type="radio" id="pageOne" name="pageLayout" value="1" checked #optOnePage>
+                <label for="pageOne">1 página</label>
+            </div>
+
+            <div class="inputGroup">
+                <input type="radio" id="pageTwo" name="pageLayout" value="2" #optTwoPages>
+                <label for="pageTwo">2 páginas</label>
             </div>
         </div>
     </fieldset>
 
     <div class="btns">
-        <button class="pdf" (click)="onSubmitPrint('PDF', optPantalla.checked, this.NoRecibo)">PDF</button>
-        <button class="correo" (click)="onSubmitPrint('CORREO', optPantalla.checked, this.NoRecibo)">CORREO</button>
+        <button class="pdf" (click)="onSubmitPrint('PDF', optPantalla.checked, optOnePage.checked, this.NoRecibo)">
+            PDF
+        </button>
+        <button class="correo" (click)="onSubmitPrint('CORREO', optPantalla.checked, optOnePage.checked, this.NoRecibo)">
+            CORREO
+        </button>
     </div>
 </div>

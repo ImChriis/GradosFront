@@ -72,6 +72,12 @@ export class ActContractService {
      );
   }
 
+  updateActUser(CodigoActo: number, NuCedula: string, body: any){
+    return this.http.put<any>(`${this.api}/actContracts/updateActUser/${CodigoActo}/${NuCedula}`, body).pipe(
+      tap(() => this.refresh$.next())
+    );
+  }
+
   removeUserFromAct(CodigoActo: number, NuCedula: string){
     return this.http.post<any>(`${this.api}/actContracts/removeUser/${CodigoActo}/${NuCedula}`, null).pipe(
       tap(() => this.refresh$.next())
@@ -112,10 +118,19 @@ export class ActContractService {
   }
 
   printReciboPdf(NoRecibo: number, usuarioReporte: string, body: any){
-    return this.http.post(`${this.api}/actContracts/printReciboPdf/${NoRecibo}/${usuarioReporte}`, body, { responseType: 'blob' });
+    return this.http.post(`${this.api}/actContracts/printReciboPdfOnePage/${NoRecibo}/${usuarioReporte}`, body, { responseType: 'blob' });
   }
 
+  printReciboPdfTwoPages(NoRecibo: number, usuarioReporte: string, body: any){
+    return this.http.post(`${this.api}/actContracts/printReciboPdf/${NoRecibo}/${usuarioReporte}`, body, { responseType: 'blob' });
+  }
+  
   sendReciboEmail(NoRecibo: number, usuarioReporte: string, body: any){
+    return this.http.post(`${this.api}/actContracts/sendReciboEmailOnePage/${NoRecibo}/${usuarioReporte}`, body, { responseType: 'blob' });
+  }
+
+  sendReciboEmailTwoPages(NoRecibo: number, usuarioReporte: string, body: any){
     return this.http.post(`${this.api}/actContracts/sendReciboEmail/${NoRecibo}/${usuarioReporte}`, body, { responseType: 'blob' });
   }
+
 }
