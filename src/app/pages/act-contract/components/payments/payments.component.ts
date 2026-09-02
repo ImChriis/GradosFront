@@ -182,22 +182,6 @@ export class PaymentsComponent implements OnInit{
     )
   }
 
-//   private refreshPaymentData() {
-//   this.actContractService.getPaymentDataByUser(
-//     this.codigoActo,
-//     String(this.NoContrato),
-//     String(this.NuCedula)
-//   ).subscribe({
-//     next: (res: any) => {
-//       // Ajusta según la forma exacta de la respuesta
-//       this.montoPagado = res.MnPagado ?? this.montoPagado;
-//       this.montoSaldo = res.MnSaldo ?? this.montoSaldo;
-//       // Si quieres actualizar montoSelectedRecibo también, recarga recibos o encontrar el recibo
-//     },
-//     error: (err) => console.error('Error refresh payment data', err)
-//   });
-// }
-
 private refreshPaymentData() {
   this.actContractService.getPaymentDataByUser(
     this.codigoActo,
@@ -207,117 +191,24 @@ private refreshPaymentData() {
     next: (res: any) => {
       const data = res?.data?.[0] ?? res;
 
+      console.log('Refreshed payment data:', data);
+
+      // 1. Actualizar las propiedades del contrato y MnInicial
       this.montoContrato = Number(data?.MnContrato ?? this.montoContrato);
       this.descuento = Number(data?.MnDescuento ?? this.descuento);
       this.MnInicial = Number(data?.MnInicial ?? this.MnInicial);
 
+      // 2. Actualizar las bases con lo devuelto por la BD
       this.montoPagadoBase = Number(data?.MnPagado ?? this.montoPagadoBase);
       this.montoSaldoBase = Number(data?.MnSaldo ?? this.montoSaldoBase);
 
-      this.montoPagado = this.montoPagadoBase + this.totalAbonos;
-      this.montoSaldo = this.montoSaldoBase - this.totalAbonos;
+      // 3. Asignar los valores directos de la BD (evita sumar this.totalAbonos dos veces)
+      this.montoPagado = this.montoPagadoBase;
+      this.montoSaldo = this.montoSaldoBase;
     },
     error: (err) => console.error('Error refresh payment data', err)
   });
 }
-
-  // onSubmit(){
-  //   if(this.selectedRecibo){
-  //     const formData = this.reciboPagoForm.value;
-  //     const nuevoMonto = Number(formData.mnrecibo ?? 0);
-  //     const montoRecibo = Number(this.montoSelectedRecibo ?? 0);
-
-  //      if (this.totalAbonos + nuevoMonto > montoRecibo) {
-  //         this.messageService.add({
-  //           severity: 'warn',
-  //           summary: 'No permitido',
-  //           detail: 'El total de abonos excede el monto del recibo seleccionado'
-  //         });
-  //         return;
-  //     }
-
-  //     formData.NoContrato = this.NoContrato;
-  //     formData.NuCedula = this.NuCedula;
-  //     formData.NoRecibo = this.selectedRecibo;
-  //     formData.Fecha = new Date().toISOString();
-  //     formData.TipoOperacion = formData.MaFormPag;
-  //     formData.TxBanco = formData.TxBanco;
-  //     formData.NuDeposito = formData.NuRefDocBan;
-  //     formData.MnDeposito = formData.mnrecibo;
-      
-  //     this.actContractService.addDeposito(formData).subscribe({
-  //       next: (response) => {
-  //         console.log('Depósito agregado:', response);
-  //         this.reciboPagoForm.reset();
-
-  //         this.totalAbonos += nuevoMonto;
-  //         this.montoPagado = this.montoPagadoBase + this.totalAbonos;
-  //         this.montoSaldo = this.montoSaldoBase - this.totalAbonos;
-  //         this.saldoRestante = Number(this.montoSelectedRecibo ?? 0) - this.totalAbonos;
-
-  //         this.loadAbonos();
-  //         this.refreshPaymentData();
-  //         this.actualizarEstadoCierre();
-  //       },
-  //       error: (error) => {
-  //         console.error('Error al agregar depósito:', error);
-  //         this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al agregar depósito'});
-  //       }
-  //     });
-
-  //   }else{
-  //     const formData = this.reciboPagoForm.value;
-  //     formData.CodigoActo = this.codigoActo;
-  //     formData.NoContrato = this.NoContrato;
-  //     formData.NuCedula = this.NuCedula;
-  //     formData.ferecibo = new Date().toISOString(); // Asignar la fecha actual en formato ISO
-  //     formData.mnsaldorec = this.montoSelectedRecibo;
-  //     formData.NoRecibo = this.NoRecibo;
-  //     formData.MnDeposito = formData.mnrecibo;
-
-  //     console.log("datos form", formData);
-
-  //     const nuevoMonto = Number(formData.mnrecibo ?? 0);
-
-  //     if (!this.addReciboCheck(nuevoMonto)) {
-  //       this.messageService.add({
-  //         severity: 'warn',
-  //         summary: 'No permitido',
-  //         detail: 'El nuevo recibo excede el monto del contrato'
-  //       });
-  //       return;
-  //     }
-
-  //     this.actContractService.addARecibo(formData).subscribe({
-  //       next: (response) => {
-  //         console.log('Recibo agregado:', response);
-  //         this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Recibo agregado correctamente'});
-  //         const montoNuevoRecibo = Number(formData.mnrecibo ?? 0);
-  //         const noReciboNuevo = Number(formData.NoRecibo ?? this.NoRecibo ?? 0);
-  //         this.NoRecibo = noReciboNuevo;
-  //         this.selectedRecibo = noReciboNuevo;
-  //         this.montoSelectedRecibo = montoNuevoRecibo;
-  //         this.totalAbonos = 0;
-  //         this.saldoRestante = montoNuevoRecibo;
-  //         this.facturado = false;
-  //         this.puedeCerrar = false;
-  //         this.isAdding = false;
-
-  //         this.reciboPagoForm.reset();
-
-  //         this.loadRecibos();
-  //         this.loadAbonos();
-  //         this.actualizarEstadoCierre();
-  //         this.refreshPaymentData();
-
-  //       },
-  //       error: (error) => {
-  //         console.error('Error al agregar recibo:', error);
-  //         this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al agregar recibo'});
-  //       }
-  //     });
-  //   }
-  // }
 
 onSubmit() {
   const formData = this.reciboPagoForm.getRawValue();
@@ -423,53 +314,7 @@ onSubmit() {
   return this.totalRecibos + nuevoMonto <= montoContrato;
 }
 
-//  private loadAbonos() {
-//   this.abonos$ = this.actContractService.refreshAbonosObservable$.pipe(
-//     startWith(null),
-//     switchMap(() =>
-//       this.actContractService.getAbonosByUserContract(
-//         String(this.NoContrato),
-//         String(this.NuCedula),
-//         this.NoRecibo
-//       )
-//     ),
-//     map(response => response.data),
-//       tap(abonos => {
-//       this.totalAbonos = abonos.reduce(
-//         (total: number, abono: any) => total + Number(abono.MnDeposito ?? 0),
-//         0
-//       );
 
-      
-//       const montoSeleccionado = Number(this.montoSelectedRecibo ?? 0);
-
-//       this.saldoRestante = montoSeleccionado - this.totalAbonos;
-
-//       this.montoPagado = this.montoPagadoBase + this.totalAbonos;
-//       this.montoSaldo = this.montoSaldoBase - this.totalAbonos;
-//       this.actualizarEstadoCierre();
-//     })
-//   );
-// }
-
-  // selectRecibo(recibo: any){
-  //   console.log('Selected recibo:', recibo);
-  //   this.NoRecibo = recibo.NoRecibo;
-  //   this.selectedRecibo = recibo.NoRecibo;
-  //   this.fechaSelectedRecibo = recibo.ferecibo;
-  //   this.montoSelectedRecibo = recibo.mnrecibo;
-  //   this.observacion = recibo.TxConcepRec;
-
-    
-  //   this.facturado = false;
-  //   this.puedeCerrar = false
-
-  //   this.reciboPagoForm.enable();
-  //   this.loadAbonos();
-  //   this.actualizarEstadoCierre();
-    
-  //   console.log(this.abonos$)
-  // }
 
  private loadAbonos() {
   this.abonos$ = this.actContractService.refreshAbonosObservable$.pipe(
@@ -644,27 +489,6 @@ selectRecibo(recibo: any) {
     return this.tieneReciboPendiente;
   }
 
-
-  // close() {
-  //     if (this.bloquearSiReciboPendiente(
-  //     'Debes completar y facturar antes de cerrar'
-  //   )) {
-  //     return;
-  //   }
-
-
-  //   if (!this.puedeCerrar) {
-  //     this.messageService.add({
-  //       severity: 'warn',
-  //       summary: 'No permitido',
-  //       detail: 'Debes completar el monto y facturar antes de cerrar'
-  //     });
-  //     return;
-  //   }
-
-  //   this.ref.close();
-  // }
-
   close() {
     if (this.facturado || this.puedeCerrar) {
     this.ref.close(true);
@@ -684,65 +508,10 @@ selectRecibo(recibo: any) {
   this.ref.close();
 }
 
-// facturar() {
-//   if (this.bloquearSiReciboPendiente(
-//     'Primero debes completar los abonos del recibo actual'
-//   )) {
-//     return;
-//   }
-
-//   if (this.saldoRestante > 0) {
-//     this.messageService.add({
-//       severity: 'warn',
-//       summary: 'Pendiente',
-//       detail: 'Aun falta completar el valor total'
-//     });
-//     return;
-//   }
-
-//   const payload = {
-//     MnContrato: this.montoContrato,
-//     MnDescuento: this.descuento,
-//     MnInicial: this.MnInicial,
-//     MnPagado: this.montoPagado,
-//     MnSaldo: this.montoSaldo
-//   };
-
-//   this.actContractService.updateTotals(this.codigoActo, this.NuCedula, payload).subscribe({
-//     next: (res: any) => {
-//       const data = res?.data?.[0] ?? res;
-
-//       this.montoContrato = Number(data?.MnContrato ?? this.montoContrato);
-//       this.descuento = Number(data?.MnDescuento ?? this.descuento);
-//       this.MnInicial = Number(data?.MnInicial ?? this.MnInicial);
-//       this.montoPagado = Number(data?.MnPagado ?? this.montoPagado);
-//       this.montoSaldo = Number(data?.MnSaldo ?? this.montoSaldo);
-
-//       this.puedeCerrar = true;
-//       this.facturado = true;
-
-//       this.messageService.add({
-//         severity: 'success',
-//         summary: 'Facturación',
-//         detail: 'Se ha actualizado el pago correctamente'
-//       });
-//     },
-//     error: (err) => {
-//       console.error('Error al actualizar los totales:', err);
-//       this.messageService.add({
-//         severity: 'error',
-//         summary: 'Error',
-//         detail: 'No se pudieron actualizar los totales'
-//       });
-//     }
-//   });
-// }
-
 facturar() {
   const montoReciboActual = Number(this.montoSelectedRecibo ?? 0);
   const tieneAbonos = this.pendingAbonos.length > 0;
 
-  // REGLA 1: No se puede facturar si el recibo está en $0 o sin abonos
   if (montoReciboActual <= 0 && !tieneAbonos) {
     this.messageService.add({
       severity: 'warn',
@@ -763,17 +532,36 @@ facturar() {
     return;
   }
 
-  const payload = {
-    MnContrato: this.montoContrato,
-    MnDescuento: this.descuento,
-    MnInicial: this.MnInicial,
-    MnPagado: this.montoPagado,
-    MnSaldo: this.montoSaldo
-  };
+  // 1. Guardar primero el recibo y depósitos en la base de datos
+  this.guardarRecibosYAbonosEnBD().pipe(
+    // 2. UNA VEZ guardados los depósitos en BD, refrescar los datos para obtener el MnInicial actualizado
+    switchMap(() => {
+      return this.actContractService.getPaymentDataByUser(
+        this.codigoActo,
+        String(this.NoContrato),
+        String(this.NuCedula)
+      );
+    }),
+    // 3. Con los datos frescos (donde el backend ya actualizó MnInicial), actualizar los totales del contrato
+    switchMap((resPayment: any) => {
+      const data = resPayment?.data?.[0] ?? resPayment;
 
-  this.actContractService.updateTotals(this.codigoActo, this.NuCedula, payload).subscribe({
-    next: (res: any) => {
-      const data = res?.data?.[0] ?? res;
+      // Si el primer depósito le asignó valor en BD, tomamos ese nuevo MnInicial
+      this.MnInicial = Number(data?.MnInicial ?? this.MnInicial);
+
+      const payload = {
+        MnContrato: this.montoContrato,
+        MnDescuento: this.descuento,
+        MnInicial: this.MnInicial, // Envía el monto inicial real devuelto por la BD
+        MnPagado: this.montoPagado,
+        MnSaldo: this.montoSaldo
+      };
+
+      return this.actContractService.updateTotals(this.codigoActo, this.NuCedula, payload);
+    })
+  ).subscribe({
+    next: (resUpdate: any) => {
+      const data = resUpdate?.data?.[0] ?? resUpdate;
 
       this.montoContrato = Number(data?.MnContrato ?? this.montoContrato);
       this.descuento = Number(data?.MnDescuento ?? this.descuento);
@@ -781,8 +569,10 @@ facturar() {
       this.montoPagado = Number(data?.MnPagado ?? this.montoPagado);
       this.montoSaldo = Number(data?.MnSaldo ?? this.montoSaldo);
 
-      this.guardarRecibosYAbonosEnBD();
+      // Recargar tablas visuales en la interfaz
       this.refreshPaymentData();
+      this.loadRecibos();
+      this.loadAbonos();
 
       this.puedeCerrar = true;
       this.facturado = true;
@@ -793,87 +583,57 @@ facturar() {
         detail: 'Se ha actualizado el pago correctamente'
       });
 
-
       const reciboAImprimir = Number(this.selectedRecibo || this.NoRecibo);
-
       if (reciboAImprimir && reciboAImprimir > 0) {
-        // Opción A: Si usas la versión simple de impresión
         this.print(reciboAImprimir);
-
-        // Opción B: Si usas la versión unificada onSubmitPrint (p. ej. previsualizar o descargar)
-        // this.onSubmitPrint('PDF', true, reciboAImprimir); 
       }
-
     },
     error: (err) => {
-      console.error('Error al actualizar los totales:', err);
+      console.error('Error durante la facturación:', err);
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
-        detail: 'No se pudieron actualizar los totales'
+        detail: 'Ocurrió un error al procesar la facturación'
       });
     }
   });
 }
 
-private guardarRecibosYAbonosEnBD() {
-  if (this.pendingRecibos.length === 0) return;
+
+private guardarRecibosYAbonosEnBD(): Observable<any> {
+  if (this.pendingRecibos.length === 0) return of(null);
 
   const recibos = [...this.pendingRecibos];
   const abonos = [...this.pendingAbonos];
 
-  // Limpiamos los arreglos temporales antes de procesar
   this.pendingRecibos = [];
   this.pendingAbonos = [];
 
-  // Procesar cada recibo secuencialmente
-  recibos.forEach((recibo) => {
-    this.actContractService.addARecibo(recibo).pipe(
+  // Usamos forkJoin para esperar a que TODOS los recibos y abonos se completen en la BD
+  const peticionesRecibos = recibos.map((recibo) => {
+    return this.actContractService.addARecibo(recibo).pipe(
       concatMap((resRecibo) => {
-        console.log('Recibo creado exitosamente en BD:', resRecibo);
-
-        // Filtrar abonos asociados usando conversión numérica flexible (evita problemas number vs string)
         const abonosDelRecibo = abonos.filter(
           (a) => Number(a.NoRecibo) === Number(recibo.NoRecibo)
         );
 
         if (abonosDelRecibo.length === 0) {
-          return of([]); // Si no hay abonos para este recibo, omitimos
+          return of([]);
         }
 
-        // Crear array de Observables para guardar todos los abonos en paralelo/grupo
         const peticionesAbonos = abonosDelRecibo.map((abono) =>
           this.actContractService.addDeposito(abono)
         );
 
         return forkJoin(peticionesAbonos);
       })
-    ).subscribe({
-      next: (resAbonos) => {
-        console.log('Todos los abonos del recibo guardados en BD:', resAbonos);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Guardado Completo',
-          detail: 'Recibos y abonos registrados correctamente'
-        });
-        
-        // Recargar datos desde la base de datos
-        this.loadRecibos();
-        this.loadAbonos();
-      },
-      error: (err) => {
-        console.error('Error al persistir recibo y abonos en BD:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error al Guardar',
-          detail: 'Ocurrió un problema al registrar los abonos en el servidor'
-        });
-      }
-    });
+    );
   });
 
   this.recibosSubject.next([]);
   this.abonosSubject.next([]);
+
+  return forkJoin(peticionesRecibos);
 }
 
   private bloquearSiReciboPendiente(mensaje: string){
