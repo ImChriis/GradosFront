@@ -131,7 +131,23 @@ form{
     width: 100%;
     display: flex;
     align-items: end;
-    margin-bottom: 5px;
+    justify-content: center;
+    gap: 5px;
+}
+
+
+.select #capacity{
+    width: 15px;
+    height: 15px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.select label{
+    color: black;
+    font-weight: bold;
+    margin: 0px;
+    padding: 0px;
 }
 
 .inputGroup3{
@@ -469,8 +485,12 @@ td{
 
 }
 
+.pago{
+    width: 100%;
+}
+
 .pago input{
-    width: 120px !important;
+    width: 100% !important;
 }
 
 
@@ -483,15 +503,15 @@ td{
 .actData .actInputs{
     display: flex;
     gap: 10px;
-    width: 70%;
+    width: 100%;
 }
 
 .actData .inputGroup{
-    width: 36%;
+    width: 100%;
 }
 
 .actData .inputGroup input{
-    width: 120px;
+    width: 100%;
 }
 
 .btnsInput{

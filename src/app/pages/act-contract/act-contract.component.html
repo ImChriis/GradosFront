@@ -229,38 +229,54 @@
           <div class="actData">
             <div class="actInputs">
               <div class="inputGroup">
-              <label for="capacity">TOTAL</label>
-              <input type="text" id="capacity" readonly name="capacity" appOnlyNumbers appUppercase [value]="total | currency:'Bs. ':'symbol':'1.2-2'" class="input">
-            </div>
-
-            <div class="inputGroup">
-              <label for="capacity">POR GRADUANDO</label>
-              <input type="text" id="capacity" name="capacity"  appOnlyNumbers appUppercase class="input" formControlName="MnCosto">
-            </div>
-            </div>
-
-            <div class="btnsInput">
-                <div class="icon2 recalculate" title="Recalcular" (click)="recalculateModal(this.codigoActo, MnCosto)">
-                <i class="pi pi-calculator"></i>
+                <label for="capacity">TOTAL</label>
+                <input type="text" id="capacity" readonly name="capacity" appOnlyNumbers appUppercase [value]="total | currency:'Bs. ':'symbol':'1.2-2'" class="input">
               </div>
 
-              <div class="icon2 refresh" title="Refrescar" (click)="refresh(this.codigoActo)">
-                <i class="pi pi-sync"></i>
+              <div class="inputGroup">
+                <label for="capacity">POR GRADUANDO</label>
+                <input type="text" id="capacity" name="capacity"  appOnlyNumbers appUppercase class="input" formControlName="MnCosto">
+              </div>
+
+              
+              <div class="inputGroup">
+                <label for="capacity">CANTIDAD</label>
+                <input type="text" id="capacity" readonly name="capacity"  appOnlyNumbers appUppercase [value]="usersAmount" >
+              </div>
             </div>
-            </div>
+<!-- 
+            <div class="btnsInput">
+
+            </div> -->
           </div>
 
-            <div class="inputGroup4 pago">
+          <div class="inputGroup4 pago">
             <div class="inputGroup">
               <label for="capacity">PAGADO</label>
               <input type="text" id="capacity" readonly name="capacity" appOnlyNumbers appUppercase [value]="totalPaid | currency: 'Bs. ': 'symbol':'1.2-2' " >
             </div>
 
             <div class="inputGroup">
-              <label for="capacity">CANTIDAD</label>
-              <input type="text" id="capacity" readonly name="capacity"  appOnlyNumbers appUppercase [value]="usersAmount" >
+              <label for="capacity">SALDO</label>
+              <input type="text" id="capacity" readonly name="capacity" appOnlyNumbers appUppercase [value]="saldo | currency:'Bs. ':'symbol':'1.2-2'" class="input">
             </div>
 
+            <div class="select">
+              <input type="checkbox" id="culminada" name="culminada">
+              <label for="culminada">CULMINADA</label>
+            </div>
+          </div>
+
+          <div class="inputGroup3">
+            <div class="icon2 recalculate" title="Recalcular" (click)="recalculateModal(this.codigoActo, MnCosto)">
+                <i class="pi pi-calculator"></i>
+              </div>
+
+              <div class="icon2 refresh" title="Refrescar" (click)="refresh(this.codigoActo)">
+                <i class="pi pi-sync"></i>
+            </div>
+
+            
             <div class="icon2 add2" title="Cancelar" (click)="addContract(codigoActo, MnCosto)">
               <i class="pi pi-plus"></i>
             </div>
@@ -275,18 +291,6 @@
 
             <div class="icon2 print" title="Cancelar" (click)="onCancel()">
               <i class="pi pi-print"></i>
-            </div>
-          </div>
-
-          <div class="inputGroup3">
-            <div class="inputGroup">
-              <label for="capacity">SALDO</label>
-              <input type="text" id="capacity" readonly name="capacity" appOnlyNumbers appUppercase [value]="saldo | currency:'Bs. ':'symbol':'1.2-2'" class="input">
-            </div>
-
-            <div class="select">
-              <input type="checkbox" id="capacity" name="capacity"  appUppercase >
-              <label for="capacity">CULMINADA</label>
             </div>
           </div>
         </form>
