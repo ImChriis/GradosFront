@@ -127,27 +127,36 @@ form{
     width: 100%;
 }
 
-.select{
-    width: 100%;
-    display: flex;
-    align-items: end;
-    justify-content: center;
-    gap: 5px;
+/* Contenedor que ocupa el espacio en la rejilla/grid */
+.checkbox-container {
+  display: flex;
+  align-items: center;      /* Centra el checkbox verticalmente respecto a los inputs vecinos */
+  justify-content: flex-start; /* Pega todo a la izquierda */
+  height: 100%;             /* Se adapta a la altura de la fila de SALDO */
+  padding-top: 18px;        /* Compensa la altura que ocupan las etiquetas (TOTAL, PAGADO, etc.) */
 }
 
+/* Label interactivo completo */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;                 /* Espacio exacto y limpio entre el cuadrito y el texto */
+  cursor: pointer;          /* Muestra la manito en todo el texto y el cuadro */
+  user-select: none;        /* Evita selecciones azules al hacer doble clic */
 
-.select #capacity{
-    width: 15px;
-    height: 15px;
-    margin: 0px;
-    padding: 0px;
-}
+  span {
+    color: #000;
+    font-size: 0.9rem;
+    line-height: 1;
+  }
 
-.select label{
-    color: black;
-    font-weight: bold;
-    margin: 0px;
-    padding: 0px;
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+    accent-color: #333;     /* Mantiene el color oscuro nativo de tu interfaz */
+  }
 }
 
 .inputGroup3{
