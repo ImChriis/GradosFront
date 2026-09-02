@@ -46,6 +46,8 @@ export class GenerateClosingComponent implements OnInit, OnDestroy{
     })
 
     console.log('Número de cierre actual:', this.NoCierre);
+
+    this.generateClosingForm.patchValue({ ferecibo: new Date().toISOString().split('T')[0] });
   }
 
   generateClosingForm = this.fb.group({
@@ -140,11 +142,19 @@ export class GenerateClosingComponent implements OnInit, OnDestroy{
         // this.cargandoReporte = false;
         console.error('Error al generar el reporte de cierre:', err);
         
-        this.messageService.add({ 
-            severity: 'error', 
-            summary: 'Error', 
-            detail: 'No se pudo generar el reporte. Verifique los parámetros o la conexión.' 
-        });
+        if(err.status === 404){
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'No se encontraron registros para la fecha indicada'
+          });
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Ocurrió un error al generar el reporte. Por favor, inténtelo de nuevo.'
+          });
+        }
       }
     });
 }

@@ -191,7 +191,7 @@
       ; as state) { -->
       <p-table
         #dt1
-        [value]='(abonos$ | async) ?? []'
+        [value]='(abonos$ | async) || []'
         [rows]="10"
         styleClass="ml-3 mr-3"
         class="tableAbonos"

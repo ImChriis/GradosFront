@@ -75,12 +75,22 @@ label{
 :host ::ng-deep {
   .tableAbonos,
   .tableRecibos {
+    /* Forzar a que la tabla calcule el ancho en base al contenido total sin colapsar */
+    .p-datatable-table {
+      table-layout: auto !important;
+      width: 100% !important;
+    }
+
+    /* Aplicar reglas tanto a encabezados (th) como a celdas (td) */
+    .p-datatable-thead > tr > th,
     .p-datatable-tbody > tr > td {
       border: 1px solid black !important;
       height: 35px !important;
-      min-height: 35px !important;
       vertical-align: middle !important;
       box-sizing: border-box;
+      white-space: nowrap !important; /* Evita que el texto invada otra celda */
+      padding: 6px 10px !important;    /* Espaciado interno seguro */
+      text-align: center;
     }
 
     .p-datatable-tbody > tr.row-placeholder {
@@ -118,8 +128,9 @@ th{
     border: none !important;
   }
 
-  td{
+  :host ::ng-deep .tableAbonos td{
     border: 1px solid black !important; //bordes negros de prueba
+    width: auto;
   }
 
 .inputs{
