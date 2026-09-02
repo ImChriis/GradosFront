@@ -191,12 +191,13 @@ private emitAbonos() {
   this.actualizarTotalesGlobales();
 }
 
-  private actualizarTotalesGlobales() {
-    const totalAbonosMemoria = this.pendingAbonos.reduce((sum, a) => sum + Number(a.MnDeposito ?? 0), 0);
-    this.montoPagado = this.montoPagadoBase + totalAbonosMemoria;
-    this.montoSaldo = Math.max(0, this.montoContrato - this.montoPagado);
-    this.actualizarEstadoCierre();
-  }
+ private actualizarTotalesGlobales() {
+  // Mantener el monto pagado fijado en el valor base de la BD (sin sumar memoria en tiempo real)
+  this.montoPagado = this.montoPagadoBase;
+  this.montoSaldo = Math.max(0, this.montoContrato - this.montoPagado);
+  
+  this.actualizarEstadoCierre();
+}
 
 selectRecibo(recibo: any) {
   // Asegurar conversión numérica
@@ -353,82 +354,104 @@ selectRecibo(recibo: any) {
     });
   }
 
-  facturar() {
-    const montoReciboActual = Number(this.montoSelectedRecibo ?? 0);
-    const tieneAbonos = this.pendingAbonos.length > 0;
+facturar() {
+  const montoReciboActual = Number(this.montoSelectedRecibo ?? 0);
+  const tieneAbonos = this.pendingAbonos.length > 0;
 
-    if (montoReciboActual <= 0 && !tieneAbonos) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Recibo en $0',
-        detail: 'No puedes facturar un recibo sin monto o sin abonos registrados.'
-      });
-      return;
-    }
-
-    this.guardarRecibosYAbonosEnBD().pipe(
-      concatMap(() => {
-        return this.actContractService.getPaymentDataByUser(
-          this.codigoActo,
-          String(this.NoContrato),
-          String(this.NuCedula)
-        );
-      }),
-      concatMap((resPayment: any) => {
-        const data = resPayment?.data?.[0] ?? resPayment;
-        this.MnInicial = Number(data?.MnInicial ?? this.MnInicial);
-
-        const payload = {
-          MnContrato: this.montoContrato,
-          MnDescuento: this.descuento,
-          MnInicial: this.MnInicial,
-          MnPagado: this.montoPagado,
-          MnSaldo: this.montoSaldo
-        };
-
-        return this.actContractService.updateTotals(this.codigoActo, this.NuCedula, payload);
-      })
-    ).subscribe({
-      next: (resUpdate: any) => {
-        const data = resUpdate?.data?.[0] ?? resUpdate;
-        this.montoContrato = Number(data?.MnContrato ?? this.montoContrato);
-        this.descuento = Number(data?.MnDescuento ?? this.descuento);
-        this.MnInicial = Number(data?.MnInicial ?? this.MnInicial);
-        this.montoPagado = Number(data?.MnPagado ?? this.montoPagado);
-        this.montoSaldo = Number(data?.MnSaldo ?? this.montoSaldo);
-
-        this.montoPagadoBase = this.montoPagado;
-        this.montoSaldoBase = this.montoSaldo;
-
-        this.pendingRecibos = [];
-        this.pendingAbonos = [];
-
-        this.loadInitialPaymentData();
-
-        this.puedeCerrar = true;
-        this.facturado = true;
-
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Facturación',
-          detail: 'Se ha actualizado el pago correctamente'
-        });
-
-        const reciboAImprimir = Number(this.selectedRecibo || this.NoRecibo);
-        if (reciboAImprimir && reciboAImprimir > 0) {
-          this.print(reciboAImprimir);
-        }
-      },
-      error: (err) => {
-        console.error('Error durante la facturación:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Ocurrió un error al procesar la facturación'
-        });
-      }
+  if (montoReciboActual <= 0 && !tieneAbonos) {
+    this.messageService.add({
+      severity: 'warn',
+      summary: 'Recibo en $0',
+      detail: 'No puedes facturar un recibo sin monto o sin abonos registrados.'
     });
+    return;
   }
+
+  // 1. Calcular la suma total de los abonos pendientes en memoria
+  const totalAbonosNuevos = this.pendingAbonos.reduce(
+    (acc, abono) => acc + Number(abono.MnDeposito ?? 0), 
+    0
+  );
+
+  // 2. Calcular el nuevo monto pagado real (Lo que había en BD + abonos nuevos)
+  const nuevoMontoPagado = this.montoPagadoBase + totalAbonosNuevos;
+  const nuevoMontoSaldo = Math.max(0, this.montoContrato - nuevoMontoPagado);
+
+  this.guardarRecibosYAbonosEnBD().pipe(
+    concatMap(() => {
+      return this.actContractService.getPaymentDataByUser(
+        this.codigoActo,
+        String(this.NoContrato),
+        String(this.NuCedula)
+      );
+    }),
+    concatMap((resPayment: any) => {
+      const data = resPayment?.data?.[0] ?? resPayment;
+      this.MnInicial = Number(data?.MnInicial ?? this.MnInicial);
+
+      // 3. Enviar al backend los TOTALES CALCULADOS CON LOS NUEVOS ABONOS
+      const payload = {
+        MnContrato: this.montoContrato,
+        MnDescuento: this.descuento,
+        MnInicial: this.MnInicial,
+        MnPagado: nuevoMontoPagado,
+        MnSaldo: nuevoMontoSaldo
+      };
+
+      return this.actContractService.updateTotals(this.codigoActo, this.NuCedula, payload);
+    })
+  ).subscribe({
+    next: (resUpdate: any) => {
+      const data = resUpdate?.data?.[0] ?? resUpdate;
+
+      // 4. Actualizar variables locales con la respuesta final o con el cálculo local
+      this.montoContrato = Number(data?.MnContrato ?? this.montoContrato);
+      this.descuento = Number(data?.MnDescuento ?? this.descuento);
+      this.MnInicial = Number(data?.MnInicial ?? this.MnInicial);
+
+      this.montoPagado = Number(data?.MnPagado ?? nuevoMontoPagado);
+      this.montoSaldo = Number(data?.MnSaldo ?? nuevoMontoSaldo);
+
+      // 5. Actualizar los valores base para que coincidan con la BD
+      this.montoPagadoBase = this.montoPagado;
+      this.montoSaldoBase = this.montoSaldo;
+
+      // 6. Pasar los abonos pendientes a las listas definitivas de BD
+      this.recibosBD = [...this.recibosBD, ...this.pendingRecibos];
+      this.abonosBD = [...this.abonosBD, ...this.pendingAbonos];
+
+      // 7. Limpiar temporales en memoria
+      this.pendingRecibos = [];
+      this.pendingAbonos = [];
+
+      // Refrescar observables locales
+      this.emitRecibos();
+      this.emitAbonos();
+
+      this.puedeCerrar = true;
+      this.facturado = true;
+
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Facturación',
+        detail: 'Se ha actualizado el pago correctamente'
+      });
+
+      const reciboAImprimir = Number(this.selectedRecibo || this.NoRecibo);
+      if (reciboAImprimir && reciboAImprimir > 0) {
+        this.print(reciboAImprimir);
+      }
+    },
+    error: (err) => {
+      console.error('Error durante la facturación:', err);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Ocurrió un error al procesar la facturación'
+      });
+    }
+  });
+}
 
   private guardarRecibosYAbonosEnBD(): Observable<any> {
     if (this.pendingRecibos.length === 0) return of(null);

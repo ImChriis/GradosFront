@@ -1,4 +1,8 @@
-<form [formGroup]="generateClosingForm" >
+<form [formGroup]="generateClosingForm">
+    @if(isLoading()) {
+        <app-loader [isLoading]="isLoading()"></app-loader>
+    }
+
     <div class="container">
         <fieldset class="group">
             <legend class="title">Fecha del Cierre</legend>

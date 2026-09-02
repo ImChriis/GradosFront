@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { OnlyNumbersDirective } from '../../../../@core/directives/only-numbers.directive';
 import { ReportsService } from '../../../../@core/services/reports.service';
@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { PdfViewerComponent } from '../../../../@core/components/pdf-viewer/pdf-viewer.component';
 import { SettingsService } from '../../../../@core/services/settings.service';
+import { LoaderComponent } from '../../../../@core/components/loader/loader.component';
 
 
 @Component({
@@ -14,7 +15,8 @@ import { SettingsService } from '../../../../@core/services/settings.service';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    OnlyNumbersDirective
+    OnlyNumbersDirective,
+    LoaderComponent
   ],
   templateUrl: './generate-closing.component.html',
   styleUrl: './generate-closing.component.scss'
@@ -29,6 +31,7 @@ export class GenerateClosingComponent implements OnInit, OnDestroy{
   ref!: DynamicDialogRef;
   nombre!: string;
   NoCierre!: string;
+  isLoading = signal(false);
 
   ngOnInit(){
     const user = localStorage.getItem('User');
@@ -70,6 +73,8 @@ export class GenerateClosingComponent implements OnInit, OnDestroy{
         });
         return;
     }
+
+    this.isLoading.set(true);
 
     // 3. Preparar el Payload exacto que espera la API Backend
     const payload = {
@@ -119,6 +124,7 @@ export class GenerateClosingComponent implements OnInit, OnDestroy{
           });
 
           this.ref.onClose.subscribe(() => {
+            this.isLoading.set(false);
             this.cleanupBlob();
           });
         } 
@@ -135,7 +141,10 @@ export class GenerateClosingComponent implements OnInit, OnDestroy{
           document.body.removeChild(a);
 
           // Liberar recursos de memoria tras descargar
-          setTimeout(() => this.cleanupBlob(), 1000);
+          setTimeout(() => {
+            this.isLoading.set(false);
+            this.cleanupBlob()
+          }, 1000);
         }
       },
       error: (err) => {

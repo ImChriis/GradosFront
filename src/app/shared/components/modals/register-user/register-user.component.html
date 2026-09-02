@@ -1,6 +1,6 @@
 <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
     <div class="inputGroup2">
-        <label for="cedula">CÓDIGO/CEDULA/RIF</label>
+        <label for="cedula">CEDULA</label>
         <input type="text" id="cedula" name="cedula" appUppercase formControlName="nucedula">
     </div>
 
@@ -14,13 +14,13 @@
         <textarea name="direccion" id="direccion" formControlName="txdireccion"></textarea>
     </div>
 
-    <div class="inputGroup2">
+    <!-- <div class="inputGroup2">
         <label for="hab">TELEF. HAB</label>
         <input type="text" id="hab" name="hab" appUppercase formControlName="txtelefono">
-    </div>
+    </div> -->
 
     <div class="inputGroup2">
-        <label for="movil">TELEF. MOVIL</label>
+        <label for="movil">TELÉFONO MOVIL</label>
         <input type="text" id="movil" name="movil" appUppercase formControlName="txcelular">
     </div>
 

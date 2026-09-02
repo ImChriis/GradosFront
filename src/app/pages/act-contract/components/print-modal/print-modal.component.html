@@ -1,4 +1,8 @@
 <div class="container">
+    @if (isLoading()) {
+    <app-loader [isLoading]="isLoading()"></app-loader>
+  }
+
     <fieldset class="group">
         <legend class="title">Destino</legend>
 

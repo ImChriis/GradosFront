@@ -29,7 +29,7 @@ export class AddContractComponent implements OnInit{
   codigoActo = this.dialogConfig.data.CodigoActo;
   MnCosto = this.dialogConfig.data.MnCosto;
   selectedUser = this.dialogConfig.data.selectedUser;
-  edit = this.dialogConfig.data.edit;
+  edit = this.dialogConfig.data.edit || false;
   nuCedula = this.selectedUser?.NuCedula ?? '';
   ref: DynamicDialogRef | undefined;
   NoContrato: string | null = null;
@@ -55,7 +55,9 @@ export class AddContractComponent implements OnInit{
     this.settingsService.getSettings().subscribe({
       next: (res: any) => {
         this.NoContrato = res.NoContrato;
-        this.actForm.patchValue({ NoContrato: this.NoContrato });
+        if(this.edit === false){
+          this.actForm.patchValue({ NoContrato: this.NoContrato });
+        }
       }
     })
 
