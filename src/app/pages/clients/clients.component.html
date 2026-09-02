@@ -135,7 +135,7 @@
               <i class="pi pi-save save"></i>
             </div>
 
-            <div class="icon" title="Eliminar" (click)="onDelete()"  [class.disabled]="!selectedClient" >
+            <div class="icon" title="Eliminar" (click)="showConfirmModal(selectedClient)"  [class.disabled]="!selectedClient" >
               <i class="pi pi-trash delete"></i>
             </div>
           </div>

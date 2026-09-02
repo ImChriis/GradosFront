@@ -171,4 +171,8 @@ export class AddContractComponent implements OnInit{
     const control = this.actForm.get(controlName);
     return !!(control && control.invalid && (control.dirty || control.touched));
   }
+
+  close(){
+    this.dialogRef.close();
+  }
 }

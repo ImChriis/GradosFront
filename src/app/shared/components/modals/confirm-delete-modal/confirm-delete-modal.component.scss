@@ -1,0 +1,49 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.message{
+    text-align: center;
+    font-size: 1rem;
+}
+
+
+   .buttons{
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    width: 100%;
+  }
+
+.confirm {
+    background-color:  #2563EB !important;
+    height: 45px;
+    width: 30%;
+    color: white !important;
+    border: 1px solid #475569 !important;
+    &:hover {
+     background-color: transparent !important;
+     color: white !important;
+    //  opacity: 0.9;
+     background-color: #1D4ED8 !important;
+     cursor: pointer;
+    }
+  }
+
+
+  .cancel{
+    background-color: #f16363 !important;
+    border-color: #f16363 !important;
+    height: 45px;
+    width: 30%;
+    color: white !important;
+    font-family: none  !important;
+    border: none;
+    &:hover{
+      opacity: 0.9;
+      color: white !important;
+      cursor: pointer;
+    }
+  }

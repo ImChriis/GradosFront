@@ -377,7 +377,7 @@ onInstitutionChange(event: any) {
         width: '50vw',
         modal: true,
         data: { CodigoActo, MnCosto: formData.MnCosto },
-        closable: true,
+        closable: false,
         breakpoints: {
           '960px': '75vw',
           '640px': '90vw'
@@ -539,7 +539,7 @@ editUser(user: any, CodigoActo: number | null, MnCosto: number | null){
         width: '50vw',
         modal: true,
         data: { CodigoActo, MnCosto: formData.MnCosto, edit: true, selectedUser: this.selectActUser },
-        closable: true,
+        closable: false,
         breakpoints: {
           '960px': '75vw',
           '640px': '90vw'

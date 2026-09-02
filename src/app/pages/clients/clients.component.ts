@@ -11,6 +11,9 @@ import { MessageService } from 'primeng/api';
 import { UppercaseDirective } from '../../@core/directives/uppercase.directive';
 import { OnlyNumbersDirective } from '../../@core/directives/only-numbers.directive';
 import { LoaderComponent } from '../../@core/components/loader/loader.component';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { ConfirmDeleteModalComponent } from '../../shared/components/modals/confirm-delete-modal/confirm-delete-modal.component';
+import { ConfirmModalComponent } from '../../shared/components/modals/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-clients',
@@ -31,6 +34,8 @@ export class ClientsComponent implements OnInit{
   private clientsService = inject(ClientsService);
   private fb = inject(FormBuilder);
   private messageService = inject(MessageService);
+  private dialogService = inject(DialogService);
+  ref!: DynamicDialogRef;
   isModalOpen = false;
   clients$!: Observable<Client[]>;
   selectedClient: Client | null = null;
@@ -159,4 +164,46 @@ export class ClientsComponent implements OnInit{
   onDelete(){
     
   }
+
+  showConfirmModal(cliente: any) {
+  this.ref = this.dialogService.open(ConfirmDeleteModalComponent, {
+    header: 'Confirmar Eliminación',
+    width: '40vw',
+    modal: true,
+    data: {
+      message: `¿Estás seguro de que deseas eliminar al cliente ${cliente.txnombre}? Esta acción borrará también todos sus registros asociados.`,
+      cliente: cliente
+    }
+  });
+
+  this.ref.onClose.subscribe((confirmed: boolean) => {
+    if (confirmed) {
+      this.executeDeleteClient(cliente.id);
+    }
+  });
+}
+
+private executeDeleteClient(id: number) {
+  this.clientsService.deleteUser(id).subscribe({
+    next: () => {
+      this.messageService.add({ 
+        severity: 'success', 
+        summary: 'Éxito', 
+        detail: 'Cliente y registros asociados eliminados correctamente' 
+      });
+      this.onCancel();
+    },
+    error: (err) => {
+      // Captura el mensaje retornado por el backend si existe
+      const errorMessage = err.error?.error || 'Ocurrió un error al eliminar el cliente';
+      
+      this.messageService.add({ 
+        severity: 'error', 
+        summary: 'Error', 
+        detail: errorMessage 
+      });
+    }
+  });
+}
+
 }

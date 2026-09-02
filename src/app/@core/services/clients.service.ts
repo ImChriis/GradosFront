@@ -39,4 +39,10 @@ export class ClientsService {
   getClientByCedula(nucedula: number){
     return this.http.get(`${this.api}/clients/${nucedula}`);
   }
+
+  deleteUser(id: number){
+    return this.http.delete(`${this.api}/clients/delete/${id}`).pipe(
+      tap(() => this.refresh$.next())
+    )
+  }
 }
