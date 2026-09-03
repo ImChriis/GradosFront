@@ -148,7 +148,7 @@ export class PaymentsComponent implements OnInit {
       }
     });
 
-    this.actContractService.getRecibosByUserContract(this.NoContrato, this.NuCedula).subscribe({
+    this.actContractService.getRecibosByUserContract(this.NoContrato, this.codigoActo, this.NuCedula).subscribe({
       next: (res: any) => {
         this.recibosBD = Array.isArray(res) ? res : (res?.data ?? []);
         this.totalRecibos = this.recibosBD.reduce((acc, r) => acc + Number(r.mnrecibo ?? 0), 0);

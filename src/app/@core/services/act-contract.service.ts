@@ -88,8 +88,8 @@ export class ActContractService {
     return this.http.get<any>(`${this.api}/actContracts/${CodigoActo}/${NuCedula}/${NoContrato}`);
   }
   
-  getRecibosByUserContract(NoContrato: number, NuCedula: number){
-    return this.http.get<any>(`${this.api}/actContracts/${NoContrato}/${NuCedula}`).pipe(
+  getRecibosByUserContract(NoContrato: number, CodigoActo: number, NuCedula: number){
+    return this.http.get<any>(`${this.api}/actContracts/${NoContrato}/${CodigoActo}/${NuCedula}`).pipe(
       tap((res) => {
         console.log("recibos recibidos:", res);
       }),
