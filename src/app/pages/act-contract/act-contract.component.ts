@@ -413,7 +413,7 @@ onInstitutionChange(event: any) {
     }else{
       this.ref = this.dialogService.open(PaymentsComponent, {
           header: 'Pagos',
-          width: '62%',
+          width: '90%',
           height: 'auto',
           modal: true,
           closeOnEscape: false,

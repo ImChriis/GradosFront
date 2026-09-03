@@ -171,19 +171,18 @@
                   [rows]="5"
                   [scrollable]="true"
                   scrollHeight="flex"
-                  scrollHeight="200px"
+                  scrollHeight="160px"
                   styles="mr-2"
                   [tableStyle]="{'min-width': '10rem'}"
                    [globalFilterFields]="['Nombre']"
                   >
 
                   <ng-template pTemplate="caption" let-event>
-                    <div class="flex-row">
-                      <div class="p-toolbar-group-end">
-                        <span class="p-input-icon-left ml-auto">
-                          <i class=""></i>
+                    <div class="flex-row2">
+                      <div class="p-toolbar-group-end SearchDiv">
+                        <span class="p-input-icon-left ml-auto searchSpan">
                           <input
-                          class="search"
+                          class="searchInput"
                           #searchInput
                           pInputText
                           type="text"
@@ -249,7 +248,7 @@
             <div class="actInputs">
               <div class="inputGroup">
                 <label for="capacity">TOTAL</label>
-                <input type="text" id="capacity" readonly name="capacity" appOnlyNumbers appUppercase [value]="total | currency:'Bs. ':'symbol':'1.2-2'" class="input">
+                <input type="text" id="capacity" readonly name="capacity" appOnlyNumbers appUppercase [value]="total" class="input">
               </div>
 
               <div class="inputGroup">
@@ -272,12 +271,12 @@
           <div class="inputGroup4 pago">
             <div class="inputGroup">
               <label for="capacity">PAGADO</label>
-              <input type="text" id="capacity" readonly name="capacity" appOnlyNumbers appUppercase [value]="totalPaid | currency: 'Bs. ': 'symbol':'1.2-2' " >
+              <input type="text" id="capacity" readonly name="capacity" appOnlyNumbers appUppercase [value]="totalPaid" >
             </div>
 
             <div class="inputGroup">
               <label for="capacity">SALDO</label>
-              <input type="text" id="capacity" readonly name="capacity" appOnlyNumbers appUppercase [value]="saldo | currency:'Bs. ':'symbol':'1.2-2'" class="input">
+              <input type="text" id="capacity" readonly name="capacity" appOnlyNumbers appUppercase [value]="saldo" class="input">
             </div>
 
             <div class="checkbox-container">
@@ -288,7 +287,7 @@
             </div>
           </div>
 
-          <div class="inputGroup3">
+          <div class="inputGroup3 btnsGrid">
             <div class="icon2 recalculate" title="Recalcular" (click)="recalculateModal(this.codigoActo, MnCosto)">
                 <i class="pi pi-calculator"></i>
               </div>
