@@ -68,7 +68,6 @@ export class PaymentsComponent implements OnInit {
   montoSaldoBase: number = 0;
   email!: string;
 
-  // Listas persistidas desde BD + Listas temporales en memoria
   private recibosBD: any[] = [];
   private abonosBD: any[] = [];
   private pendingRecibos: any[] = [];
@@ -77,7 +76,6 @@ export class PaymentsComponent implements OnInit {
   private recibosSubject = new BehaviorSubject<any[]>([]);
   private abonosSubject = new BehaviorSubject<any[]>([]);
 
-  // Observables conectados ÚNICAMENTE a los Subjects
   recibos$: Observable<any[]> = this.recibosSubject.asObservable();
   abonos$: Observable<any[]> = this.abonosSubject.asObservable();
 
@@ -115,7 +113,6 @@ export class PaymentsComponent implements OnInit {
 
     this.reciboPagoForm.disable();
 
-    // Cargar datos iniciales desde la BD
     this.loadInitialPaymentData();
 
     this.banksService.getMetodoPago().subscribe({
@@ -132,7 +129,6 @@ export class PaymentsComponent implements OnInit {
   }
 
   private loadInitialPaymentData() {
-    // 1. Cargar estado fresco del contrato/usuario
     this.actContractService.getPaymentDataByUser(
       this.codigoActo,
       String(this.NoContrato),
@@ -152,7 +148,6 @@ export class PaymentsComponent implements OnInit {
       }
     });
 
-    // 2. Cargar Recibos ya guardados en BD
     this.actContractService.getRecibosByUserContract(this.NoContrato).subscribe({
       next: (res: any) => {
         this.recibosBD = Array.isArray(res) ? res : (res?.data ?? []);
@@ -167,81 +162,70 @@ export class PaymentsComponent implements OnInit {
     this.recibosSubject.next(todosLosRecibos);
   }
 
-private emitAbonos() {
-  const targetRecibo = Number(this.selectedRecibo);
+  private emitAbonos() {
+    const targetRecibo = Number(this.selectedRecibo);
 
-  // Si abonosBD ya viene filtrado desde el servidor por ese NoRecibo, 
-  // validamos si existe a.NoRecibo; si no viene, incluimos el elemento directamente.
-  const abonosBDFiltrados = this.abonosBD.filter(
-    a => a.NoRecibo !== undefined ? Number(a.NoRecibo) === targetRecibo : true
-  );
+    const abonosBDFiltrados = this.abonosBD.filter(
+      a => a.NoRecibo !== undefined ? Number(a.NoRecibo) === targetRecibo : true
+    );
 
-  const abonosMemoriaFiltrados = this.pendingAbonos.filter(
-    a => Number(a.NoRecibo) === targetRecibo
-  );
+    const abonosMemoriaFiltrados = this.pendingAbonos.filter(
+      a => Number(a.NoRecibo) === targetRecibo
+    );
 
-  const todosLosAbonos = [...abonosBDFiltrados, ...abonosMemoriaFiltrados];
+    const todosLosAbonos = [...abonosBDFiltrados, ...abonosMemoriaFiltrados];
 
-  this.abonosSubject.next(todosLosAbonos);
+    this.abonosSubject.next(todosLosAbonos);
 
-  this.totalAbonos = todosLosAbonos.reduce((total, a) => total + Number(a.MnDeposito ?? 0), 0);
-  const montoSeleccionado = Number(this.montoSelectedRecibo ?? 0);
-  this.saldoRestante = Math.max(0, montoSeleccionado - this.totalAbonos);
+    this.totalAbonos = todosLosAbonos.reduce((total, a) => total + Number(a.MnDeposito ?? 0), 0);
+    const montoSeleccionado = Number(this.montoSelectedRecibo ?? 0);
+    this.saldoRestante = Math.max(0, montoSeleccionado - this.totalAbonos);
 
-  this.actualizarTotalesGlobales();
-}
+    this.actualizarTotalesGlobales();
+  }
 
- private actualizarTotalesGlobales() {
-  // Mantener el monto pagado fijado en el valor base de la BD (sin sumar memoria en tiempo real)
-  this.montoPagado = this.montoPagadoBase;
-  this.montoSaldo = Math.max(0, this.montoContrato - this.montoPagado);
-  
-  this.actualizarEstadoCierre();
-}
+  private actualizarTotalesGlobales() {
+    this.montoPagado = this.montoPagadoBase;
+    this.montoSaldo = Math.max(0, this.montoContrato - this.montoPagado);
+    this.actualizarEstadoCierre();
+  }
 
-selectRecibo(recibo: any) {
-  // Asegurar conversión numérica
-  const numRecibo = Number(recibo.NoRecibo);
-  this.NoRecibo = numRecibo;
-  this.selectedRecibo = numRecibo;
-  this.fechaSelectedRecibo = recibo.ferecibo;
-  this.observacion = recibo.TxConcepRec ?? '';
-  this.montoSelectedRecibo = Number(recibo.mnrecibo ?? 0);
+  selectRecibo(recibo: any) {
+    const numRecibo = Number(recibo.NoRecibo);
+    this.NoRecibo = numRecibo;
+    this.selectedRecibo = numRecibo;
+    this.fechaSelectedRecibo = recibo.ferecibo;
+    this.observacion = recibo.TxConcepRec ?? '';
+    this.montoSelectedRecibo = Number(recibo.mnrecibo ?? 0);
 
-  this.isAdding = false;
-  this.reciboPagoForm.enable();
+    this.isAdding = false;
+    this.reciboPagoForm.enable();
 
-  // Limpiar lista visualmente mientras carga
-  this.abonosBD = [];
-  this.abonosSubject.next([]);
+    this.abonosBD = [];
+    this.abonosSubject.next([]);
 
-  // Petición al backend
-  this.actContractService.getAbonosByUserContract(
-    String(this.NoContrato),
-    String(this.NuCedula),
-    numRecibo
-  ).subscribe({
-    next: (res: any) => {
-      console.log('Respuesta de abonos:', res);
-
-      // Asignación correcta evaluando la respuesta del backend
-      if (Array.isArray(res)) {
-        this.abonosBD = res;
-      } else if (res && Array.isArray(res.data)) {
-        this.abonosBD = res.data; // ✅ Extrae el arreglo correctamente
-      } else {
+    this.actContractService.getAbonosByUserContract(
+      String(this.NoContrato),
+      String(this.NuCedula),
+      numRecibo
+    ).subscribe({
+      next: (res: any) => {
+        if (Array.isArray(res)) {
+          this.abonosBD = res;
+        } else if (res && Array.isArray(res.data)) {
+          this.abonosBD = res.data;
+        } else {
+          this.abonosBD = [];
+        }
+        this.emitAbonos();
+      },
+      error: (err) => {
+        console.error('Error al obtener abonos del recibo:', err);
         this.abonosBD = [];
+        this.emitAbonos();
       }
-
-      this.emitAbonos();
-    },
-    error: (err) => {
-      console.error('Error al obtener abonos del recibo:', err);
-      this.abonosBD = [];
-      this.emitAbonos();
-    }
-  });
-}
+    });
+  }
 
   add() {
     if (this.bloquearSiReciboPendiente('Debes terminar primero el proceso de facturación antes de agregar un nuevo recibo')) {
@@ -259,15 +243,18 @@ selectRecibo(recibo: any) {
       el?.focus();
     }, 0);
 
+    // Consultamos la tabla de configuración únicamente para precargar una vista previa inicial
     this.settingsService.getSettings().subscribe({
       next: (res: any) => {
-        const NoRecibo = Number(res.NoRecibo ?? 0) + 1;
-        this.NoRecibo = NoRecibo;
-        this.selectedRecibo = NoRecibo;
+        const NoReciboSugerido = Number(res.NoRecibo ?? 0);
+        this.NoRecibo = NoReciboSugerido;
+        this.selectedRecibo = NoReciboSugerido;
         this.montoSelectedRecibo = 0;
         this.fechaSelectedRecibo = new Date().toISOString();
         this.observacion = '';
         this.isAdding = true;
+
+        this.reciboPagoForm.patchValue({ NoRecibo: NoReciboSugerido });
 
         this.abonosBD = [];
         this.emitAbonos();
@@ -301,7 +288,6 @@ selectRecibo(recibo: any) {
       return;
     }
 
-    // CREAR O ACTUALIZAR RECIBO EN MEMORIA
     if (this.isAdding || !this.recibosBD.some(r => Number(r.NoRecibo) === Number(this.selectedRecibo))) {
       let reciboExistente = this.pendingRecibos.find(r => Number(r.NoRecibo) === Number(this.selectedRecibo));
 
@@ -327,7 +313,6 @@ selectRecibo(recibo: any) {
       this.isAdding = false;
     }
 
-    // REGISTRAR ABONO EN MEMORIA
     const nuevoAbono = {
       NoRecibo: this.selectedRecibo,
       NoContrato: this.NoContrato,
@@ -341,11 +326,9 @@ selectRecibo(recibo: any) {
 
     this.pendingAbonos.push(nuevoAbono);
 
-    // Emitir cambios a los observadores para refrescar tablas al instante
     this.emitRecibos();
     this.emitAbonos();
 
-    // Limpiar campos de transacción
     this.reciboPagoForm.patchValue({
       MaFormPag: '',
       TxBanco: '',
@@ -354,104 +337,124 @@ selectRecibo(recibo: any) {
     });
   }
 
-facturar() {
-  const montoReciboActual = Number(this.montoSelectedRecibo ?? 0);
-  const tieneAbonos = this.pendingAbonos.length > 0;
+  facturar() {
+    const montoReciboActual = Number(this.montoSelectedRecibo ?? 0);
+    const tieneAbonos = this.pendingAbonos.length > 0;
 
-  if (montoReciboActual <= 0 && !tieneAbonos) {
-    this.messageService.add({
-      severity: 'warn',
-      summary: 'Recibo en $0',
-      detail: 'No puedes facturar un recibo sin monto o sin abonos registrados.'
-    });
-    return;
-  }
-
-  // 1. Calcular la suma total de los abonos pendientes en memoria
-  const totalAbonosNuevos = this.pendingAbonos.reduce(
-    (acc, abono) => acc + Number(abono.MnDeposito ?? 0), 
-    0
-  );
-
-  // 2. Calcular el nuevo monto pagado real (Lo que había en BD + abonos nuevos)
-  const nuevoMontoPagado = this.montoPagadoBase + totalAbonosNuevos;
-  const nuevoMontoSaldo = Math.max(0, this.montoContrato - nuevoMontoPagado);
-
-  this.guardarRecibosYAbonosEnBD().pipe(
-    concatMap(() => {
-      return this.actContractService.getPaymentDataByUser(
-        this.codigoActo,
-        String(this.NoContrato),
-        String(this.NuCedula)
-      );
-    }),
-    concatMap((resPayment: any) => {
-      const data = resPayment?.data?.[0] ?? resPayment;
-      this.MnInicial = Number(data?.MnInicial ?? this.MnInicial);
-
-      // 3. Enviar al backend los TOTALES CALCULADOS CON LOS NUEVOS ABONOS
-      const payload = {
-        MnContrato: this.montoContrato,
-        MnDescuento: this.descuento,
-        MnInicial: this.MnInicial,
-        MnPagado: nuevoMontoPagado,
-        MnSaldo: nuevoMontoSaldo
-      };
-
-      return this.actContractService.updateTotals(this.codigoActo, this.NuCedula, payload);
-    })
-  ).subscribe({
-    next: (resUpdate: any) => {
-      const data = resUpdate?.data?.[0] ?? resUpdate;
-
-      // 4. Actualizar variables locales con la respuesta final o con el cálculo local
-      this.montoContrato = Number(data?.MnContrato ?? this.montoContrato);
-      this.descuento = Number(data?.MnDescuento ?? this.descuento);
-      this.MnInicial = Number(data?.MnInicial ?? this.MnInicial);
-
-      this.montoPagado = Number(data?.MnPagado ?? nuevoMontoPagado);
-      this.montoSaldo = Number(data?.MnSaldo ?? nuevoMontoSaldo);
-
-      // 5. Actualizar los valores base para que coincidan con la BD
-      this.montoPagadoBase = this.montoPagado;
-      this.montoSaldoBase = this.montoSaldo;
-
-      // 6. Pasar los abonos pendientes a las listas definitivas de BD
-      this.recibosBD = [...this.recibosBD, ...this.pendingRecibos];
-      this.abonosBD = [...this.abonosBD, ...this.pendingAbonos];
-
-      // 7. Limpiar temporales en memoria
-      this.pendingRecibos = [];
-      this.pendingAbonos = [];
-
-      // Refrescar observables locales
-      this.emitRecibos();
-      this.emitAbonos();
-
-      this.puedeCerrar = true;
-      this.facturado = true;
-
+    if (montoReciboActual <= 0 && !tieneAbonos) {
       this.messageService.add({
-        severity: 'success',
-        summary: 'Facturación',
-        detail: 'Se ha actualizado el pago correctamente'
+        severity: 'warn',
+        summary: 'Recibo en $0',
+        detail: 'No puedes facturar un recibo sin monto o sin abonos registrados.'
       });
-
-      const reciboAImprimir = Number(this.selectedRecibo || this.NoRecibo);
-      if (reciboAImprimir && reciboAImprimir > 0) {
-        this.print(reciboAImprimir);
-      }
-    },
-    error: (err) => {
-      console.error('Error durante la facturación:', err);
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Ocurrió un error al procesar la facturación'
-      });
+      return;
     }
-  });
-}
+
+    const totalAbonosNuevos = this.pendingAbonos.reduce(
+      (acc, abono) => acc + Number(abono.MnDeposito ?? 0),
+      0
+    );
+
+    const nuevoMontoPagado = this.montoPagadoBase + totalAbonosNuevos;
+    const nuevoMontoSaldo = Math.max(0, this.montoContrato - nuevoMontoPagado);
+
+    this.guardarRecibosYAbonosEnBD().pipe(
+      concatMap(() => {
+        return this.actContractService.getPaymentDataByUser(
+          this.codigoActo,
+          String(this.NoContrato),
+          String(this.NuCedula)
+        );
+      }),
+      concatMap((resPayment: any) => {
+        const data = resPayment?.data?.[0] ?? resPayment;
+        this.MnInicial = Number(data?.MnInicial ?? this.MnInicial);
+
+        const payload = {
+          MnContrato: this.montoContrato,
+          MnDescuento: this.descuento,
+          MnInicial: this.MnInicial,
+          MnPagado: nuevoMontoPagado,
+          MnSaldo: nuevoMontoSaldo
+        };
+
+        return this.actContractService.updateTotals(this.codigoActo, this.NuCedula, payload);
+      })
+    ).subscribe({
+      next: (resUpdate: any) => {
+        const data = resUpdate?.data?.[0] ?? resUpdate;
+
+        this.montoContrato = Number(data?.MnContrato ?? this.montoContrato);
+        this.descuento = Number(data?.MnDescuento ?? this.descuento);
+        this.MnInicial = Number(data?.MnInicial ?? this.MnInicial);
+
+        this.montoPagado = Number(data?.MnPagado ?? nuevoMontoPagado);
+        this.montoSaldo = Number(data?.MnSaldo ?? nuevoMontoSaldo);
+
+        this.montoPagadoBase = this.montoPagado;
+        this.montoSaldoBase = this.montoSaldo;
+
+        this.recibosBD = [...this.recibosBD, ...this.pendingRecibos];
+        this.abonosBD = [...this.abonosBD, ...this.pendingAbonos];
+
+        const numReciboFinal = Number(this.selectedRecibo || this.NoRecibo);
+
+        this.pendingRecibos = [];
+        this.pendingAbonos = [];
+
+        this.emitRecibos();
+        this.emitAbonos();
+
+        this.puedeCerrar = true;
+        this.facturado = true;
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Facturación Exitosa',
+          detail: `Se guardó el recibo #${numReciboFinal} correctamente`
+        });
+
+        if (numReciboFinal && numReciboFinal > 0) {
+          this.print(numReciboFinal);
+        }
+      },
+      error: (err) => {
+        console.error('Error durante la facturación:', err);
+
+        // Si el backend responde con conflicto de duplicidad (409)
+        if (err.status === 409 && err.error?.code === 'RECIBO_DUPLICADO') {
+          const nuevoNumero = err.error.sugerido;
+
+          if (nuevoNumero) {
+            // Reasignamos automáticamente el nuevo correlativo asignado por el servidor
+            this.NoRecibo = nuevoNumero;
+            this.selectedRecibo = nuevoNumero;
+
+            this.pendingRecibos.forEach(r => r.NoRecibo = nuevoNumero);
+            this.pendingAbonos.forEach(a => a.NoRecibo = nuevoNumero);
+
+            this.reciboPagoForm.patchValue({ NoRecibo: nuevoNumero });
+
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Correlativo Ajustado',
+              detail: `El número original ya había sido asignado. Reintentando automáticamente con el recibo #${nuevoNumero}...`
+            });
+
+            // Reintentamos automáticamente la facturación con el nuevo correlativo sin cancelar nada
+            this.facturar();
+            return;
+          }
+        }
+
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.error?.message || 'Ocurrió un error al procesar la facturación'
+        });
+      }
+    });
+  }
 
   private guardarRecibosYAbonosEnBD(): Observable<any> {
     if (this.pendingRecibos.length === 0) return of(null);

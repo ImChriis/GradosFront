@@ -166,7 +166,7 @@
                 actUsers$ | async
                 ; as state) { -->
                 <p-table
-                  #dt1
+                  #dt2
                   [value]="actUsers$ | async"
                   [rows]="5"
                   [scrollable]="true"
@@ -174,7 +174,26 @@
                   scrollHeight="200px"
                   styles="mr-2"
                   [tableStyle]="{'min-width': '10rem'}"
+                   [globalFilterFields]="['Nombre']"
                   >
+
+                  <ng-template pTemplate="caption" let-event>
+                    <div class="flex-row">
+                      <div class="p-toolbar-group-end">
+                        <span class="p-input-icon-left ml-auto">
+                          <i class=""></i>
+                          <input
+                          class="search"
+                          #searchInput
+                          pInputText
+                          type="text"
+                          placeholder="BUSCAR"
+                          (input)="dt2.filterGlobal(searchInput.value, 'contains')"
+                        />
+                          </span>
+                      </div>
+                    </div>
+                    </ng-template>
                     <ng-template pTemplate="header">
                       <tr>
                         <th style="min-width: 1rem;" class="border">
