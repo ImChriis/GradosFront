@@ -45,13 +45,11 @@ export class PrintModalComponent implements OnInit, OnDestroy {
     const bodyRaw = '';
     const body = { emailCliente: this.email };
 
-    let serviceCall = (type === 'CORREO')
-      ? (esUnaPagina 
-          ? this.actContractService.sendReciboEmail(NoRecibo, this.nombre, body)
-          : this.actContractService.sendReciboEmailTwoPages(NoRecibo, this.nombre, body))
-      : (esUnaPagina 
-          ? this.actContractService.printReciboPdf(NoRecibo, this.nombre, bodyRaw)
-          : this.actContractService.printReciboPdfTwoPages(NoRecibo, this.nombre, bodyRaw));
+   let serviceCall = (type === 'CORREO')
+    ? this.actContractService.sendReciboEmailTwoPages(NoRecibo, this.nombre, body)
+    : (esUnaPagina 
+        ? this.actContractService.printReciboPdf(NoRecibo, this.nombre, bodyRaw)
+        : this.actContractService.printReciboPdfTwoPages(NoRecibo, this.nombre, bodyRaw));
 
     serviceCall.subscribe({
       next: (res: any) => {
