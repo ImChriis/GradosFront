@@ -42,6 +42,7 @@ export class PaymentsComponent implements OnInit {
   actUser = this.dialogConfig.data.actUser;
   codigoActo = this.dialogConfig.data.codigoActo;
   totalPerStudent = this.dialogConfig.data.MnCosto;
+  actUserEmail = this.dialogConfig.data.actUser.email;
 
   NuCedula!: number;
   NoContrato!: number;
@@ -126,6 +127,8 @@ export class PaymentsComponent implements OnInit {
         this.banks = response.filter((item: any) => item.status === 1).map((item: any) => item.bancos);
       }
     });
+
+    console.log('Datos iniciales del usuario:', this.actUser);
   }
 
   private loadInitialPaymentData() {
@@ -553,7 +556,7 @@ export class PaymentsComponent implements OnInit {
       closable: true,
       data: {
         NoRecibo: NoRecibo,
-        email: this.email,
+        email: this.actUserEmail,
       },
       breakpoints: {
         '960px': '90%',
