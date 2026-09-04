@@ -135,6 +135,10 @@ export class PaymentsComponent implements OnInit {
       String(this.NuCedula)
     ).subscribe({
       next: (res: any) => {
+        console.log('Datos de pago recibidos:', res);
+
+        console.log(this.NoContrato, this.NuCedula, this.codigoActo);
+        
         const data = res?.data?.[0] ?? res;
         this.montoContrato = Number(data?.MnContrato ?? this.montoContrato);
         this.descuento = Number(data?.MnDescuento ?? this.descuento);
@@ -150,8 +154,18 @@ export class PaymentsComponent implements OnInit {
 
     this.actContractService.getRecibosByUserContract(this.NoContrato, this.codigoActo, this.NuCedula).subscribe({
       next: (res: any) => {
-        this.recibosBD = Array.isArray(res) ? res : (res?.data ?? []);
-        this.totalRecibos = this.recibosBD.reduce((acc, r) => acc + Number(r.mnrecibo ?? 0), 0);
+        console.log("Recibos recibidos:", res);
+
+        const list = Array.isArray(res) ? res : (res?.data ?? []);
+
+        this.recibosBD = Array.isArray(list) ? list : [list];
+        this.totalRecibos = this.recibosBD.reduce((acc, r) => acc + Number(r?.mnrecibo ?? 0), 0);
+        this.emitRecibos();
+      },
+      error: (err) => {
+        console.error('Error al obtener recibos del usuario:', err);
+        this.recibosBD = [];
+        this.totalRecibos = 0;
         this.emitRecibos();
       }
     });

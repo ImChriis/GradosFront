@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
-import { map, Subject, tap } from 'rxjs';
+import { map, Observable, Subject, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -88,14 +88,15 @@ export class ActContractService {
     return this.http.get<any>(`${this.api}/actContracts/${CodigoActo}/${NuCedula}/${NoContrato}`);
   }
   
-  getRecibosByUserContract(NoContrato: number, CodigoActo: number, NuCedula: number){
-    return this.http.get<any>(`${this.api}/actContracts/${NoContrato}/${CodigoActo}/${NuCedula}`).pipe(
-      tap((res) => {
-        console.log("recibos recibidos:", res);
-      }),
-      map(response => [...response].sort((a, b) => b.NoRecibo - a.NoRecibo))  // Ordenar por NoRecibo de mayor a menor
-    )
-  }
+getRecibosByUserContract(NoContrato: any, CodigoActo: any, NuCedula: any): Observable<any> {
+  return this.http.get<any>(`${this.api}/actContracts/recibos/${NoContrato}/${CodigoActo}/${NuCedula}`).pipe(
+    map((res: any) => {
+      // Accedemos a res.data que es el arreglo real
+      const list = res?.data ?? res;
+      return list;
+    })
+  );
+}
 
   getAbonosByUserContract(NoContrato: string, NuCedula: string, NoRecibo: number){
     return this.http.get<any>(`${this.api}/actContracts/abonos/${NoContrato}/${NuCedula}/${NoRecibo}`);
