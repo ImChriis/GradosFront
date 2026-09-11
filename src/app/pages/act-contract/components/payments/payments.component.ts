@@ -92,7 +92,7 @@ export class PaymentsComponent implements OnInit {
     TxConcepRec: [''],
     CodUser: [null as number | null],
     Anulado: [null as number | null],
-    Tipo: [''],
+    Tipo: ['1'], // Tipo 1 = Contrato de actos, 2 = Contrato de anillos
     CodigoActo: [null as number | null],
     MaFormPag: [''],
     TxBanco: [''],
