@@ -21,6 +21,7 @@ import { Institution } from '../../@core/models/institution.model';
 import { UppercaseDirective } from '../../@core/directives/uppercase.directive';
 import { LoaderComponent } from '../../@core/components/loader/loader.component';
 import { RefreshComponent } from './components/refresh/refresh.component';
+import { AuthService } from '../../@core/services/auth.service';
 
 //temporal
 interface Act {
@@ -35,6 +36,7 @@ interface Act {
   MnCosto: null;
   CoLugar: number | null;
   CodigoInst: number | null;
+  CodUser: string | null;
 
   //users data
   Nombre: string;
@@ -59,6 +61,7 @@ interface Act {
 })
 export class ActContractComponent implements OnInit{
   private actContractService =  inject(ActContractService);
+  private authsService = inject(AuthService);
   private fb = inject(FormBuilder);
   private dialogService = inject(DialogService);
   private messageService = inject(MessageService);
@@ -88,6 +91,7 @@ export class ActContractComponent implements OnInit{
   siglas!: string;
   isLoading = signal(true);
   MnCosto: number | null = 0;
+  CodUser = this.authsService.CodUser;
 
   actForm = this.fb.group({
     CodigoActo: this.fb.control<number | null>(null, Validators.required),
@@ -99,7 +103,7 @@ export class ActContractComponent implements OnInit{
     MnCosto: [null, Validators.required],
     TxLugar: ['', Validators.required],
     especialidad: ['', Validators.required],
-    CodUser: [null],
+    CodUser: [this.CodUser() ? String(this.CodUser()) : null],
     Culminada: [null],
     nbInstitucion: ['', Validators.required],
     CodigoInst: this.fb.control<number | null>(null, Validators.required),
@@ -203,7 +207,8 @@ onInstitutionChange(event: any) {
       titulo: act.titulo,
       MnCosto: act.MnCosto,
       CodigoInst: act.CodigoInst,
-      CoLugar: act.CoLugar
+      CoLugar: act.CoLugar,
+      CodUser: act.CodUser
     })
 
     console.log("selected act: ", this.selectedAct);
@@ -259,7 +264,7 @@ onInstitutionChange(event: any) {
         Titulo: formData.titulo,
         CoLugar: formData.CoLugar,
         Especialidad: formData.especialidad,
-        CodUser: null,
+        CodUser: formData.CodUser,
         Culminada: 0,
         CodigoInst: formData.CodigoInst,
         TxLugar: formData.TxLugar
@@ -295,7 +300,7 @@ onInstitutionChange(event: any) {
         CoLugar: formData.CoLugar,
         MnCosto: formData.MnCosto,
         Especialidad: formData.especialidad,
-        CodUser: null,
+        CodUser: formData.CodUser,
         Culminada: 0,
         CodigoInst: formData.CodigoInst
       }

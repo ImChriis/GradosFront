@@ -14,6 +14,7 @@ import { forkJoin } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
 import { PrintModalComponent } from '../print-modal/print-modal.component';
 import { OnlyAlphanumericsDirective } from '../../../../shared/directives/only-alphanumerics.directive';
+import { AuthService } from '../../../../@core/services/auth.service';
 
 @Component({
   selector: 'app-payments',
@@ -38,6 +39,7 @@ export class PaymentsComponent implements OnInit {
   private ref = inject(DynamicDialogRef);
   private printRef = inject(DynamicDialogRef);
   private dialogService = inject(DialogService);
+  private authsService = inject(AuthService);
 
   actUser = this.dialogConfig.data.actUser;
   codigoActo = this.dialogConfig.data.codigoActo;
@@ -68,6 +70,7 @@ export class PaymentsComponent implements OnInit {
   montoPagadoBase: number = 0;
   montoSaldoBase: number = 0;
   email!: string;
+  CodUser = this.authsService.CodUser;
 
   private recibosBD: any[] = [];
   private abonosBD: any[] = [];
@@ -90,7 +93,7 @@ export class PaymentsComponent implements OnInit {
     mnrecibo: [null as number | null],
     mnsaldorec: [null as number | null],
     TxConcepRec: [''],
-    CodUser: [null as number | null],
+    CodUser: [this.CodUser() ? String(this.CodUser()) : null],
     Anulado: [null as number | null],
     Tipo: ['1'], // Tipo 1 = Contrato de actos, 2 = Contrato de anillos
     CodigoActo: [null as number | null],

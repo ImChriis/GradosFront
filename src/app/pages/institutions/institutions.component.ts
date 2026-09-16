@@ -10,6 +10,7 @@ import { InstitutionForm } from '../../@core/models/forms/institution-form';
 import { MessageService } from 'primeng/api';
 import { UppercaseDirective } from '../../@core/directives/uppercase.directive';
 import { LoaderComponent } from '../../@core/components/loader/loader.component';
+import { AuthService } from '../../@core/services/auth.service';
 
 @Component({
   selector: 'app-institutions',
@@ -27,6 +28,7 @@ import { LoaderComponent } from '../../@core/components/loader/loader.component'
 export class InstitutionsComponent implements OnInit{
   private institutionsService = inject(InstitutionsService);
   private messageService = inject(MessageService);
+  private authService = inject(AuthService);
   private fb = inject(FormBuilder);
   institutions$!: Observable<Institution[]>;
   isAdding = false;
@@ -34,12 +36,14 @@ export class InstitutionsComponent implements OnInit{
   selectedInstitution!: Institution | null;
   CodigoInst!: number;
   isLoading = signal(true);
+  CodUser = this.authService.CodUser
 
   institutionsForm: FormGroup<InstitutionForm> = this.fb.group({
     CodigoInst: new FormControl<number | null>(null, { nonNullable: true }),
     siglas: new FormControl('', { nonNullable: true }),
     nbinstitucion: new FormControl('', { nonNullable: true }),
     tpinstitucion: new FormControl('', { nonNullable: true }),
+    CodUser: new FormControl<string | null>('', { nonNullable: true })
   })
 
   ngOnInit(){
@@ -53,6 +57,7 @@ export class InstitutionsComponent implements OnInit{
       tap(() => this.isLoading.set(false))
     )
 
+    console.log(this.CodUser)
     this.institutionsForm.disable();
     this.selectedInstitution = null;
   }
@@ -86,8 +91,13 @@ export class InstitutionsComponent implements OnInit{
   }
 
   onSave(){
+    const formValue = this.institutionsForm.getRawValue();
+    const payload: Partial<Institution> = {
+      ...formValue, CodUser: this.CodUser() ? String(this.CodUser()) : null
+    } as Institution;
+
     if(this.CodigoInst){
-      this.institutionsService.updateInstitution(this.CodigoInst, this.institutionsForm.value as Institution).subscribe({
+      this.institutionsService.updateInstitution(this.CodigoInst, payload).subscribe({
         next: (res) => {
           this.messageService.add({ severity: 'success', summary: 'Institución Actualizada', detail: `La institución ha sido actualizada exitosamente.` });
           this.institutionsForm.reset();
@@ -101,7 +111,7 @@ export class InstitutionsComponent implements OnInit{
         }
       });
     }else{
-      this.institutionsService.addInstitution(this.institutionsForm.value as Institution).subscribe({
+      this.institutionsService.addInstitution(payload).subscribe({
         next: (res) => {
           this.messageService.add({ severity: 'success', summary: 'Institución Agregada', detail: `La institución ha sido agregada exitosamente.` });
           this.institutionsForm.reset();

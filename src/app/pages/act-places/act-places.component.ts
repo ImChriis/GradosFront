@@ -11,6 +11,7 @@ import { ActPlacesForm } from '../../@core/models/forms/act-form';
 import { UppercaseDirective } from '../../@core/directives/uppercase.directive';
 import { LoaderComponent } from '../../@core/components/loader/loader.component';
 import { OnlyNumbersDirective } from '../../@core/directives/only-numbers.directive';
+import { AuthService } from '../../@core/services/auth.service';
 
 @Component({
   selector: 'app-act-places',
@@ -30,6 +31,7 @@ import { OnlyNumbersDirective } from '../../@core/directives/only-numbers.direct
 export class ActPlacesComponent implements OnInit{
   private actsService = inject(ActsService);
   private messageService = inject(MessageService);
+  private authService = inject(AuthService);
   private fb = inject(FormBuilder);
   isAdding = false;
   isEnabled = false;
@@ -37,6 +39,7 @@ export class ActPlacesComponent implements OnInit{
   acts$!: Observable<ActPlace[]>;
   CodLugar!: number | null;
   isLoading = signal(true);
+  CodUser = this.authService.CodUser;
 
   actPlacesForm: FormGroup<ActPlacesForm> = this.fb.group({
     CoLugar: new FormControl<number | null>(null),
@@ -44,7 +47,7 @@ export class ActPlacesComponent implements OnInit{
     Capacidad: new FormControl<number | null>(null),
     MaTipoLugar: new FormControl<number | null>(null),
     Activo: new FormControl<number | null>(null),
-    CodUser: new FormControl<number | null>(null),
+    CodUser: new FormControl<string | null>(null),
   })
 
   ngOnInit(): void {
@@ -94,11 +97,16 @@ export class ActPlacesComponent implements OnInit{
   }
 
   onSave(){
+    const formValue = this.actPlacesForm.getRawValue();
+    const payload: Partial<ActPlace> = {
+      ...formValue, CodUser: this.CodUser() ? String(this.CodUser()) : null
+    } as ActPlace;
+
     if(this.selectedActPlace){
       console.log(this.CodLugar)
       console.log('Updating Act Place:', this.actPlacesForm.value);
 
-      this.actsService.updateActPlace(this.CodLugar!, this.actPlacesForm.value as ActPlace).subscribe({
+      this.actsService.updateActPlace(this.CodLugar!, payload).subscribe({
         next:(res) => {
           this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Lugar de Acto actualizado correctamente' });
           this.actPlacesForm.reset();
@@ -112,7 +120,7 @@ export class ActPlacesComponent implements OnInit{
         }
       })
     }else{
-      this.actsService.addActPlace(this.actPlacesForm.value as ActPlace).subscribe({
+      this.actsService.addActPlace(payload).subscribe({
         next: (res) => {
           this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Lugar de Acto agregado correctamente' });
           this.actPlacesForm.reset();

@@ -3,4 +3,5 @@ export interface Institution{
     siglas: string;
     nbinstitucion: string;
     tpinstitucion: string;
+    CodUser: string | null;
 }

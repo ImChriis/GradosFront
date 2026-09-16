@@ -10,6 +10,7 @@ import { InputText } from 'primeng/inputtext';
 import { UppercaseDirective } from "../../@core/directives/uppercase.directive";
 import { MessageService } from 'primeng/api';
 import { LoaderComponent } from '../../@core/components/loader/loader.component';
+import { AuthService } from '../../@core/services/auth.service';
 
 @Component({
   selector: 'app-specialities',
@@ -27,6 +28,7 @@ import { LoaderComponent } from '../../@core/components/loader/loader.component'
 export class SpecialitiesComponent implements OnInit{
   private specialitiesService = inject(SpecialitiesService);
   private messageService = inject(MessageService);
+  private authService = inject(AuthService);
   private fb = inject(FormBuilder);
   selectedSpeciality: Speciality | null = null;
   isAdding = false;
@@ -34,11 +36,13 @@ export class SpecialitiesComponent implements OnInit{
   specialities$!: Observable<Speciality[]>;
   CodigoEsp!: number | null;
   isLoading = signal(true);
+  CodUser = this.authService.CodUser;
 
   specialititesForm: FormGroup<SpecialitiesForm> = this.fb.group({
     CodigoEsp: new FormControl<number | null>(null),
     Titulo: new FormControl('', { nonNullable: true }),
     Especialidad: new FormControl('', { nonNullable: true }),
+    CodUser: new FormControl<string | null>('', { nonNullable: true })
   })
 
   ngOnInit(): void {
@@ -84,9 +88,16 @@ export class SpecialitiesComponent implements OnInit{
   }
 
   onSave(){
+    const formValue = this.specialititesForm.getRawValue();
+
+    const payload: Partial<Speciality> = {
+      ...formValue, 
+      CodUser: this.CodUser() ? String(this.CodUser()) : null
+    } as Speciality;
+
     if(this.selectedSpeciality){
       console.log('Updating Speciality:', this.specialititesForm.value);
-      this.specialitiesService.updateSpeciality(this.CodigoEsp!, this.specialititesForm.value as Speciality).subscribe({
+      this.specialitiesService.updateSpeciality(this.CodigoEsp!, payload).subscribe({
         next: (res) => {
           this.messageService.add({
             severity: 'success',
@@ -108,7 +119,7 @@ export class SpecialitiesComponent implements OnInit{
         }
       })
     }else{
-      this.specialitiesService.addSpeciality(this.specialititesForm.value as Speciality).subscribe({
+      this.specialitiesService.addSpeciality(payload).subscribe({
         next: (res) => {
           this.messageService.add({
             severity: 'success',

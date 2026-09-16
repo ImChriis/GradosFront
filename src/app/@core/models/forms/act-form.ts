@@ -6,5 +6,5 @@ export interface ActPlacesForm{
     Capacidad: FormControl<number | null>;
     MaTipoLugar: FormControl<number | null>;
     Activo: FormControl<number | null>;
-    CodUser: FormControl<number | null>;
+    CodUser: FormControl<string | null>;
 }

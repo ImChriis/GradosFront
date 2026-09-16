@@ -10,6 +10,7 @@ import { ReportClientsComponent } from '../../shared/components/modals/report-cl
 import { AboutUsComponent } from '../../shared/components/modals/about-us/about-us.component';
 import { ReportActListComponent } from '../../shared/components/modals/report-act-list/report-act-list.component';
 import { GenerateClosingComponent } from '../../shared/components/modals/generate-closing/generate-closing.component';
+import { AuthService } from '../services/auth.service';
 
 
 @Component({
@@ -24,6 +25,7 @@ import { GenerateClosingComponent } from '../../shared/components/modals/generat
 })
 export class LayoutComponent implements OnInit{
   private router = inject(Router);
+  private authService = inject(AuthService);
   private dialogService = inject(DialogService);
   // private dialogRef = inject(DynamicDialogRef);
   ref!: DynamicDialogRef;
@@ -245,7 +247,6 @@ export class LayoutComponent implements OnInit{
   }
 
   logout(){
-    localStorage.removeItem('User');
-    this.router.navigateByUrl('/');
+    this.authService.logout();
   }
 }

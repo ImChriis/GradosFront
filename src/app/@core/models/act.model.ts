@@ -4,5 +4,5 @@ export interface ActPlace{
     Capacidad: number | null;
     MaTipoLugar: number | null;
     Activo: number | null;
-    CodUser: number | null;
+    CodUser: string | null;
 }

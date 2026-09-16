@@ -5,4 +5,5 @@ export interface InstitutionForm{
     siglas: FormControl<string>;
     nbinstitucion: FormControl<string>;
     tpinstitucion: FormControl<string>;
+    CodUser: FormControl<string | null>;
 }

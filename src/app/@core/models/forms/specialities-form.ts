@@ -4,4 +4,5 @@ export interface SpecialitiesForm {
     CodigoEsp: FormControl<number | null>;
     Titulo: FormControl<string>;
     Especialidad: FormControl<string>;
-}
+    CodUser: FormControl<string | null>;
+} 

@@ -1,6 +1,6 @@
 export interface Settings {
   Id: string;
-  CoSucursal: string;
+  CodSucursal: string;
   NbSucursal: string;
   Producto: string;
   Nombre: string;
