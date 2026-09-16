@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -19,12 +19,13 @@ import { Client } from '../../../../@core/models/client.model';
   templateUrl: './register-user.component.html',
   styleUrl: './register-user.component.scss'
 })
-export class RegisterUserComponent {
+export class RegisterUserComponent implements OnInit{
   private clientService = inject(ClientsService);
   private messageService = inject(MessageService);
   private fb = inject(FormBuilder);
   private dialogRef = inject(DynamicDialogRef);
   ref: DynamicDialogRef | undefined
+  CodUser!: number;
 
   userForm: FormGroup<ClientForm> = this.fb.group({
     id: new FormControl<number | null>(null, { nonNullable: true }),
@@ -34,10 +35,19 @@ export class RegisterUserComponent {
     txtelefono: new FormControl<string | null>('', { nonNullable: true }),
     txcelular: new FormControl<string | null>('', { nonNullable: true }),
     txemail: new FormControl<string | null>('', { nonNullable: true }),
-    codUser: new FormControl<string | null>('', { nonNullable: true }),
+    CodUser: new FormControl<string | null>('', { nonNullable: true }),
   })
   
+  ngOnInit(): void {
+     const user = localStorage.getItem('User');
+    if(user){
+      const parsedUser = JSON.parse(user);
+      this.CodUser = parsedUser.user.id;
+    }
+  }
+
   onSubmit(){
+    this.userForm.patchValue({ CodUser: this.CodUser.toString() });
     this.clientService.addClient(this.userForm.value as Client).subscribe({
       next: (res => {
         this.messageService.add({ severity: 'success', summary: 'Usuario registrado correctamente' });

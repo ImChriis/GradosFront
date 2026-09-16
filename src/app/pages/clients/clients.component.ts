@@ -44,6 +44,7 @@ export class ClientsComponent implements OnInit{
   id!: number;
   isLoading = signal(true);
   loading = true;
+  codUser!: number;
 
   clientsForm: FormGroup<ClientForm> = this.fb.group({
     id: new FormControl<number | null>(null, { nonNullable: true } ),
@@ -53,7 +54,7 @@ export class ClientsComponent implements OnInit{
     txtelefono: new FormControl<string | null>('', { nonNullable: true }),
     txcelular: new FormControl<string | null>('', { nonNullable: true, validators: [Validators.required] }),
     txemail: new FormControl<string | null>('', { nonNullable: true, validators: [Validators.email] }),
-    codUser: new FormControl<string | null>('', { nonNullable: true }),
+    CodUser: new FormControl<string | null>('', { nonNullable: true }),
   })
   
   ngOnInit(): void {
@@ -71,6 +72,13 @@ export class ClientsComponent implements OnInit{
 
     this.clientsForm.disable();
     this.selectedClient = null;
+
+    const user = localStorage.getItem('User');
+    if(user){
+      const parsedUser = JSON.parse(user);
+      this.codUser = parsedUser.user.id;
+      console.log('codUser:', this.codUser);
+    }
   }
 
   onSelectClient(client: Client){
@@ -86,7 +94,7 @@ export class ClientsComponent implements OnInit{
       txtelefono: client.txtelefono,
       txcelular: client.txcelular,
       txemail: client.txemail,
-      codUser: client.codUser,
+      CodUser: client.CodUser,
     });
 
     this.id = client.id;
@@ -115,6 +123,7 @@ export class ClientsComponent implements OnInit{
     
     if(this.selectedClient){
       console.log(this.id + ' updating');
+      this.clientsForm.patchValue({ CodUser: this.codUser.toString() });
       this.clientsService.updateClient(this.id, this.clientsForm.value as Client).subscribe({
         next: (client) => {
           this.messageService.add({severity:'success', summary: 'Success', detail: 'Client updated successfully'});
@@ -133,7 +142,8 @@ export class ClientsComponent implements OnInit{
         }
       });
     }else{
-         this.clientsService.addClient(this.clientsForm.value as Client).subscribe({
+      this.clientsForm.patchValue({ CodUser: this.codUser.toString() });
+      this.clientsService.addClient(this.clientsForm.value as Client).subscribe({
       next: (client) => {
         this.messageService.add({severity:'success', summary: 'Success', detail: 'Client added successfully'});
         this.clientsForm.reset();
@@ -205,5 +215,4 @@ private executeDeleteClient(id: number) {
     }
   });
 }
-
 }
