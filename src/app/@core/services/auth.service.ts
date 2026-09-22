@@ -3,6 +3,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { User } from '../models/user.mode';
 import { map } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ import { map } from 'rxjs';
 export class AuthService {
   private http = inject(HttpClient);
   private api: string = environment.api;
+  private router = inject(Router);
 
   private codUserSignal = signal<string | null>(this.getStoredCodUser());
   public CodUser = computed(() => this.codUserSignal())
@@ -42,5 +44,6 @@ export class AuthService {
   logout() {
     localStorage.removeItem('User');
     this.codUserSignal.set(null);
+    this.router.navigate(['/']);
   }
 }

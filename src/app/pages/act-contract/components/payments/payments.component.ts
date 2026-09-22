@@ -71,6 +71,7 @@ export class PaymentsComponent implements OnInit {
   montoSaldoBase: number = 0;
   email!: string;
   CodUser = this.authsService.CodUser;
+  CodSucursal = this.settingsService.CodSucursal;
 
   private recibosBD: any[] = [];
   private abonosBD: any[] = [];
@@ -87,7 +88,7 @@ export class PaymentsComponent implements OnInit {
     NoRecibo: [null as number | null],
     ferecibo: [new Date().toISOString()],
     NuCedula: [null as number | null],
-    CodSucursal: [null as number | null],
+    CodSucursal: [this.CodSucursal() ? String(this.CodSucursal()) : null],
     NoContrato: [null as number | null],
     tprecibo: [''],
     mnrecibo: [null as number | null],
@@ -322,7 +323,9 @@ export class PaymentsComponent implements OnInit {
           NuCedula: this.NuCedula,
           CodigoActo: this.codigoActo,
           MaFormPag: formData.MaFormPag ?? '',
-          TxBanco: formData.TxBanco ?? ''
+          TxBanco: formData.TxBanco ?? '',
+          CodUser: formData.CodUser ?? '',
+          CodSucursal: formData.CodSucursal ?? ''
         };
         this.pendingRecibos.push(reciboExistente);
       } else {
@@ -341,7 +344,9 @@ export class PaymentsComponent implements OnInit {
       TipoOperacion: formData.MaFormPag ?? '',
       TxBanco: formData.TxBanco ?? '',
       NuDeposito: formData.NuRefDocBan ?? null,
-      MnDeposito: montoInput
+      MnDeposito: montoInput,
+      CodUser: formData.CodUser ?? '',
+      CodSucursal: formData.CodSucursal ?? ''
     };
 
     this.pendingAbonos.push(nuevoAbono);
@@ -508,7 +513,10 @@ export class PaymentsComponent implements OnInit {
     this.facturado = false;
     this.isAdding = false;
 
-    this.reciboPagoForm.reset();
+    this.reciboPagoForm.reset({
+    CodUser: this.CodUser() ? String(this.CodUser()) : null,
+    CodSucursal: this.CodSucursal() ? String(this.CodSucursal()) : null
+  });
     this.reciboPagoForm.disable();
 
     this.loadInitialPaymentData();

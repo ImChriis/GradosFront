@@ -10,15 +10,15 @@ import { tap } from 'rxjs';
 export class SettingsService {
   private api: string = environment.api;
   private http = inject(HttpClient);
+
   private CodSucursalSignal = signal<string | null>(null);
   public CodSucursal = computed(() => this.CodSucursalSignal())
-
 
   getSettings(){
     return this.http.get(`${this.api}/settings`).pipe(
       tap((res: any) => {
-        if(res?.CodSucursal){
-          this.CodSucursalSignal.set(res.CodSucursal);
+        if(res?.CoSucursal){
+          this.CodSucursalSignal.set(res.CoSucursal);
         }
       })
     )

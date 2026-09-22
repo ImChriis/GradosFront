@@ -11,6 +11,7 @@ import { AboutUsComponent } from '../../shared/components/modals/about-us/about-
 import { ReportActListComponent } from '../../shared/components/modals/report-act-list/report-act-list.component';
 import { GenerateClosingComponent } from '../../shared/components/modals/generate-closing/generate-closing.component';
 import { AuthService } from '../services/auth.service';
+import { ConfirmLogOutComponent } from '../../shared/components/modals/confirm-log-out/confirm-log-out.component';
 
 
 @Component({
@@ -210,6 +211,15 @@ export class LayoutComponent implements OnInit{
             separator: true
           },
           {
+            label: 'Auditoría',
+            routerLink: '/audit',
+            visible: this.role === 'Master'
+          },
+          {
+            separator: true,
+            visible: this.role === 'Master'
+          },
+          {
             label: 'Opciones',
             routerLink: '/settings'
           }
@@ -247,6 +257,11 @@ export class LayoutComponent implements OnInit{
   }
 
   logout(){
-    this.authService.logout();
+    this.ref = this.dialogService.open(ConfirmLogOutComponent, {
+      header: 'Confirmar Cierre de Sesión',
+      width: '30%',
+      modal: true,
+      closable: false
+    });
   }
 }

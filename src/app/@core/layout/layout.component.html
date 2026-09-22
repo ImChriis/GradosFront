@@ -48,6 +48,12 @@
                 <i class="pi pi-users"></i>
             </button>
 
+            @if(this.role === 'Master') {
+                <button routerLink="/audit" title="Auditoría">
+                    <i class="pi pi-clipboard"></i>
+                </button>
+            }
+
             <button routerLink="/settings" title="Configuración">
                 <i class="pi pi-cog"></i>
             </button>

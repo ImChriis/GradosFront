@@ -249,10 +249,10 @@ onInstitutionChange(event: any) {
   }
 
   onSave(){
-    // if(!this.actForm.valid){
-    //   this.messageService.add({ severity: 'warn', summary: 'Formulario inválido', detail: 'Por favor, complete todos los campos requeridos.' });
-    //   return;
-    // }
+    if(this.actForm.get('CodigoActo')?.invalid || this.actForm.get('Fecha')?.invalid || this.actForm.get('Hora')?.invalid || this.actForm.get('titulo')?.invalid || this.actForm.get('MnCosto')?.invalid || this.actForm.get('especialidad')?.invalid ){
+      this.messageService.add({ severity: 'warn', summary: 'Campos incompletos', detail: 'Por favor, complete todos los campos obligatorios antes de guardar.' });
+      return;
+    }
 
     if(this.codigoActo){
         const formData = this.actForm.value;

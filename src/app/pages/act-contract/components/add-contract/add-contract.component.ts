@@ -7,6 +7,7 @@ import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dy
 import { ConfirmModalComponent } from '../../../../shared/components/modals/confirm-modal/confirm-modal.component';
 import { ClientsService } from '../../../../@core/services/clients.service';
 import { SettingsService } from '../../../../@core/services/settings.service';
+import { AuthService } from '../../../../@core/services/auth.service';
 
 @Component({
   selector: 'app-add-contract',
@@ -25,6 +26,7 @@ export class AddContractComponent implements OnInit{
   private dialogConfig = inject(DynamicDialogConfig);
   private dialogService = inject(DialogService);
   private dialogRef = inject(DynamicDialogRef);
+  private authService = inject(AuthService);
   private fb = inject(FormBuilder);
   codigoActo = this.dialogConfig.data.CodigoActo;
   MnCosto = this.dialogConfig.data.MnCosto;
@@ -33,6 +35,8 @@ export class AddContractComponent implements OnInit{
   nuCedula = this.selectedUser?.NuCedula ?? '';
   ref: DynamicDialogRef | undefined;
   NoContrato: string | null = null;
+  CodUser = this.authService.CodUser;
+  CodSucursal = this.settingsService.CodSucursal;
 
   actForm = this.fb.group({
     CodigoActo: this.fb.control<number | null>(null, Validators.required),
@@ -45,10 +49,10 @@ export class AddContractComponent implements OnInit{
     MnInicial: this.fb.control<number | null>(null),
     MnContrato: this.fb.control<number | null>(null),
     MaEdoCont: this.fb.control<string | null>(null),
-    CodUser: this.fb.control<string | null>(null),
+    CodUser: [this.CodUser() ? String(this.CodUser()) : null],
     Chemise: this.fb.control<string | null>(null),
     MnDescuento: this.fb.control<number | null>(null),
-    CodSucursal: this.fb.control<string | null>(null),
+    CodSucursal: [this.CodSucursal() ? String(this.CodSucursal()) : null],
   })
 
   ngOnInit(): void {
