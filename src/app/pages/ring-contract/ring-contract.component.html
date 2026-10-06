@@ -94,9 +94,9 @@
                     <input type="text" />
                 </div>
 
-            <div class="icon2" title="Agregar">
-                <i class="pi pi-search add"></i>
-            </div>
+                <div class="icon2" title="Agregar">
+                    <i class="pi pi-search add"></i>
+                </div>
             </div>
 
             <div class="inputGroup3">
@@ -126,7 +126,46 @@
                 </div>
             </div>
 
-            
+            <div class="inputGroup3">
+              <p-tabs [(value)]="activeTab">
+                <p-tablist>
+                    <p-tab [value]="0">Detalles</p-tab>
+                    <p-tab [value]="1">Regalias</p-tab>
+                    <p-tab [value]="2">Estado</p-tab>
+                    <p-tab [value]="3">Saldo</p-tab>
+                  </p-tablist>
+                  <p-tabpanels>
+                    <p-tabpanel [value]="0">contenido 1</p-tabpanel>
+                    <p-tabpanel [value]="1">contenido 2</p-tabpanel>
+                    <p-tabpanel [value]="2">contenido 3</p-tabpanel>
+                    <p-tabpanel [value]="3">contenido 4</p-tabpanel>
+                  </p-tabpanels>
+              </p-tabs>
+            </div>
         </form>
+
+                <div class="buttons">
+          <!-- <div class="icon" title="Buscar">
+            <i class="pi pi-search searchIcon"></i>
+          </div> -->
+
+          <div class="icons">
+            <div class="icon" title="Agregar">
+              <i class="pi pi-plus add"></i>
+            </div>
+
+            <div class="icon" title="Guardar">
+              <i class="pi pi-save save"></i>
+            </div>
+
+            <div class="icon" title="Eliminar">
+              <i class="pi pi-trash delete"></i>
+            </div>
+          </div>
+          
+          <div class="icon cancel" title="Cancelar">
+            <i class="pi pi-times cancel"></i>
+          </div>
+        </div>
     </div>
 </div>

@@ -25,6 +25,7 @@ export class RingContractComponent implements OnInit {
   private ringContractService = inject(RingContractService);
   contracts$!: Observable<any>;
   isLoading = signal(false);
+  activeTab = signal<string | number>(0);
 
   ngOnInit() {
     this.contracts$ = this.ringContractService.getRingContract();

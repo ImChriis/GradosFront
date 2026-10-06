@@ -157,29 +157,29 @@
         </div>
 
         <div class="buttons">
-            <div class="icon" title="Nueva Operación" [class.disabled]="bloquearAcciones" (click)="add()">
+            <button type="button" class="icon" title="Nueva Operación" [class.disabled]="bloquearAcciones" (click)="add()">
                 <i class="pi pi-file new"></i>
-            </div>
+            </button>
 
-            <div class="icon" title="Caja" [class.disabled]="bloquearAcciones" (click)="facturar()">
+            <button type="button" class="icon" title="Caja" [disabled]="!hayReciboNuevo" (click)="facturar()">
                 <i class="pi pi-money-bill pay"></i>
-            </div>
+            </button>
 
-            <div class="icon" title="Imprimir" [class.disabled]="bloquearAcciones" (click)="print(NoRecibo)">
+            <button type="button" class="icon" title="Imprimir" [disabled]="!hayReciboTabla" (click)="print(NoRecibo)">
                 <i class="pi pi-print print"></i>
-            </div>
+            </button>
 
-            <div class="icon" title="Actualizar">
+            <button type="button" class="icon" title="Actualizar" [disabled]="!hayReciboTabla">
                 <i class="pi pi-refresh refresh"></i>
-            </div>
+            </button>
 
-            <div class="icon" title="Cancelar" [class.disabled]="bloquearAcciones" (click)="cancel()">
+            <button type="button" class="icon" title="Cancelar" (click)="cancel()">
                 <i class="pi pi-times times"></i>
-            </div>
+            </button>
 
-            <div class="icon" title="Salida" [class.disabled]="bloquearAcciones" (click)="close()">
+            <button type="button" class="icon" title="Salida" [disabled]="bloquearAcciones" (click)="close()">
                 <i class="pi pi-sign-out exit"></i>
-            </div>
+            </button>
         </div>
     </div>
 
@@ -284,8 +284,8 @@
                 </div>
 
                 <div class="icons-col">
-                    <div class="icon" title="Agregar" (click)="onSubmit()"><i class="pi pi-plus add"></i></div>
-                    <div class="icon" title="Eliminar"><i class="pi pi-minus minus"></i></div>
+                    <button type="button" class="icon" title="Agregar" [disabled]="!hayReciboNuevo" (click)="onSubmit()"><i class="pi pi-plus add"></i></button>
+                    <button type="button" class="icon" title="Eliminar" [disabled]="!hayReciboNuevo"><i class="pi pi-minus minus"></i></button>
                 </div>
             </div>
         </div>

@@ -126,6 +126,11 @@ form{
     width: 100%;
 }
 
+.inputGroup2 label{
+    color: black;
+    font-weight: bold;
+}
+
 .inputGroup2 input{
     height: 3vh;
     background-color: rgb(223, 220, 220);
@@ -528,4 +533,37 @@ td{
 
 .input{
     width: 57%;
+}
+
+.inputGroup3 p-tabs{
+    width: 100%;
+}
+
+.inputGroup3 ::ng-deep .p-tablist-tab-list {
+    background: transparent;
+    border-bottom: none;
+}
+
+.inputGroup3 .p-tab,
+.inputGroup3 .p-tab:hover,
+.inputGroup3 .p-tab.p-tab-active {
+    background: transparent;
+    border: none;
+    color: black;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.inputGroup3 .p-tabpanels {
+    background: transparent;
+    color: black;
+}
+
+.inputGroup3 .p-tab.p-tab-active {
+    border-bottom: 2px solid #2563EB;
+    color: #2563EB;
+}
+
+.inputGroup3 ::ng-deep .p-tablist-active-bar {
+    display: none;
 }

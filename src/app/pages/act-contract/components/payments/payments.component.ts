@@ -73,6 +73,16 @@ export class PaymentsComponent implements OnInit {
   CodUser = this.authsService.CodUser;
   CodSucursal = this.settingsService.CodSucursal;
 
+  reciboDeTabla: 'nuevo' | 'tabla' | null = null;
+
+  get hayReciboNuevo(): boolean {
+    return this.reciboDeTabla === 'nuevo';
+  }
+
+  get hayReciboTabla(): boolean {
+    return this.reciboDeTabla === 'tabla';
+  }
+
   private recibosBD: any[] = [];
   private abonosBD: any[] = [];
   private pendingRecibos: any[] = [];
@@ -214,13 +224,14 @@ export class PaymentsComponent implements OnInit {
   selectRecibo(recibo: any) {
     const numRecibo = Number(recibo.NoRecibo);
     this.NoRecibo = numRecibo;
+    this.reciboDeTabla = 'tabla';
     this.selectedRecibo = numRecibo;
     this.fechaSelectedRecibo = recibo.ferecibo;
     this.observacion = recibo.TxConcepRec ?? '';
     this.montoSelectedRecibo = Number(recibo.mnrecibo ?? 0);
 
     this.isAdding = false;
-    this.reciboPagoForm.enable();
+    this.reciboPagoForm.disable();
 
     this.abonosBD = [];
     this.abonosSubject.next([]);
@@ -253,6 +264,7 @@ export class PaymentsComponent implements OnInit {
       return;
     }
 
+    this.reciboDeTabla = 'nuevo';
     this.reciboPagoForm.enable();
     const hoy = new Date();
     const fechaFormateada = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}-${String(hoy.getDate()).padStart(2, '0')}`;
@@ -269,6 +281,7 @@ export class PaymentsComponent implements OnInit {
       next: (res: any) => {
         const NoReciboSugerido = Number(res.NoRecibo ?? 0);
         this.NoRecibo = NoReciboSugerido;
+
         this.selectedRecibo = NoReciboSugerido;
         this.montoSelectedRecibo = 0;
         this.fechaSelectedRecibo = new Date().toISOString();
@@ -503,6 +516,7 @@ export class PaymentsComponent implements OnInit {
   }
 
   cancel() {
+    this.reciboDeTabla = null;
     this.pendingRecibos = [];
     this.pendingAbonos = [];
     this.NoRecibo = 0;
@@ -512,6 +526,7 @@ export class PaymentsComponent implements OnInit {
     this.selectedRecibo = 0;
     this.facturado = false;
     this.isAdding = false;
+
 
     this.reciboPagoForm.reset({
     CodUser: this.CodUser() ? String(this.CodUser()) : null,
@@ -560,19 +575,28 @@ export class PaymentsComponent implements OnInit {
   }
 
   print(NoRecibo: number) {
-    this.printRef = this.dialogService.open(PrintModalComponent, {
-      header: "¿Qué te gustaría hacer con el recibo?",
-      width: '40%',
-      modal: true,
-      closable: true,
-      data: {
-        NoRecibo: NoRecibo,
-        email: this.actUserEmail,
-      },
-      breakpoints: {
-        '960px': '90%',
-        '640px': '100%'
+    if(!NoRecibo) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Recibo inválido',
+        detail: 'No se puede imprimir un recibo sin número válido'
+      });
+      return;
+    }else{
+          this.printRef = this.dialogService.open(PrintModalComponent, {
+          header: "¿Qué te gustaría hacer con el recibo?",
+          width: '40%',
+          modal: true,
+          closable: true,
+          data: {
+            NoRecibo: NoRecibo,
+            email: this.actUserEmail,
+          },
+          breakpoints: {
+            '960px': '90%',
+            '640px': '100%'
+          }
+        });
       }
-    });
-  }
+    }
 }
