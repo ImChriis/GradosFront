@@ -1,0 +1,72 @@
+<div class="searchUser">
+
+  <div class="table-wrapper" style="position: relative; min-height: 300px;">
+    <div class="table">
+      @if (clients$ | async; as state) {
+        <p-table
+          #dtSearch
+          dataKey="CodUsuario"
+          [value]="state"
+          [rows]="10"
+          [paginator]="true"
+          [globalFilterFields]="['nucedula', 'txnombre']"
+          styleClass="ml-3 mr-3"
+        >
+          <ng-template pTemplate="caption">
+            <div class="flex-row">
+              <div class="p-toolbar-group-end">
+                <span class="p-input-icon-left ml-auto">
+                  <input
+                    class="search searchInput"
+                    #searchInput
+                    pInputText
+                    type="text"
+                    placeholder="BUSCAR"
+                    (input)="dtSearch.filterGlobal(searchInput.value, 'contains')"
+                  />
+                </span>
+              </div>
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="min-width: 6rem" class="border">
+                <div class="flex thstyles">CÉDULA</div>
+              </th>
+              <th style="min-width: 20rem">
+                <div class="flex thstyles">NOMBRE</div>
+              </th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-client>
+            <tr class="table-content"
+                (click)="selectClient(client)"
+                [class.selected]="selectedClient?.id === client.id">
+              <td>{{ client.nucedula }}</td>
+              <td>{{ client.txnombre }}</td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="4">No elementos encontrados.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      }
+    </div>
+  </div>
+
+  <div class="modalButtons">
+    <button type="button" class="btn accept"
+            [disabled]="!selectedClient" (click)="accept()">
+      ACEPTAR
+    </button>
+    <button type="button" class="btn cancel" (click)="cancel()">
+      CANCELAR
+    </button>
+  </div>
+
+</div>

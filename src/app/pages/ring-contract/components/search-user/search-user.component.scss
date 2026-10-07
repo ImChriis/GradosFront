@@ -1,0 +1,79 @@
+.searchUser {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px;
+    width: 100% ;
+}
+
+.table { width: 100% !important; }
+.table p-table { width: 100% !important; }
+
+.table-content { cursor: pointer; }
+.table-content:hover { background-color: gray !important; }
+.table-content.selected { background-color: #acd4f5 !important; }
+
+.searchInput{
+    background-color: lightgray;
+    color: black;
+    border: none;
+    width: 105%;
+    margin-left: -15px;
+    text-transform: uppercase;
+    height: 3vh;
+    border-radius: 10px;
+}
+
+.searchInput::placeholder{
+    color: black;
+}
+
+.modalButtons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.modalButtons .btn {
+    border: none;
+    border-radius: 6px;
+    padding: 8px 18px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
+
+.modalButtons .accept { background-color: #2563EB; }
+.modalButtons .accept:disabled { opacity: 0.5; cursor: not-allowed; }
+.modalButtons .cancel { background-color: rgb(92, 37, 1); }
+.modalButtons .btn:hover:not(:disabled) { opacity: 0.9; }
+
+
+th{
+    background-color: darkgray !important;
+    color: black !important;
+    border: none !important;
+    font-size: 12px;;
+}
+
+td{
+    border: none !important;
+    font-size: 12px;
+}
+
+  :host ::ng-deep p-table tr:nth-child(odd) {
+    background-color: rgb(245, 243, 243) !important;
+    color: black !important;
+    border: none !important;
+  }
+  
+  
+  :host ::ng-deep p-table tr:nth-child(even) {
+    background-color: rgb(190, 190, 190) !important;
+    color: black !important;
+    border: none !important;
+  }
+
+  td{
+    border: 1px solid black !important; //bordes negros de prueba
+  }
