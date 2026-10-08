@@ -567,3 +567,322 @@ td{
 .inputGroup3 ::ng-deep .p-tablist-active-bar {
     display: none;
 }
+
+.detailsContent{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+fieldset{
+    display: flex;
+    // gap: 10px;
+    flex-direction: column;
+    width: 100%;
+    border: 1px solid #ababab !important;
+}
+
+.institution{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.top{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.inputs{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+}
+
+.inputs input{
+    width: 70%;
+    height: 3vh;
+    background-color: rgb(223, 220, 220);
+    border: none;
+    color: black;
+    border-radius: 10px;
+    padding-left: 10px;
+    text-transform: uppercase;
+}
+
+.inputs button{
+    height: 3vh;
+    width: 30px;
+    background-color: darkgray;
+    border: none;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 4px 8px 0 rgba(0, 0, 0, 0.2), inset 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.inputs button:hover{
+    cursor: pointer;
+    background-color: gray;
+    transform: translateY(-2px);
+}
+
+#observaciones{
+    margin-top: 10px;
+}
+
+.top .left{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.top .left .leftInput{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 60px minmax(0, 1fr) 34px;
+    align-items: center;
+}
+
+.top .right{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+}
+
+.leftInput input{
+    width: 100%;
+    height: 3vh;
+    background-color: rgb(223, 220, 220);
+    border: none;
+    color: black;
+    border-radius: 10px;
+    padding-left: 10px;
+    text-transform: uppercase;
+}
+
+.top .right .rightInput{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 3vh;               // == filas de la izquierda → se alinean
+}
+
+.rightInput label{
+    flex-shrink: 0;                // las etiquetas no se encogen
+}
+
+.rightInput input[type="radio"]{
+    margin-left: auto;             // empuja el radio + su label al extremo derecho
+}
+
+.rightInput input[type="radio"] + label{
+    min-width: 40px;               // 1.50 / 1.25 / Ambos al mismo ancho → radios alineados al píxel
+}
+
+.rightInput input[type="text"]{
+    flex: 0 1 160px;               // ancho normal, encoge si falta espacio
+    min-width: 90px;               // pero nunca menos de esto → jamás desborda
+    height: 3vh;
+    background-color: rgb(223, 220, 220);
+    border: none;
+    color: black;
+    border-radius: 10px;
+    padding-left: 10px;
+    text-transform: uppercase;
+}
+
+/* ===================== Pestaña REGALÍAS ===================== */
+.regalias{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));   // 3 columnas iguales, nunca desbordan
+    // gap: 10px;
+}
+
+.regaliasCol{
+    display: flex;
+    flex-direction: column;
+}
+
+.checkRow{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 3vh;           // misma altura de fila que en Detalles
+}
+
+.checkRow label{
+    cursor: pointer;
+}
+
+/* Inputs de ancho completo (detalle de Diploma / Otros / etc.) */
+.regaliasInput{
+    width: 100%;
+    height: 3vh;
+    min-height: 24px;
+    background-color: rgb(223, 220, 220);
+    border: none;
+    color: black;
+    border-radius: 10px;
+    // padding-left: 10px;
+    text-transform: uppercase;
+}
+
+/* Cajita de cantidad al lado de Fotografía */
+.checkRow .qtyInput{
+    width: 45px;
+    height: 3vh;
+    min-height: 22px;
+    background-color: rgb(223, 220, 220);
+    border: 1px solid #ababab;
+    border-radius: 5px;
+    color: black;
+    // padding-left: 6px;
+    text-align: right;
+}
+
+/* ===================== Pestaña SALDO ===================== */
+.saldo{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+}
+
+.saldoRow{
+    display: grid;
+    grid-template-columns: 140px 160px;   // etiqueta fija | input fijo → todo alineado
+    gap: 10px;
+    align-items: center;
+}
+
+.saldoRow label{
+    text-align: right;                     // etiquetas pegadas al input, como en el diseño
+}
+
+.saldoRow input{
+    width: 100%;
+    height: 3vh;
+    min-height: 24px;
+    background-color: #ffffff;
+    border: 1px solid #ababab;
+    border-radius: 4px;
+    color: black;
+    text-align: right;
+    padding: 0 8px;
+}
+
+/* Montos calculados (no editables) */
+.saldoRow input[readonly]{
+    background-color: rgb(223, 220, 220);
+}
+
+.saldoActions{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 20px;
+}
+
+.payBtn{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    color: black;
+    background-color: darkgray;
+    border: none;
+    font-size: 14px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.payBtn:hover{
+    cursor: pointer;
+    background-color: gray;
+    transform: translateY(-2px);
+}
+
+.payBtn .payIcon{
+    font-size: 22px;
+}
+
+/* ===================== Pestaña ESTADO ===================== */
+.estadoHead{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.estadoRow{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.estadoRow select{
+    width: 220px;
+    height: 3vh;
+    min-height: 24px;
+    background-color: rgb(223, 220, 220);
+    border: 1px solid #ababab;
+    border-radius: 4px;
+    color: black;
+    padding-left: 6px;
+}
+
+.estadoRow input{
+    width: 110px;
+    height: 3vh;
+    min-height: 24px;
+    background-color: #ffffff;
+    border: 1px solid #ababab;
+    border-radius: 4px;
+    color: black;
+    padding: 0 8px;
+}
+
+/* Cajas: Contrato | Fabricación | Engaste */
+.estadoGrid{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));   // 3 columnas iguales, sin desbordar
+    gap: 10px;
+    align-items: stretch;                               // todas las cajas con la misma altura
+}
+
+.estadoGrid fieldset{
+    width: 100%;
+    margin: 0;
+    padding: 12px 10px;
+    display: flex;
+    gap: 5px;
+}
+
+.estadoField{
+    display: grid;
+    grid-template-columns: 55px minmax(0, 1fr);         // etiqueta fija | input → alineados
+    gap: 8px;
+    align-items: center;
+}
+
+.estadoField input{
+    width: 100%;
+    height: 3vh;
+    min-height: 24px;
+    background-color: #ffffff;
+    border: 1px solid #ababab;
+    border-radius: 4px;
+    color: black;
+    padding: 0 8px;
+}

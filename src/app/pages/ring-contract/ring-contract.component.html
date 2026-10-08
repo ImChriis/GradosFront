@@ -135,10 +135,317 @@
                     <p-tab [value]="3">Saldo</p-tab>
                   </p-tablist>
                   <p-tabpanels>
-                    <p-tabpanel [value]="0">contenido 1</p-tabpanel>
-                    <p-tabpanel [value]="1">contenido 2</p-tabpanel>
-                    <p-tabpanel [value]="2">contenido 3</p-tabpanel>
-                    <p-tabpanel [value]="3">contenido 4</p-tabpanel>
+                    <p-tabpanel [value]="0">
+                      <div class="detailsContent">
+                        <fieldset>
+                          <legend>Detalles de la institución</legend>
+                        
+                          <div class="institution">
+
+                            <div class="bot">
+                                <div class="inputs">
+                                <label for="titulo">Titulo</label>
+                                <input type="text" id="titulo" name="titulo" readonly />
+                                <button type="button"><i class="pi pi-search"></i></button>
+                              </div>
+                            </div>
+
+                            <div class="top">
+                              <div class="inputs">
+                                <label for="titulo">Espec.</label>
+                                <input type="text" id="titulo" name="titulo" readonly />
+                              </div>
+
+                              <div class="inputs">
+                                <label for="titulo">Siglas</label>
+                                <input type="text" id="titulo" name="titulo" readonly />
+                                <button type="button"><i class="pi pi-search"></i></button>
+                              </div>
+                            </div>
+                          </div>
+                        </fieldset>
+
+                        <fieldset>
+                          <legend>Detalles del Anillo</legend>
+
+                          <div class="top">
+                            <div class="left">
+                              <div class="leftInput">
+                                <label for="modelo">Modelo: </label>
+                                <input type="text" id="modelo" name="modelo" />
+                              </div>
+
+                              <div class="leftInput">
+                                <label for="kilate">Kilate: </label>
+                                <input type="text" id="kilate" name="kilate" />
+                              </div>
+
+                              <div class="leftInput">
+                                <label for="medida">Medida: </label>
+                                <input type="text" id="medida" name="medida" />
+                              </div>
+
+                              <div class="leftInput">
+                                <label for="peso">Peso: </label>
+                                <input type="text" id="peso" name="peso" />
+
+                                <label for="peso">Grs</label>
+                              </div>
+                            </div>
+
+                            <div class="right">
+                              <div class="rightInput">
+                                <label for="zircone">Cantidad Zircone: </label>
+                                <input type="text" id="zircone" name="zircone" />
+                                <input type="radio" id="radio" name="radio" />
+                                <label for="radio">1.50</label>
+                              </div>
+
+                              <div class="rightInput">
+                                <input type="checkbox" id="acumulado" name="acumulado" />
+                                <label for="acumulado">Acumulado </label>
+                                <input type="radio" id="radio2" name="radio" />
+                                <label for="radio2">1.25</label>
+                              </div>
+
+                              <div class="rightInput">
+                                <input type="checkbox" id="activo" name="activo" />
+                                <label for="activo">Activo / Inactivo </label>
+                                <input type="radio" id="radio3" name="radio" />
+                                <label for="radio3">Ambos</label>
+                              </div>
+
+                              <div class="rightInput">      <!-- era el anidado dentro de la fila 3 -->
+                                <input type="checkbox" id="anulado" name="anulado" />
+                                <label for="anulado">Anulado </label>
+                                <input type="checkbox" id="exonerado" name="exonerado" />
+                                <label for="exonerado">Exonerado</label>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="bot">
+                            <div class="inputs">
+                              <label for="observaciones">Observaciones: </label>
+                              <input type="text" id="observaciones" name="observaciones" />
+                            </div>
+                          </div>
+                        </fieldset>
+                      </div>
+                    </p-tabpanel>
+                    <p-tabpanel [value]="1">
+                      <div class="detailsContent">
+                        <fieldset>
+                          <div class="regalias">
+                            <div class="regaliasCol">
+                              <div class="checkRow">
+                                <input type="checkbox" id="medalla" name="medalla" />
+                                <label for="medalla">Medalla</label>
+                              </div>
+
+                              <div class="checkRow">
+                                <input type="checkbox" id="cinta" name="cinta" />
+                                <label for="cinta">Cinta</label>
+                              </div>
+
+                              <div class="checkRow">
+                                <input type="checkbox" id="botonInstitucion" name="botonInstitucion" />
+                                <label for="botonInstitucion">Botón Institución</label>
+                              </div>
+
+                              <div class="checkRow">
+                                <input type="checkbox" id="botonEspecialidad" name="botonEspecialidad" checked />
+                                <label for="botonEspecialidad">Botón Especialidad</label>
+                              </div>
+
+                              <div class="checkRow">
+                                <input type="checkbox" id="placa" name="placa" />
+                                <label for="placa">Placa</label>
+                              </div>
+                            </div>
+
+                            <div class="regaliasCol">
+                              <div class="checkRow">
+                                <input type="checkbox" id="portaDiploma" name="portaDiploma" />
+                                <label for="portaDiploma">Porta Diploma</label>
+                              </div>
+
+                              <div class="checkRow">
+                                <input type="checkbox" id="llavero" name="llavero" checked />
+                                <label for="llavero">Llavero</label>
+                              </div>
+
+                              <div class="checkRow">
+                                <input type="checkbox" id="portaNombre" name="portaNombre" />
+                                <label for="portaNombre">Porta Nombre</label>
+                              </div>
+
+                              <div class="checkRow">
+                                <input type="checkbox" id="togaBirrete" name="togaBirrete" />
+                                <label for="togaBirrete">Toga y Birrete</label>
+                              </div>
+
+                              <div class="checkRow">
+                                <input type="checkbox" id="estuche" name="estuche" />
+                                <label for="estuche">Estuche</label>
+                              </div>
+                            </div>
+
+                            <div class="regaliasCol">
+                              <div class="checkRow">
+                                <input type="checkbox" id="albumSencillo" name="albumSencillo" />
+                                <label for="albumSencillo">Album Sencillo</label>
+                              </div>
+
+                              <div class="checkRow">
+                                <input type="checkbox" id="albumEspecial" name="albumEspecial" />
+                                <label for="albumEspecial">Album Especial</label>
+                              </div>
+
+                              <div class="checkRow">
+                                <input type="checkbox" id="video" name="video" />
+                                <label for="video">Video</label>
+                              </div>
+
+                              <div class="checkRow">
+                                <input type="checkbox" id="fotografia" name="fotografia" />
+                                <label for="fotografia">Fotografía</label>
+                                <input type="text" class="qtyInput" name="fotografiaCantidad" value="0" />
+                              </div>
+                            </div>
+                          </div>
+
+                          <input type="text" class="regaliasInput" name="regaliasDetalle" />
+
+                          <div class="checkRow">
+                            <input type="checkbox" id="diploma" name="diploma" />
+                            <label for="diploma">Diploma</label>
+                          </div>
+                          <input type="text" class="regaliasInput" name="diplomaDetalle" />
+
+                          <div class="checkRow">
+                            <input type="checkbox" id="otrosRegalias" name="otrosRegalias" />
+                            <label for="otrosRegalias">Otros</label>
+                          </div>
+                          <input type="text" class="regaliasInput" name="otrosDetalle" />
+                        </fieldset>
+                      </div>
+                    </p-tabpanel>
+                    <p-tabpanel [value]="2">
+                      <div class="detailsContent">
+                        <fieldset>
+                          <div class="estadoHead">
+                            <div class="estadoRow">
+                              <label for="estadoContrato">Estado del Contrato:</label>
+                              <select id="estadoContrato" name="estadoContrato">
+                                <option value="1">1 - En Proceso</option>
+                                <option value="2">2 - En Fabricación</option>
+                                <option value="3">3 - Fabricado</option>
+                                <option value="4">4 - En Engastes</option>
+                                <option value="5">5 - Por Entregar</option>
+                                <option value="6" selected>6 - Entregado</option>
+                                <option value="7">7 - Servicio</option>
+                                <option value="8">8 - Reclamo</option>
+                                <option value="9">9 - Anulado</option>
+                              </select>
+                            </div>
+
+                            <div class="estadoRow">
+                              <label for="requeridoEl">Requerido el:</label>
+                              <input type="text" id="requeridoEl" name="requeridoEl" value="15/04/2012" />
+                            </div>
+                          </div>
+
+                          <div class="estadoGrid">
+                            <fieldset>
+                              <legend>Contrato</legend>
+
+                              <div class="estadoField">
+                                <label for="contratoInicio">Inicio:</label>
+                                <input type="text" id="contratoInicio" name="contratoInicio" value="25/01/2012" />
+                              </div>
+
+                              <div class="estadoField">
+                                <label for="contratoEntrega">Entrega:</label>
+                                <input type="text" id="contratoEntrega" name="contratoEntrega" value="18/05/2012" />
+                              </div>
+                            </fieldset>
+
+                            <fieldset>
+                              <legend>Fabricación</legend>
+
+                              <div class="estadoField">
+                                <label for="fabricacionInicio">Inicio:</label>
+                                <input type="text" id="fabricacionInicio" name="fabricacionInicio" value="11/02/2012" />
+                              </div>
+
+                              <div class="estadoField">
+                                <label for="fabricacionFin">Fin:</label>
+                                <input type="text" id="fabricacionFin" name="fabricacionFin" value="27/04/2012" />
+                              </div>
+
+                              <div class="estadoField">
+                                <label for="orden">Orden:</label>
+                                <input type="text" id="orden" name="orden" value="4894" />
+                              </div>
+                            </fieldset>
+
+                            <fieldset>
+                              <legend>Engaste</legend>
+
+                              <div class="estadoField">
+                                <label for="engasteInicio">Inicio:</label>
+                                <input type="text" id="engasteInicio" name="engasteInicio" value="27/04/2012" />
+                              </div>
+
+                              <div class="estadoField">
+                                <label for="engasteFin">Fin:</label>
+                                <input type="text" id="engasteFin" name="engasteFin" value="35/20/12__" />
+                              </div>
+                            </fieldset>
+                          </div>
+                        </fieldset>
+                      </div>
+                    </p-tabpanel>
+                    <p-tabpanel [value]="3">
+                      <div class="detailsContent">
+                        <fieldset>
+                          <div class="saldo">
+                            <div class="saldoRow">
+                              <label for="montoContrato">Monto Contrato:</label>
+                              <input type="text" id="montoContrato" name="montoContrato" value="3,300.00" />
+                            </div>
+
+                            <div class="saldoRow">
+                              <label for="descuento">Descuento:</label>
+                              <input type="text" id="descuento" name="descuento" value="0.00" />
+                            </div>
+
+                            <div class="saldoRow">
+                              <label for="inicialContrato">Inicial Contrato:</label>
+                              <input type="text" id="inicialContrato" name="inicialContrato" value="250.00" />
+                            </div>
+
+                            <div class="saldoRow">
+                              <label for="montoPagado">Monto Pagado:</label>
+                              <input type="text" id="montoPagado" name="montoPagado" value="3,300.00" readonly />
+                            </div>
+
+                            <div class="saldoRow">
+                              <label for="montoSaldo">Monto Saldo:</label>
+                              <input type="text" id="montoSaldo" name="montoSaldo" value="0.00" readonly />
+                            </div>
+                          </div>
+
+                          <div class="saldoActions">
+                            <button type="button" class="payBtn">
+                              <span class="payIcon">💰</span>
+                              Efectuar Pago
+                            </button>
+                          </div>
+                        </fieldset>
+                      </div>
+                    </p-tabpanel>
                   </p-tabpanels>
               </p-tabs>
             </div>
