@@ -1,1 +1,141 @@
-<p>audits works!</p>
+<div class="container">
+  <div class="clientsList">
+    <fieldset class="body">
+      <legend class="title">Auditoría</legend>
+
+      <div [formGroup]="filtersForm" class="filtersContainer">
+        <div class="filters">
+          <div class="filterGroup">
+            <label for="fTabla">TABLA</label>
+            <select id="fTabla" formControlName="tabla">
+              <option value="">TODAS</option>
+              @for (t of tablas$ | async; track t.value) {
+                <option [value]="t.value">{{ t.label }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="filterGroup">
+            <label for="fUsuario">USUARIO</label>
+            <select id="fUsuario" formControlName="CodUser">
+              <option value="">TODOS</option>
+              @for (u of usuarios$ | async; track u.value) {
+                <option [value]="u.value">{{ u.label }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="filterGroup">
+            <label for="fAccion">ACCIÓN</label>
+            <select id="fAccion" formControlName="accion">
+              <option value="">TODAS</option>
+              <option value="INSERT">INSERT</option>
+              <option value="UPDATE">UPDATE</option>
+              <option value="DELETE">DELETE</option>
+            </select>
+          </div>
+
+          <div class="filterGroup">
+            <label for="fDesde">DESDE</label>
+            <input id="fDesde" type="date" formControlName="desde" />
+          </div>
+
+          <div class="filterGroup">
+            <label for="fHasta">HASTA</label>
+            <input id="fHasta" type="date" formControlName="hasta" />
+          </div>
+
+          <button type="button" class="clearBtn" (click)="clearFilters()">
+            LIMPIAR
+          </button>
+        </div>
+
+        <div class="table-wrapper" style="position: relative; min-height: 300px;">
+          <app-loader [isLoading]="isLoading()" mode="component"></app-loader>
+
+          <div class="table">
+            @if (audits$ | async; as rows) {
+              <p-table
+                dataKey="id_auditoria"
+                [value]="rows"
+                [rows]="5"
+                [paginator]="true"
+                styleClass="ml-3 mr-3"
+              >
+                <ng-template pTemplate="caption">
+                  <div class="flex-row">
+                    <div class="p-toolbar-group-end">
+                      <span class="p-input-icon-left ml-auto">
+                        <i class=""></i>
+                        <input
+                          class="search"
+                          pInputText
+                          type="text"
+                          placeholder="BUSCAR"
+                          [formControl]="qControl"
+                        />
+                      </span>
+                    </div>
+                  </div>
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th style="min-width: 4rem" class="border">
+                      <div class="flex thstyles">ID</div>
+                    </th>
+                    <th style="min-width: 10rem">
+                      <div class="flex thstyles">FECHA Y HORA</div>
+                    </th>
+                    <th style="min-width: 7rem">
+                      <div class="flex thstyles">ACCIÓN</div>
+                    </th>
+                    <th style="min-width: 8rem">
+                      <div class="flex thstyles">TABLA</div>
+                    </th>
+                    <th style="min-width: 5rem">
+                      <div class="flex thstyles">ID</div>
+                    </th>
+                    <th style="min-width: 12rem">
+                      <div class="flex thstyles">USUARIO</div>
+                    </th>
+                    <th style="min-width: 20rem">
+                      <div class="flex thstyles">DETALLES</div>
+                    </th>
+                  </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-row>
+                  <tr class="table-content">
+                    <td>{{ row.id_auditoria }}</td>
+                    <td>{{ row.fecha_hora | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+                    <td>
+                      <span
+                        class="badge"
+                        [ngClass]="'badge-' + (row.accion | lowercase)"
+                      >
+                        {{ row.accion }}
+                      </span>
+                    </td>
+                    <td>{{ row.tabla_afectada }}</td>
+                    <td>{{ row.id_registro ?? '-' }}</td>
+                    <td>{{ row.usuario_nombre ?? '-' }}</td>
+                    <td class="detalles" [title]="row.detalles ?? ''">
+                      {{ row.detalles ?? '-' }}
+                    </td>
+                  </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="7">No elementos encontrados.</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            }
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</div>
