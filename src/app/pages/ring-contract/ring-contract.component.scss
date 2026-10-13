@@ -151,8 +151,9 @@ form{
 .inputGroup3{
     width: 100%;
     display: flex;
-    justify-content: space-evenly;
-    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
     border: 1px solid #ababab; /* Borde sutil */
     border-radius: 10px;
     padding: 10px;
@@ -165,15 +166,22 @@ form{
 .inputGroup3 .inputGroup24{
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: end;
     font-size: 10px;
-    width: auto;
+    width: 100%;
 }
 
 
 .inputGroup3 .inputGroup input, .inputGroup3 .inputGroup2 input{
     background-color: rgb(223, 220, 220);
-   width: 100%;
+    width: 100%;
+}
+
+.searchIcon{
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    height: 100%;
 }
 
 .inputGroup4{
@@ -267,7 +275,7 @@ form{
 }
 
     .icon{
-          color: #FFFFFF;
+    color: #FFFFFF;
     // background-color: darkgray;
     background-color: #2563EB;
     padding: 10px;
@@ -286,12 +294,19 @@ form{
 
 .icon2{
     display: flex;
+    width: 40px;
+    // height: 3vh;
     justify-content: center;
     align-items: center;
     color: black;
-    background-color: darkgray;
-    padding: 10px;
+    background-color: #939393;
+    border: none;
+    padding: 5px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.icon2 i{
+    font-size: 300px;
 }
 
 .icon.disabled{

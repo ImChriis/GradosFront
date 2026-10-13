@@ -30,10 +30,52 @@ export class RingContractComponent implements OnInit {
   contracts$!: Observable<any>;
   isLoading = signal(false);
   activeTab = signal<string | number>(0);
-  user = [];
+  user: any[] = [];
+  userName!: string;
+
+  /** Estado de los botones de acción, mismo patrón que act-contract:
+   *  Agregar  -> inhabilitado mientras se está agregando/editando
+   *  Guardar  -> inhabilitado hasta que haya algo que guardar
+   *  Eliminar -> inhabilitado hasta seleccionar una fila */
+  isAdding = false;
+  isEnabled = false;
+  selectedContract: any | null = null;
 
   ngOnInit() {
     this.contracts$ = this.ringContractService.getRingContract();
+    this.isAdding = false;
+  }
+
+  onSelectContract(contract: any) {
+    this.selectedContract = contract;
+    this.isEnabled = true;
+    this.isAdding = true;
+  }
+
+  onAdd() {
+    this.selectedContract = null;
+    this.isEnabled = true;
+    this.isAdding = true;
+  }
+
+  onSave() {
+    // TODO: acá va el llamado a RingContractService cuando exista el endpoint de guardar
+    this.resetActions();
+  }
+
+  onDelete() {
+    // TODO: acá va el llamado a RingContractService cuando exista el endpoint de eliminar
+    this.resetActions();
+  }
+
+  onCancel() {
+    this.resetActions();
+  }
+
+  private resetActions() {
+    this.isEnabled = false;
+    this.isAdding = false;
+    this.selectedContract = null;
   }
 
   openSearchUserModal(){
@@ -49,6 +91,8 @@ export class RingContractComponent implements OnInit {
   )
     this.ref?.onClose.subscribe((result: any) => {
       this.user = result;
+      this.userName = result.txnombre;
+      console.log('Selected user:', this.user); // Log the selected user to the console
     })
   }
 }

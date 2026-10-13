@@ -93,19 +93,19 @@
 
             <div class="inputGroup">
                 <label for="identification">BANCOS</label>
-                <input type="text" id="identification" name="identification" formControlName="bancos" appUppercase>
+                <input type="text" id="bank" name="identification" formControlName="bancos" appUppercase>
             </div>
 
           <div class="estado">
               <div class="inputGroup2">
                 <label for="identification" class="titles">STATUS</label>
                 <div class="select">
-                    <input type="radio" id="active" class="checkbox" name="Status" [value]="1" formControlName="status">
+                    <input type="radio" id="active" class="checkbox" name="status" [value]="1" formControlName="status">
                     <label for="active">ACTIVO</label>
                 </div>
 
                 <div class="select">
-                    <input type="radio" id="inactive" class="checkbox"  name="Status" [value]="0" formControlName="status">
+                    <input type="radio" id="inactive" class="checkbox"  name="status" [value]="0" formControlName="status">
                     <label for="inactive">INACTIVO</label>
                 </div>
               </div>
