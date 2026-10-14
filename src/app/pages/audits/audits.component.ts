@@ -102,7 +102,9 @@ export class AuditsComponent implements OnInit {
           catchError(() => {
             this.isLoading.set(false);
             return of<AuditRow[]>([]);
-          })
+          }),
+          tap((res) => console.log('Audits loaded', res))
+
         )
       )
     );

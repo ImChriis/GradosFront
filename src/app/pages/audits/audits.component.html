@@ -58,7 +58,7 @@
               <p-table
                 dataKey="id_auditoria"
                 [value]="rows"
-                [rows]="5"
+                [rows]="8"
                 [paginator]="true"
                 styleClass="ml-3 mr-3"
               >
@@ -84,7 +84,7 @@
                     <th style="min-width: 4rem" class="border">
                       <div class="flex thstyles">ID</div>
                     </th>
-                    <th style="min-width: 10rem">
+                    <th style="min-width: 12rem">
                       <div class="flex thstyles">FECHA Y HORA</div>
                     </th>
                     <th style="min-width: 7rem">
@@ -108,7 +108,7 @@
                 <ng-template pTemplate="body" let-row>
                   <tr class="table-content">
                     <td>{{ row.id_auditoria }}</td>
-                    <td>{{ row.fecha_hora | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+                    <td>{{ row.fecha_hora | date: 'dd/MM/yyyy hh:mm a' : 'VE' }}</td>
                     <td>
                       <span
                         class="badge"
