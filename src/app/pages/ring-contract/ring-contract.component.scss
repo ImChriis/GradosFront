@@ -71,13 +71,14 @@
     border: 1px solid #949393 !important;
     padding: 10px;
     background-color: white;
-    gap: 20px;
+    gap: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 10px;
 }
 
 form{
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -88,7 +89,9 @@ form{
 
 .inputGroup{
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
     width: 100%;
     gap: 3px;
 }
@@ -96,6 +99,8 @@ form{
 .inputGroup label{
     color: black;
     font-weight: bold;
+    font-size: 12px;
+    
 }
 
 .inputGroup input{
@@ -106,6 +111,7 @@ form{
     border-radius: 10px;
     padding-left: 10px;
     text-transform: uppercase;
+    width: 100%;
 }
 
 .inputGroup textarea{
@@ -121,7 +127,9 @@ form{
 
 .inputGroup2{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
     gap: 10px;
     width: 100%;
 }
@@ -131,7 +139,8 @@ form{
     font-weight: bold;
 }
 
-.inputGroup2 input{
+.inputGroup3 .inputGroup2 input{
+    width:85%;
     height: 3vh;
     background-color: rgb(223, 220, 220);
     border: none;
@@ -153,7 +162,7 @@ form{
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    // gap: 10px;
     border: 1px solid #ababab; /* Borde sutil */
     border-radius: 10px;
     padding: 10px;
@@ -172,9 +181,9 @@ form{
 }
 
 
-.inputGroup3 .inputGroup input, .inputGroup3 .inputGroup2 input{
+.inputGroup3 .inputGroup input{
     background-color: rgb(223, 220, 220);
-    width: 100%;
+    width: 60%;
 }
 
 .searchIcon{
@@ -294,8 +303,9 @@ form{
 
 .icon2{
     display: flex;
-    width: 40px;
-    // height: 3vh;
+    width: 30px;
+    // height: 25px;
+    height: 3vh;
     justify-content: center;
     align-items: center;
     color: black;
@@ -306,7 +316,7 @@ form{
 }
 
 .icon2 i{
-    font-size: 300px;
+    font-size: 16px !important;
 }
 
 .icon.disabled{
@@ -557,6 +567,8 @@ td{
 .inputGroup3 ::ng-deep .p-tablist-tab-list {
     background: transparent;
     border-bottom: none;
+    height: 25px;
+    margin-top: -10px;
 }
 
 .inputGroup3 .p-tab,
@@ -572,6 +584,8 @@ td{
 .inputGroup3 .p-tabpanels {
     background: transparent;
     color: black;
+    margin-bottom: -15px;
+    height: 100%;
 }
 
 .inputGroup3 .p-tab.p-tab-active {
@@ -609,6 +623,7 @@ fieldset{
     justify-content: space-between;
     align-items: center;
     gap: 16px;
+    // flex-direction: column;
 }
 
 .inputs{
