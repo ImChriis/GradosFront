@@ -57,7 +57,7 @@
                 {{ contract.NoContrato }}
               </td>
               <td>
-                {{ contract.NuCedula }}
+                {{ contract.nucedula }}
               </td>
               <td>
                 {{ contract.txnombre }}
@@ -77,27 +77,27 @@
     </div>
 
     <div class="clientForm">
-        <form  autocomplete="off">
+        <form [formGroup]="ringForm" autocomplete="off">
             <div class="inputGroup3">
                 <div class="inputGroup">
-                    <label for="">NO. CONTRATO</label>
-                    <input type="text" pInputText />
+                    <label for="noContrato">NO. CONTRATO</label>
+                    <input type="text" id="noContrato" pInputText formControlName="NoContrato" />
                 </div>
 
                 <div class="inputGroup">
-                    <label for="">NO. CEDULA</label>
-                    <input type="text" pInputText />
+                    <label for="nucedula">NO. CEDULA</label>
+                    <input type="text" id="nucedula" pInputText formControlName="nucedula" />
                 </div>
             </div>
 
             <div class="inputGroup3">
                 <div class="inputGroup2">
                     <label for="cliente">CLIENTE</label>
-                    <input type="text" readonly [value]='userName || ""' />
+                    <input type="text" id="cliente" formControlName="txnombre" readonly />
                 </div>
 
                 <div class="searchIcon">
-                    <button type="button" class="icon2 searchIcon" title="Agregar" (click)="openSearchUserModal()">
+                    <button type="button" class="icon2 searchIcon" title="Buscar cliente" (click)="openSearchUserModal()">
                       <i class="pi pi-search add"></i>
                     </button>
                 </div>
@@ -105,27 +105,27 @@
 
             <div class="inputGroup3">
                 <div class="inputGroup24">
-                  <input type="radio" name="anillo" id="anillo"/>
+                  <input type="radio" id="anillo" formControlName="MaTpCont" value="1"/>
                     <label for="anillo">ANILLO</label>
                 </div>
 
                 <div class="inputGroup24">
-                  <input type="radio" name="reconocimiento" id="reconocimiento"/>
+                  <input type="radio" id="reconocimiento" formControlName="MaTpCont" value="2"/>
                     <label for="reconocimiento">RECONOCIMIENTO</label>
                 </div>
 
                 <div class="inputGroup24">
-                  <input type="radio" name="reparacion" id="reparacion"/>
+                  <input type="radio" id="reparacion" formControlName="MaTpCont" value="3"/>
                     <label for="reparacion">REPARACIÓN</label>
                 </div>
 
                 <div class="inputGroup24">
-                  <input type="radio" name="jostens" id="jostens"/>
+                  <input type="radio" id="jostens" formControlName="MaTpCont" value="4"/>
                     <label for="jostens">JOSTENS</label>
                 </div>
 
                 <div class="inputGroup24">
-                  <input type="radio" name="otros" id="otros"/>
+                  <input type="radio" id="otros" formControlName="MaTpCont" value="5"/>
                     <label for="otros">OTROS</label>
                 </div>
             </div>
@@ -149,20 +149,20 @@
                             <div class="bot">
                                 <div class="inputs">
                                 <label for="titulo">Titulo</label>
-                                <input type="text" id="titulo" name="titulo" readonly />
+                                <input type="text" id="titulo" formControlName="titulo" readonly />
                                 <button type="button"><i class="pi pi-search"></i></button>
                               </div>
                             </div>
 
                             <div class="top">
                               <div class="inputs">
-                                <label for="titulo">Espec.</label>
-                                <input type="text" id="titulo" name="titulo" readonly />
+                                <label for="especialidad">Espec.</label>
+                                <input type="text" id="especialidad" formControlName="especialidad" readonly />
                               </div>
 
                               <div class="inputs">
-                                <label for="titulo">Siglas</label>
-                                <input type="text" id="titulo" name="titulo" readonly />
+                                <label for="siglas">Siglas</label>
+                                <input type="text" id="siglas" formControlName="siglas" readonly />
                                 <button type="button"><i class="pi pi-search"></i></button>
                               </div>
                             </div>
@@ -176,22 +176,22 @@
                             <div class="left">
                               <div class="leftInput">
                                 <label for="modelo">Modelo: </label>
-                                <input type="text" id="modelo" name="modelo" />
+                                <input type="text" id="modelo" formControlName="modelo" />
                               </div>
 
                               <div class="leftInput">
                                 <label for="kilate">Kilate: </label>
-                                <input type="text" id="kilate" name="kilate" />
+                                <input type="text" id="kilate" formControlName="kilate" />
                               </div>
 
                               <div class="leftInput">
                                 <label for="medida">Medida: </label>
-                                <input type="text" id="medida" name="medida" />
+                                <input type="text" id="medida" formControlName="medida" />
                               </div>
 
                               <div class="leftInput">
                                 <label for="peso">Peso: </label>
-                                <input type="text" id="peso" name="peso" />
+                                <input type="text" id="peso" formControlName="peso" />
 
                                 <label for="peso">Grs</label>
                               </div>
@@ -200,29 +200,29 @@
                             <div class="right">
                               <div class="rightInput">
                                 <label for="zircone">Cantidad Zircone: </label>
-                                <input type="text" id="zircone" name="zircone" />
-                                <input type="radio" id="radio" name="radio" />
+                                <input type="text" id="zircone" formControlName="cazirc" />
+                                <input type="radio" id="radio" formControlName="tpzirc" value="1.50" />
                                 <label for="radio">1.50</label>
                               </div>
 
                               <div class="rightInput">
                                 <input type="checkbox" id="acumulado" name="acumulado" />
                                 <label for="acumulado">Acumulado </label>
-                                <input type="radio" id="radio2" name="radio" />
+                                <input type="radio" id="radio2" formControlName="tpzirc" value="1.25" />
                                 <label for="radio2">1.25</label>
                               </div>
 
                               <div class="rightInput">
-                                <input type="checkbox" id="activo" name="activo" />
+                                <input type="checkbox" id="activo" formControlName="InActivo" />
                                 <label for="activo">Activo / Inactivo </label>
-                                <input type="radio" id="radio3" name="radio" />
+                                <input type="radio" id="radio3" formControlName="tpzirc" value="AMBOS" />
                                 <label for="radio3">Ambos</label>
                               </div>
 
                               <div class="rightInput">      <!-- era el anidado dentro de la fila 3 -->
-                                <input type="checkbox" id="anulado" name="anulado" />
+                                <input type="checkbox" id="anulado" formControlName="Anulado" />
                                 <label for="anulado">Anulado </label>
-                                <input type="checkbox" id="exonerado" name="exonerado" />
+                                <input type="checkbox" id="exonerado" formControlName="Exonerado" />
                                 <label for="exonerado">Exonerado</label>
                               </div>
                             </div>
@@ -231,7 +231,7 @@
                           <div class="bot">
                             <div class="inputs">
                               <label for="observaciones">Observaciones: </label>
-                              <input type="text" id="observaciones" name="observaciones" />
+                              <input type="text" id="observaciones" formControlName="TxObservacion" />
                             </div>
                           </div>
                         </fieldset>
@@ -243,95 +243,93 @@
                           <div class="regalias">
                             <div class="regaliasCol">
                               <div class="checkRow">
-                                <input type="checkbox" id="medalla" name="medalla" />
+                                <input type="checkbox" id="medalla" formControlName="inmedalla" />
                                 <label for="medalla">Medalla</label>
                               </div>
 
                               <div class="checkRow">
-                                <input type="checkbox" id="cinta" name="cinta" />
+                                <input type="checkbox" id="cinta" formControlName="incinta" />
                                 <label for="cinta">Cinta</label>
                               </div>
 
                               <div class="checkRow">
-                                <input type="checkbox" id="botonInstitucion" name="botonInstitucion" />
+                                <input type="checkbox" id="botonInstitucion" formControlName="inbotoninst" />
                                 <label for="botonInstitucion">Botón Institución</label>
                               </div>
 
                               <div class="checkRow">
-                                <input type="checkbox" id="botonEspecialidad" name="botonEspecialidad" checked />
+                                <input type="checkbox" id="botonEspecialidad" formControlName="inbotesp" />
                                 <label for="botonEspecialidad">Botón Especialidad</label>
                               </div>
 
                               <div class="checkRow">
-                                <input type="checkbox" id="placa" name="placa" />
+                                <input type="checkbox" id="placa" formControlName="inplaca" />
                                 <label for="placa">Placa</label>
                               </div>
                             </div>
 
                             <div class="regaliasCol">
                               <div class="checkRow">
-                                <input type="checkbox" id="portaDiploma" name="portaDiploma" />
+                                <input type="checkbox" id="portaDiploma" formControlName="inportadip" />
                                 <label for="portaDiploma">Porta Diploma</label>
                               </div>
 
                               <div class="checkRow">
-                                <input type="checkbox" id="llavero" name="llavero" checked />
+                                <input type="checkbox" id="llavero" formControlName="inllavero" />
                                 <label for="llavero">Llavero</label>
                               </div>
 
                               <div class="checkRow">
-                                <input type="checkbox" id="portaNombre" name="portaNombre" />
+                                <input type="checkbox" id="portaNombre" formControlName="inportanombre" />
                                 <label for="portaNombre">Porta Nombre</label>
                               </div>
 
                               <div class="checkRow">
-                                <input type="checkbox" id="togaBirrete" name="togaBirrete" />
+                                <input type="checkbox" id="togaBirrete" formControlName="intoga" />
                                 <label for="togaBirrete">Toga y Birrete</label>
                               </div>
 
                               <div class="checkRow">
-                                <input type="checkbox" id="estuche" name="estuche" />
+                                <input type="checkbox" id="estuche" formControlName="inestuche" />
                                 <label for="estuche">Estuche</label>
                               </div>
                             </div>
 
                             <div class="regaliasCol">
                               <div class="checkRow">
-                                <input type="checkbox" id="albumSencillo" name="albumSencillo" />
+                                <input type="checkbox" id="albumSencillo" formControlName="inalbumsenc" />
                                 <label for="albumSencillo">Album Sencillo</label>
                               </div>
 
                               <div class="checkRow">
-                                <input type="checkbox" id="albumEspecial" name="albumEspecial" />
+                                <input type="checkbox" id="albumEspecial" formControlName="inalbumesp" />
                                 <label for="albumEspecial">Album Especial</label>
                               </div>
 
                               <div class="checkRow">
-                                <input type="checkbox" id="video" name="video" />
+                                <input type="checkbox" id="video" formControlName="invideo" />
                                 <label for="video">Video</label>
                               </div>
 
                               <div class="checkRow">
-                                <input type="checkbox" id="fotografia" name="fotografia" />
+                                <input type="checkbox" id="fotografia" formControlName="infotografia" />
                                 <label for="fotografia">Fotografía</label>
-                                <input type="text" class="qtyInput" name="fotografiaCantidad" value="0" />
+                                <input type="text" class="qtyInput" formControlName="cafotografia" />
                               </div>
                             </div>
                           </div>
 
-                          <input type="text" class="regaliasInput" name="regaliasDetalle" />
-
                           <div class="checkRow">
-                            <input type="checkbox" id="diploma" name="diploma" />
+                            <input type="checkbox" id="diploma" formControlName="indiploma" />
                             <label for="diploma">Diploma</label>
                           </div>
-                          <input type="text" class="regaliasInput" name="diplomaDetalle" />
+                          <input type="text" class="regaliasInput" formControlName="TxDiploma" />
 
                           <div class="checkRow">
-                            <input type="checkbox" id="otrosRegalias" name="otrosRegalias" />
+                            <input type="checkbox" id="otrosRegalias" formControlName="Inotroreg" />
                             <label for="otrosRegalias">Otros</label>
                           </div>
-                          <input type="text" class="regaliasInput" name="otrosDetalle" />
+                          <input type="text" class="regaliasInput" formControlName="TxOtroReg" />
                         </fieldset>
                       </div>
                     </p-tabpanel>
@@ -341,13 +339,13 @@
                           <div class="estadoHead">
                             <div class="estadoRow">
                               <label for="estadoContrato">Estado del Contrato:</label>
-                              <select id="estadoContrato" name="estadoContrato">
+                              <select id="estadoContrato" formControlName="MaEstado">
                                 <option value="1">1 - En Proceso</option>
                                 <option value="2">2 - En Fabricación</option>
                                 <option value="3">3 - Fabricado</option>
                                 <option value="4">4 - En Engastes</option>
                                 <option value="5">5 - Por Entregar</option>
-                                <option value="6" selected>6 - Entregado</option>
+                                <option value="6">6 - Entregado</option>
                                 <option value="7">7 - Servicio</option>
                                 <option value="8">8 - Reclamo</option>
                                 <option value="9">9 - Anulado</option>
@@ -356,7 +354,7 @@
 
                             <div class="estadoRow">
                               <label for="requeridoEl">Requerido el:</label>
-                              <input type="text" id="requeridoEl" name="requeridoEl" value="15/04/2012" />
+                              <input type="date" id="requeridoEl" formControlName="FeSolici" />
                             </div>
                           </div>
 
@@ -366,12 +364,12 @@
 
                               <div class="estadoField">
                                 <label for="contratoInicio">Inicio:</label>
-                                <input type="text" id="contratoInicio" name="contratoInicio" value="25/01/2012" />
+                                <input type="date" id="contratoInicio" formControlName="feinicio" />
                               </div>
 
                               <div class="estadoField">
                                 <label for="contratoEntrega">Entrega:</label>
-                                <input type="text" id="contratoEntrega" name="contratoEntrega" value="18/05/2012" />
+                                <input type="date" id="contratoEntrega" formControlName="FeFin" />
                               </div>
                             </fieldset>
 
@@ -380,17 +378,17 @@
 
                               <div class="estadoField">
                                 <label for="fabricacionInicio">Inicio:</label>
-                                <input type="text" id="fabricacionInicio" name="fabricacionInicio" value="11/02/2012" />
+                                <input type="date" id="fabricacionInicio" formControlName="Feinifab" />
                               </div>
 
                               <div class="estadoField">
                                 <label for="fabricacionFin">Fin:</label>
-                                <input type="text" id="fabricacionFin" name="fabricacionFin" value="27/04/2012" />
+                                <input type="date" id="fabricacionFin" formControlName="FeFinFab" />
                               </div>
 
                               <div class="estadoField">
                                 <label for="orden">Orden:</label>
-                                <input type="text" id="orden" name="orden" value="4894" />
+                                <input type="text" id="orden" formControlName="nuordenfab" />
                               </div>
                             </fieldset>
 
@@ -399,12 +397,12 @@
 
                               <div class="estadoField">
                                 <label for="engasteInicio">Inicio:</label>
-                                <input type="text" id="engasteInicio" name="engasteInicio" value="27/04/2012" />
+                                <input type="date" id="engasteInicio" formControlName="FeIniEng" />
                               </div>
 
                               <div class="estadoField">
                                 <label for="engasteFin">Fin:</label>
-                                <input type="text" id="engasteFin" name="engasteFin" value="35/20/12__" />
+                                <input type="date" id="engasteFin" formControlName="FeFinEng" />
                               </div>
                             </fieldset>
                           </div>
@@ -417,32 +415,32 @@
                           <div class="saldo">
                             <div class="saldoRow">
                               <label for="montoContrato">Monto Contrato:</label>
-                              <input type="text" id="montoContrato" name="montoContrato" value="3,300.00" />
+                              <input type="text" id="montoContrato" formControlName="mncontrato" />
                             </div>
 
                             <div class="saldoRow">
                               <label for="descuento">Descuento:</label>
-                              <input type="text" id="descuento" name="descuento" value="0.00" />
+                              <input type="text" id="descuento" formControlName="mndescuento" />
                             </div>
 
                             <div class="saldoRow">
                               <label for="inicialContrato">Inicial Contrato:</label>
-                              <input type="text" id="inicialContrato" name="inicialContrato" value="250.00" />
+                              <input type="text" id="inicialContrato" formControlName="mninicial" />
                             </div>
 
                             <div class="saldoRow">
                               <label for="montoPagado">Monto Pagado:</label>
-                              <input type="text" id="montoPagado" name="montoPagado" value="3,300.00" readonly />
+                              <input type="text" id="montoPagado" formControlName="mnpagado" readonly />
                             </div>
 
                             <div class="saldoRow">
                               <label for="montoSaldo">Monto Saldo:</label>
-                              <input type="text" id="montoSaldo" name="montoSaldo" value="0.00" readonly />
+                              <input type="text" id="montoSaldo" formControlName="mnsaldo" readonly />
                             </div>
                           </div>
 
                           <div class="saldoActions">
-                            <button type="button" class="payBtn">
+                            <button type="button" class="payBtn" (click)="pay()" [disabled]="!selectedContract">
                               <span class="payIcon">💰</span>
                               Efectuar Pago
                             </button>
