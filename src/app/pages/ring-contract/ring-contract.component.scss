@@ -340,6 +340,17 @@ form{
     transform: translateY(-2px);
 }
 
+.icon2:disabled{
+    opacity: 0.4;
+    cursor: default;
+}
+
+.icon2:disabled:hover{
+    cursor: default;
+    background-color: #939393;
+    transform: none;
+}
+
 .recalculate{
     color: blue;
 }
@@ -663,6 +674,17 @@ fieldset{
     transform: translateY(-2px);
 }
 
+.inputs button:disabled{
+    opacity: 0.4;
+    cursor: default;
+}
+
+.inputs button:disabled:hover{
+    cursor: default;
+    background-color: darkgray;
+    transform: none;
+}
+
 #observaciones{
     margin-top: 10px;
 }
@@ -708,6 +730,22 @@ fieldset{
 
 .rightInput label{
     flex-shrink: 0;                // las etiquetas no se encogen
+}
+
+/* Checkboxes y radios con el azul de acento del proyecto (#2563EB),
+   igual que en payment-methods / banks / institutions / act-places.
+   Sin esta regla se quedan en el gris nativo del navegador. */
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+    accent-color: #2563EB;
+}
+
+input[type="radio"] {
+    accent-color: #2563EB;
+    cursor: pointer;
 }
 
 .rightInput input[type="radio"]{

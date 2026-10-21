@@ -14,7 +14,11 @@ import { TabsModule } from 'primeng/tabs';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Observable } from 'rxjs';
 import { SearchUserComponent } from './components/search-user/search-user.component';
+import { SearchSpecialityComponent } from './components/search-speciality/search-speciality.component';
+import { SearchInstitutionComponent } from './components/search-institution/search-institution.component';
 import { Client } from '../../@core/models/client.model';
+import { Speciality } from '../../@core/models/speciality.model';
+import { Institution } from '../../@core/models/institution.model';
 
 /** La tabla guarda los flags como texto: '0' | '1' */
 const aFlag = (v: any): boolean => v === true || v === 1 || v === '1' || v === 'S';
@@ -161,6 +165,8 @@ export class RingContractComponent implements OnInit {
     this.selectedContract = contract;
     this.isEnabled = true;
     this.isAdding = true;
+    // Sin esto el formulario queda deshabilitado y no se puede editar nada
+    this.ringForm.enable();
   }
 
   private loadSaldo(id: number) {
@@ -509,6 +515,47 @@ export class RingContractComponent implements OnInit {
       this.ringForm.patchValue({
         nucedula: result.nucedula ?? '',
         txnombre: result.txnombre ?? '',
+      });
+    });
+  }
+
+  /** Busca el título y de paso trae la especialidad que le corresponde */
+  openSearchSpecialityModal() {
+    this.ref = this.dialogService.open(SearchSpecialityComponent, {
+      header: 'Seleccionar título y especialidad',
+      width: '50vw',
+      modal: true,
+      breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw',
+      },
+    });
+
+    this.ref?.onClose.subscribe((result: Speciality | null) => {
+      if (!result) return;
+      this.ringForm.patchValue({
+        titulo: result.Titulo ?? '',
+        especialidad: result.Especialidad ?? '',
+      });
+    });
+  }
+
+  /** Busca la institución y de ahí toma las siglas */
+  openSearchInstitutionModal() {
+    this.ref = this.dialogService.open(SearchInstitutionComponent, {
+      header: 'Seleccionar institución',
+      width: '50vw',
+      modal: true,
+      breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw',
+      },
+    });
+
+    this.ref?.onClose.subscribe((result: Institution | null) => {
+      if (!result) return;
+      this.ringForm.patchValue({
+        siglas: result.siglas ?? '',
       });
     });
   }

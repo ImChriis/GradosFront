@@ -97,7 +97,8 @@
                 </div>
 
                 <div class="searchIcon">
-                    <button type="button" class="icon2 searchIcon" title="Buscar cliente" (click)="openSearchUserModal()">
+                    <button type="button" class="icon2 searchIcon" title="Buscar cliente"
+                            [disabled]="!isAdding" (click)="openSearchUserModal()">
                       <i class="pi pi-search add"></i>
                     </button>
                 </div>
@@ -150,7 +151,11 @@
                                 <div class="inputs">
                                 <label for="titulo">Titulo</label>
                                 <input type="text" id="titulo" formControlName="titulo" readonly />
-                                <button type="button"><i class="pi pi-search"></i></button>
+                                <button type="button" title="Buscar título"
+                                        [disabled]="!isAdding"
+                                        (click)="openSearchSpecialityModal()">
+                                  <i class="pi pi-search"></i>
+                                </button>
                               </div>
                             </div>
 
@@ -163,7 +168,11 @@
                               <div class="inputs">
                                 <label for="siglas">Siglas</label>
                                 <input type="text" id="siglas" formControlName="siglas" readonly />
-                                <button type="button"><i class="pi pi-search"></i></button>
+                                <button type="button" title="Buscar institución"
+                                        [disabled]="!isAdding"
+                                        (click)="openSearchInstitutionModal()">
+                                  <i class="pi pi-search"></i>
+                                </button>
                               </div>
                             </div>
                           </div>
