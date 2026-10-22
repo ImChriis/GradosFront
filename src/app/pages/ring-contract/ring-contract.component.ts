@@ -21,6 +21,7 @@ import { PaymentsComponent } from './components/payments/payments.component';
 import { Client } from '../../@core/models/client.model';
 import { Speciality } from '../../@core/models/speciality.model';
 import { Institution } from '../../@core/models/institution.model';
+import { OnlyNumbersDirective } from '../../@core/directives/only-numbers.directive';
 
 /** La tabla guarda los flags como texto: '0' | '1' */
 const aFlag = (v: any): boolean => v === true || v === 1 || v === '1' || v === 'S';
@@ -40,6 +41,7 @@ const aFecha = (v: any): string => {
     ReactiveFormsModule,
     LoaderComponent,
     TabsModule,
+    OnlyNumbersDirective
   ],
   templateUrl: './ring-contract.component.html',
   styleUrl: './ring-contract.component.scss',
@@ -121,11 +123,13 @@ export class RingContractComponent implements OnInit {
     nuordenfab: [''],
 
     // --- pestaña Saldo ---
-    mncontrato: [0],
-    mndescuento: [0],
-    mninicial: [0],
-    mnpagado: [{ value: 0, disabled: true }],
-    mnsaldo: [{ value: 0, disabled: true }],
+    // Arrancan vacíos (igual que add-contract de actContract) y solo
+    // mncontrato se digita al crear; mninicial solo se digita sobre un contrato existente
+    mncontrato: [''],
+    mndescuento: [''],
+    mninicial: [''],
+    mnpagado: [{ value: '', disabled: true }],
+    mnsaldo: [{ value: '', disabled: true }],
   });
 
   ngOnInit() {
@@ -181,7 +185,12 @@ export class RingContractComponent implements OnInit {
       next: (res: any) => {
         const s = res?.data;
         if (s) {
+          // Refresca los 5 montos: así el monto inicial que fija el primer
+          // recibo se refleja en el input apenas se cierra el modal de pagos
           this.ringForm.patchValue({
+            mncontrato: s.mncontrato ?? '',
+            mndescuento: s.mndescuento ?? '',
+            mninicial: s.mninicial ?? '',
             mnpagado: s.pagado,
             mnsaldo: s.saldo,
           });
@@ -247,9 +256,9 @@ export class RingContractComponent implements OnInit {
       FeFinEng: aFecha(c.FeFinEng),
       nuordenfab: c.nuordenfab ?? '',
 
-      mncontrato: c.mncontrato ?? 0,
-      mndescuento: c.mndescuento ?? 0,
-      mninicial: c.mninicial ?? 0,
+      mncontrato: c.mncontrato ?? '',
+      mndescuento: c.mndescuento ?? '',
+      mninicial: c.mninicial ?? '',
     });
   }
 
@@ -267,11 +276,11 @@ export class RingContractComponent implements OnInit {
       MaEstado: '1',
       cafotografia: '0',
       MnCostoAnillo: 0,
-      mncontrato: 0,
-      mndescuento: 0,
-      mninicial: 0,
-      mnpagado: 0,
-      mnsaldo: 0,
+      mncontrato: '',
+      mndescuento: '',
+      mninicial: '',
+      mnpagado: '',
+      mnsaldo: '',
     });
     this.ringForm.enable();
     this.isEnabled = true;
@@ -340,6 +349,8 @@ export class RingContractComponent implements OnInit {
         NoContrato: f.NoContrato,
         nucedula: f.nucedula,
         CodUser: this.auth.CodUser(),
+        // Único monto que se digita al crear; el backend calcula el resto
+        mncontrato: f.mncontrato,
         ...this.detallesRegaliasPayload(),
       })
       .subscribe({

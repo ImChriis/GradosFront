@@ -103,11 +103,28 @@ export class LayoutComponent implements OnInit{
             items: [
               {
                 label: 'Anillos',
-                routerLink: '/ringContracts'
+                routerLink: '/ringContracts',
+                // Mismo icono que el atajo de la barra inferior. `icon` en PrimeNG
+                // es una clase CSS, así que la imagen se pinta por iconStyle
+                // (la URL se resuelve contra <base href="/">).
+                icon: 'miAnilloIcon',
+                iconStyle: {
+                  width: '1em',
+                  height: '1em',
+                  display: 'inline-block',
+                  backgroundImage: "url('assets/img/anillo.png')",
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center',
+                  backgroundSize: 'contain'
+                }
+              },
+              {
+                separator: true
               },
               {
                 label: 'Actos de Grado',
-                routerLink: '/actContracts'
+                routerLink: '/actContracts',
+                icon: 'pi pi-graduation-cap'
               }
             ]
           },
@@ -205,7 +222,8 @@ export class LayoutComponent implements OnInit{
         items: [
           {
             label: 'Usuarios',
-            routerLink: '/users'
+            routerLink: '/users',
+            icon: 'pi pi-users'
           },
           {
             separator: true
@@ -213,6 +231,7 @@ export class LayoutComponent implements OnInit{
           {
             label: 'Auditoría',
             routerLink: '/audit',
+            icon: 'pi pi-clipboard',
             visible: this.role === 'Master'
           },
           {
@@ -221,7 +240,8 @@ export class LayoutComponent implements OnInit{
           },
           {
             label: 'Opciones',
-            routerLink: '/settings'
+            routerLink: '/settings',
+            icon: 'pi pi-cog'
           }
         ]
       },

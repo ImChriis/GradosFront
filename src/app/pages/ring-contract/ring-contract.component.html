@@ -424,17 +424,21 @@
                           <div class="saldo">
                             <div class="saldoRow">
                               <label for="montoContrato">Monto Contrato:</label>
-                              <input type="text" id="montoContrato" formControlName="mncontrato" />
+                              <!-- Blanco solo mientras creas un contrato nuevo -->
+                              <input type="text" id="montoContrato" formControlName="mncontrato"
+                                     [readonly]="!(isAdding && !selectedContract)" appOnlyNumbers />
                             </div>
 
                             <div class="saldoRow">
                               <label for="descuento">Descuento:</label>
-                              <input type="text" id="descuento" formControlName="mndescuento" />
+                              <input type="text" id="descuento" formControlName="mndescuento" readonly />
                             </div>
 
                             <div class="saldoRow">
                               <label for="inicialContrato">Inicial Contrato:</label>
-                              <input type="text" id="inicialContrato" formControlName="mninicial" />
+                              <!-- Lo fija el primer recibo; se corrige a mano solo sobre un contrato guardado -->
+                              <input type="text" id="inicialContrato" formControlName="mninicial"
+                                     [readonly]="!selectedContract" appOnlyNumbers />
                             </div>
 
                             <div class="saldoRow">
