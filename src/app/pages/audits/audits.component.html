@@ -58,7 +58,7 @@
               <p-table
                 dataKey="id_auditoria"
                 [value]="rows"
-                [rows]="8"
+                [rows]="5"
                 [paginator]="true"
                 styleClass="ml-3 mr-3"
               >
@@ -106,7 +106,7 @@
                 </ng-template>
 
                 <ng-template pTemplate="body" let-row>
-                  <tr class="table-content">
+                  <tr class="table-content" (click)="openAuditView(row)">
                     <td>{{ row.id_auditoria }}</td>
                     <td>{{ row.fecha_hora | date: 'dd/MM/yyyy hh:mm a' : 'VE' }}</td>
                     <td>

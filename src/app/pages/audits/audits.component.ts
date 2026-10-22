@@ -3,6 +3,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import {
   catchError,
   debounceTime,
@@ -21,6 +22,7 @@ import {
 } from '../../@core/services/audits.service';
 import { UsersService } from '../../@core/services/users.service';
 import { LoaderComponent } from '../../@core/components/loader/loader.component';
+import { ViewAuditComponent } from './components/viewAudit/viewAudit.component';
 
 @Component({
   selector: 'app-audits',
@@ -38,6 +40,9 @@ export class AuditsComponent implements OnInit {
   private auditsService = inject(AuditsService);
   private usersService = inject(UsersService);
   private fb = inject(FormBuilder);
+  private dialogService = inject(DialogService);
+
+  ref?: DynamicDialogRef;
 
   isLoading = signal(true);
 
@@ -123,6 +128,21 @@ export class AuditsComponent implements OnInit {
       desde: f.desde || undefined,
       hasta: f.hasta || undefined,
     };
+  }
+
+  /** Click en una fila -> modal con la información completa del registro */
+  openAuditView(row: AuditRow) {
+    this.ref = this.dialogService.open(ViewAuditComponent, {
+      header: 'Detalle de auditoría',
+      width: '50vw',
+      modal: true,
+      closeOnEscape: true,
+      data: { audit: row },
+      breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw',
+      },
+    });
   }
 
   clearFilters(): void {

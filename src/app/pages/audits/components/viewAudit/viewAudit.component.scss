@@ -1,0 +1,195 @@
+.viewAudit {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 10px;
+    width: 100%;
+}
+
+/* ------------------------------------------------- cabecera del registro */
+
+.meta {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    border: 1px solid #ababab;
+    border-radius: 10px;
+    padding: 14px;
+    background-color: rgb(245, 243, 243);
+}
+
+.metaItem {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.metaItem label {
+    color: #1e293b;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.metaItem p {
+    margin: 0;
+    color: black;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.subtle {
+    color: #64748b;
+    font-size: 12px;
+}
+
+/* ------------------------------------------------------------ badge */
+
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: bold;
+    color: white;
+    letter-spacing: 0.5px;
+}
+
+.badge-insert {
+    background-color: #16a34a;
+}
+
+.badge-update {
+    background-color: #d97706;
+}
+
+.badge-delete {
+    background-color: #dc2626;
+}
+
+/* --------------------------------------------------- sección de detalles */
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.section h3 {
+    margin: 0;
+    color: black;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.detalleTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.detalleTable th {
+    background-color: darkgray !important;
+    color: black !important;
+    border: none !important;
+    font-size: 12px;
+    text-align: left;
+    padding: 6px 8px;
+}
+
+.detalleTable td {
+    border: none !important;
+    color: black !important;
+    font-size: 12px;
+    padding: 6px 8px;
+    overflow-wrap: anywhere;
+}
+
+.detalleTable tbody tr:nth-child(odd) {
+    background-color: rgb(245, 243, 243) !important;
+}
+
+.detalleTable tbody tr:nth-child(even) {
+    background-color: rgb(190, 190, 190) !important;
+}
+
+.detalleTable .campo {
+    font-weight: bold;
+}
+
+.detalleTable .anterior {
+    color: #b91c1c;
+}
+
+.detalleTable .nuevo {
+    color: #15803d;
+}
+
+.mensaje {
+    margin: 0;
+    color: black;
+    font-size: 13px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.empty {
+    margin: 0;
+    color: #64748b;
+    font-size: 13px;
+    font-style: italic;
+}
+
+/* --------------------------------------------------------- texto crudo */
+
+.rawBlock summary {
+    cursor: pointer;
+    color: #1e293b;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.raw {
+    margin: 8px 0 0;
+    padding: 10px;
+    max-height: 180px;
+    overflow: auto;
+    background-color: rgb(245, 243, 243);
+    border: 1px solid #ababab;
+    border-radius: 8px;
+    color: black;
+    font-size: 11px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+/* ------------------------------------------------------------- botones */
+
+.modalButtons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.modalButtons .btn {
+    border: none;
+    border-radius: 6px;
+    padding: 8px 18px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
+
+.modalButtons .accept {
+    background-color: #2563eb;
+}
+
+.modalButtons .cancel {
+    background-color: rgb(92, 37, 1);
+}
+
+.modalButtons .btn:hover {
+    opacity: 0.9;
+}

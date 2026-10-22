@@ -1,0 +1,98 @@
+<div class="viewAudit">
+  @if (audit(); as row) {
+    <div class="meta">
+      <div class="metaItem">
+        <label>ID</label>
+        <p>{{ row.id_auditoria }}</p>
+      </div>
+
+      <div class="metaItem">
+        <label>FECHA Y HORA</label>
+        <p>{{ row.fecha_hora | date: 'dd/MM/yyyy hh:mm a' : 'VE' }}</p>
+      </div>
+
+      <div class="metaItem">
+        <label>ACCIÓN</label>
+        <p>
+          <span class="badge" [ngClass]="'badge-' + (row.accion | lowercase)">
+            {{ row.accion }}
+          </span>
+        </p>
+      </div>
+
+      <div class="metaItem">
+        <label>TABLA</label>
+        <p>{{ row.tabla_afectada }}</p>
+      </div>
+
+      <div class="metaItem">
+        <label>ID DEL REGISTRO</label>
+        <p>{{ row.id_registro ?? '—' }}</p>
+      </div>
+
+      <div class="metaItem">
+        <label>USUARIO</label>
+        <p>
+          {{ row.usuario_nombre ?? '—' }}
+          @if (row.CodUser) {
+            <span class="subtle">(#{{ row.CodUser }})</span>
+          }
+        </p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>DETALLES</h3>
+
+      @if (hayDetalles()) {
+        @if (campos().length > 0) {
+          <table class="detalleTable">
+            <thead>
+              <tr>
+                <th>CAMPO</th>
+                @if (esDiff()) {
+                  <th>ANTERIOR</th>
+                  <th>NUEVO</th>
+                } @else {
+                  <th>VALOR</th>
+                }
+              </tr>
+            </thead>
+            <tbody>
+              @for (c of campos(); track $index) {
+                <tr>
+                  <td class="campo">{{ c.campo }}</td>
+                  @if (esDiff()) {
+                    <td class="anterior">{{ c.anterior }}</td>
+                    <td class="nuevo">{{ c.nuevo }}</td>
+                  } @else {
+                    <td>{{ c.nuevo }}</td>
+                  }
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <p class="mensaje">{{ mensaje() }}</p>
+        }
+      } @else {
+        <p class="empty">Sin detalles registrados.</p>
+      }
+    </div>
+
+    <details class="rawBlock">
+      <summary>VER TEXTO ORIGINAL</summary>
+      <pre class="raw">{{ row.detalles ?? '—' }}</pre>
+    </details>
+
+    <div class="modalButtons">
+      <button type="button" class="btn accept" (click)="close()">CERRAR</button>
+    </div>
+  } @else {
+    <p class="empty">No se pudo cargar el registro.</p>
+
+    <div class="modalButtons">
+      <button type="button" class="btn cancel" (click)="close()">CERRAR</button>
+    </div>
+  }
+</div>
