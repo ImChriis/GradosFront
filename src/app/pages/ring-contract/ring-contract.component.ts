@@ -10,12 +10,14 @@ import {
   RingContractService,
 } from '../../@core/services/ring-contract.service';
 import { AuthService } from '../../@core/services/auth.service';
+import { SettingsService } from '../../@core/services/settings.service';
 import { TabsModule } from 'primeng/tabs';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Observable } from 'rxjs';
 import { SearchUserComponent } from './components/search-user/search-user.component';
 import { SearchSpecialityComponent } from './components/search-speciality/search-speciality.component';
 import { SearchInstitutionComponent } from './components/search-institution/search-institution.component';
+import { PaymentsComponent } from './components/payments/payments.component';
 import { Client } from '../../@core/models/client.model';
 import { Speciality } from '../../@core/models/speciality.model';
 import { Institution } from '../../@core/models/institution.model';
@@ -46,6 +48,7 @@ export class RingContractComponent implements OnInit {
   private ringContractService = inject(RingContractService);
   private messageService = inject(MessageService);
   private auth = inject(AuthService);
+  private settingsService = inject(SettingsService);
   private dialogService = inject(DialogService);
   private fb = inject(FormBuilder);
   private ref = inject(DynamicDialogRef, { optional: true });
@@ -130,6 +133,10 @@ export class RingContractComponent implements OnInit {
 
     // Cualquier escritura recarga la tabla principal (mismo patrón que act-contract)
     this.ringContractService.refreshObservable$.subscribe(() => this.loadContracts());
+
+    // Puebla el signal de CodSucursal que usa el modal de pagos.
+    // Sin esto el formulario del modal se construye con CodSucursal null.
+    this.settingsService.getSettings().subscribe();
 
     this.ringForm.disable();
   }
@@ -468,31 +475,40 @@ export class RingContractComponent implements OnInit {
   //  Saldo
   // ----------------------------------------------------------------
 
+  /**
+   * Modal de pagos, idéntico al de act-contract (dentro va Tipo = 2).
+   * Al cerrarse se recarga el saldo para que montos, pagado y saldo
+   * queden al día en la pestaña Saldo.
+   */
   pay() {
-    if (!this.selectedContract) return;
-
-    const monto = this.ringForm.getRawValue().mninicial;
-    const f = this.ringForm.getRawValue();
-
-    this.ringContractService
-      .payContract(this.selectedContract.id, {
-        monto,
-        TpRecibo: 'I',
-        Fecha: new Date().toISOString().slice(0, 10),
-        TxConcepRec: `Pago inicial contrato N° ${f.NoContrato}`,
-        CodUser: this.auth.CodUser(),
-      })
-      .subscribe({
-        next: () => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Pago registrado',
-            detail: 'El pago fue aplicado al contrato.',
-          });
-          this.loadSaldo(this.selectedContract!.id);
-        },
-        error: (err) => this.showError(err, 'No se pudo registrar el pago.'),
+    if (!this.selectedContract) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'No se ha seleccionado ningún contrato para ver los pagos.',
       });
+      return;
+    }
+
+    this.ref = this.dialogService.open(PaymentsComponent, {
+      header: 'Pagos',
+      width: '90%',
+      height: 'auto',
+      modal: true,
+      closeOnEscape: false,
+      data: {
+        contract: this.selectedContract,
+      },
+      breakpoints: {
+        '960px': '90%',
+        '640px': '100%',
+      },
+    });
+
+    this.ref?.onClose.subscribe(() => {
+      if (this.selectedContract) {
+        this.loadSaldo(this.selectedContract.id);
+      }
+    });
   }
 
   // ----------------------------------------------------------------

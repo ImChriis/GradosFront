@@ -107,4 +107,14 @@ export class RingContractService {
       tap(() => this.refresh$.next())
     );
   }
+
+  /** POST /ringContracts/createRecibo -> modal de pagos, recibo en memoria de facturación */
+  createRecibo(body: any) {
+    return this.http.post<any>(`${this.api}/ringContracts/createRecibo`, body);
+  }
+
+  /** POST /ringContracts/createDeposito -> modal de pagos, abono de un recibo */
+  createDeposito(body: any) {
+    return this.http.post<any>(`${this.api}/ringContracts/createDeposito`, body);
+  }
 }

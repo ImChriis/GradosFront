@@ -1,0 +1,294 @@
+<form [formGroup]="reciboPagoForm" (ngSubmit)="onSubmit()">
+  <div class="container">
+    <div class="user">
+        <div class="inputGroup">
+            <label for="contract">NO. CONTRATO</label>
+            <input type="text" id="contract" name="contract" readonly [value]="NoContrato">
+        </div>
+
+        <div class="inputGroup">
+            <label for="cedula">NO. CEDULA</label>
+            <input type="text" id="cedula" name="cedula" readonly [value]="NuCedula">
+        </div>
+
+        <div class="inputGroup cliente">
+            <label for="name">CLIENTE</label>
+            <input type="text" id="name" name="name" readonly [value]="client">
+        </div>
+    </div>
+
+    <div class="top">
+        <div class="table">
+              <!-- @if(
+      recibos$ | async
+      ; as state) { -->
+      <p-table
+        #dt1
+        [value]='(recibos$ | async) ?? []'
+        [rows]="10"
+        class="tableRecibos"
+        styleClass="ml-3 mr-3"
+        scrollable="true"
+        scrollHeight="200px"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="min-width: 1rem" class="border">
+                <div class="flex thstyles">NO. RECIBO</div>
+              </th>
+              <th style="min-width: 10rem">
+                <div class="flex thstyles">FECHA RECIBO</div>
+              </th>
+              <th style="min-width: 10rem">
+                <div class="flex thstyles">MONTO RECIBO</div>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-recibo class="p-table">
+            <tr class="table-content"
+            (click)="selectRecibo(recibo)"
+            [class.selected]="!recibo.isPlaceholder && NoRecibo && NoRecibo === recibo.NoRecibo"
+            > 
+              <td>
+                @if(!recibo.isPlaceholder) {
+                  {{ recibo.NoRecibo }}
+                } @else {
+                  &nbsp;
+                }
+              </td>
+              <td>
+                @if(!recibo.isPlaceholder) {
+                  {{ recibo.ferecibo | date: 'dd/MM/yyyy' }}
+                } @else {
+                  &nbsp;
+                }
+              </td>
+              <td>
+                @if(!recibo.isPlaceholder) {
+                  {{ recibo.mnrecibo | currency: 'Bs. ': 'symbol':'1.2-2' }}
+                } @else {
+                  &nbsp;
+                }
+              </td>
+            </tr>
+          </ng-template>
+          <!-- <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">No elementos encontrados.</td>
+            </tr>
+          </ng-template> -->
+        </p-table>
+      <!-- } -->
+        </div>
+
+        <div class="inputs">
+            <div class="inputGroup">
+                <label for="montoContrato">MONTO CONTRATO</label>
+                <input type="text" id="montoContrato" name="montoContrato" readonly [value]="montoContrato | currency: 'Bs. ': 'symbol':'1.2-2'">
+            </div>
+
+            <div class="inputGroup">
+                <label for="montoContrato">DESCUENTO</label>
+                <input type="text" id="montoContrato" name="montoContrato" readonly [value]="descuento | currency: 'Bs. ': 'symbol':'1.2-2'">
+            </div>
+
+            <div class="inputGroup">
+                <label for="montoContrato">INICIAL CONTRATO</label>
+                <input type="text" id="montoContrato" name="montoContrato" readonly [value]="MnInicial | currency: 'Bs. ': 'symbol':'1.2-2'">
+            </div>
+
+            <div class="inputGroup">
+                <label for="montoContrato">MONTO PAGADO</label>
+                <input type="text" id="montoContrato" name="montoContrato" readonly [value]="montoPagado | currency: 'Bs. ': 'symbol':'1.2-2'">
+            </div>
+
+            <div class="inputGroup">
+                <label for="montoContrato">MONTO SALDO</label>
+                <input type="text" id="montoContrato" name="montoContrato" readonly [value]="montoSaldo | currency: 'Bs. ': 'symbol':'1.2-2'">
+            </div>
+            
+            <div class="selects">
+                <div class="selectGroup">
+                    <label for="anulado">ANULADO</label>
+                    <input type="checkbox" name="anulado" id="anulado">
+                </div>
+
+                <div class="selectGroup">
+                    <label for="preview">PREVIEW</label>
+                    <input type="checkbox" name="preview" id="preview" checked>
+                </div>
+
+                <button>
+                    ELIMINAR RECIBO
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="mid">
+        <div class="details">
+            <div class="detailsInputs">
+                <div class="inputGroup">
+                    <label for="recibo">NO. RECIBO</label>
+                    <input type="text" id="recibo" name="recibo" readonly [value]="NoRecibo ? NoRecibo : ''">
+                </div>
+
+                <div class="inputGroup">
+                    <label for="fecha">FECHA</label>
+                    <input type="text" id="fecha" name="fecha" readonly [value]="fechaSelectedRecibo | date: 'dd/MM/yyyy' : ''">
+                </div>
+
+                <div class="inputGroup">
+                    <label for="pago">PAGO</label>
+                    <input type="text" id="pago" name="pago" [readOnly]="!isAdding" [value]="montoSelectedRecibo | currency: 'Bs. ': 'symbol':'1.2-2'" appOnlyNumbers>
+                </div>
+            </div>
+
+            <div class="detailsTableBtn">
+                <!-- <div class="icon2">
+                    <i class="pi pi-file-excel"></i>
+                </div> -->
+
+                <div class="detailsTable">
+                    <label for="observacion">OBSERVACIÓN</label>
+                    <textarea name="observacion" id="observacion" [value]="observacion" formControlName="TxConcepRec" appUppercase></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button type="button" class="icon" title="Nueva Operación" [class.disabled]="bloquearAcciones" (click)="add()">
+                <i class="pi pi-file new"></i>
+            </button>
+
+            <button type="button" class="icon" title="Caja" [disabled]="!hayReciboNuevo" (click)="facturar()">
+                <i class="pi pi-money-bill pay"></i>
+            </button>
+
+            <button type="button" class="icon" title="Imprimir" [disabled]="!hayReciboTabla" (click)="print(NoRecibo)">
+                <i class="pi pi-print print"></i>
+            </button>
+
+            <button type="button" class="icon" title="Actualizar" [disabled]="!hayReciboTabla">
+                <i class="pi pi-refresh refresh"></i>
+            </button>
+
+            <button type="button" class="icon" title="Cancelar" (click)="cancel()">
+                <i class="pi pi-times times"></i>
+            </button>
+
+            <button type="button" class="icon" title="Salida" [disabled]="bloquearAcciones" (click)="close()">
+                <i class="pi pi-sign-out exit"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="bot">
+      <div class="abonosTable">
+          <label for="abonos">ABONOS</label>
+                          <!-- @if(
+      abonos$ | async
+      ; as state) { -->
+      <p-table
+        #dt1
+        [value]='(abonos$ | async) || []'
+        [rows]="10"
+        styleClass="ml-3 mr-3"
+        class="tableAbonos"
+        scrollable="true"
+        scrollHeight="230px"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="min-width: 9rem" class="border">
+                <div class="flex thstyles">FECHA DEPOSITO</div>
+              </th>
+              <th style="min-width: 9rem">
+                <div class="flex thstyles">TIPO OPERACIÓN</div>
+              </th>
+              <th style="min-width: 9rem">
+                <div class="flex thstyles">BANCO</div>
+              </th>
+                <th style="min-width: 9rem">
+                <div class="flex thstyles">NO. DEPOSITO</div>
+              </th>
+             <th style="min-width: 9rem">
+                <div class="flex thstyles">MONTO DEPOSITO</div>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-abono class="p-table">
+           <tr class="table-content tableAbonos"> 
+            <td>
+              @if (!abono.isPlaceholder) {
+                {{ abono.Fecha | date: 'dd/MM/yyyy' }}
+              }
+            </td>
+            <td>
+              @if (!abono.isPlaceholder) {
+                {{ abono.TipoOperacion }}
+              }
+            </td>
+            <td>
+              @if (!abono.isPlaceholder) {
+                {{ abono.TxBanco }}
+              }
+            </td>
+            <td>
+              @if (!abono.isPlaceholder) {
+                {{ abono.NuDeposito }}
+              }
+            </td>
+            <td>
+              @if (!abono.isPlaceholder) {
+                {{ abono.MnDeposito | currency: 'Bs. ': 'symbol':'1.2-2' }}
+              }
+            </td>
+          </tr>
+          </ng-template>
+        </p-table>
+      <!-- } -->
+        </div>
+
+        <div class="payments">
+            <label>FORMAS DE PAGO</label>
+
+            <div class="inputGroup">
+                <label for="montoContrato">MÉTODO DE PAGO</label>
+                <select name="" id="" formControlName="MaFormPag">
+                    <option *ngFor="let metodo of metodosPago" [value]="metodo">{{ metodo }}</option>
+                </select>
+            </div>
+
+            <div class="inputGroup">
+                <label for="montoContrato">BANCO</label>
+                <select name="" id="" formControlName="TxBanco">
+                    <option *ngFor="let banco of banks" [value]="banco">{{ banco }}</option>
+                </select>
+            </div>
+
+           <div class="paymentsBot">
+                <div class="inputs-col">
+                    <div class="inputGroup">
+                        <label for="cheque">REFERENCIA</label>
+                        <input type="text" id="cheque" name="cheque" formControlName="NuRefDocBan" appUppercase appOnlyAlphanumerics>
+                    </div>
+                    <div class="inputGroup">
+                        <label for="fecha">FECHA</label>
+                        <input type="date" id="fecha" name="fecha" formControlName="ferecibo">
+                    </div>
+                    <div class="inputGroup">
+                        <label for="trans">MONTO PAGO</label>
+                        <input type="text" id="trans" name="trans" formControlName="mnrecibo" appOnlyNumbers>
+                    </div>
+                </div>
+
+                <div class="icons-col">
+                    <button type="button" class="icon" title="Agregar" [disabled]="!hayReciboNuevo" (click)="onSubmit()"><i class="pi pi-plus add"></i></button>
+                    <button type="button" class="icon" title="Eliminar" [disabled]="!hayReciboNuevo"><i class="pi pi-minus minus"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
