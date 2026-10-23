@@ -131,18 +131,18 @@ export class LayoutComponent implements OnInit{
           {
             separator: true
           },
-          {
-            label: 'Anular Recibos',
-            items: [
+          // {
+          //   label: 'Anular Recibos',
+          //   items: [
 
-            ]
-          },
+          //   ]
+          // },
           // {
           //   label: 'Reclamos y Servicios',
           // },
-          {
-            separator: true
-          },
+          // {
+          //   separator: true
+          // },
           {
             label: 'Generar Cierre',
             command: () => this.openModal(GenerateClosingComponent, 'Generar Cierre', '30%')

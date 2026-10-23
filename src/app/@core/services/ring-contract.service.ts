@@ -101,6 +101,17 @@ export class RingContractService {
     );
   }
 
+  /**
+   * PUT /ringContracts/:id/anularRecibo -> botón "Anular" del modal de pagos.
+   * Marca `Anulado = '1'` y devuelve el monto del recibo al saldo; se niega (409)
+   * si el recibo ya pertenece a un cierre.
+   */
+  anularRecibo(id: number | string, body: any) {
+    return this.http.put<any>(`${this.api}/ringContracts/${id}/anularRecibo`, body).pipe(
+      tap(() => this.refresh$.next())
+    );
+  }
+
   /** POST /ringContracts/pay/:id -> botón "Efectuar Pago" */
   payContract(id: number | string, body: any) {
     return this.http.post<any>(`${this.api}/ringContracts/pay/${id}`, body).pipe(

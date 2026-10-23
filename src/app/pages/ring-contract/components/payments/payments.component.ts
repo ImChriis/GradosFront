@@ -14,6 +14,7 @@ import { forkJoin } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
 import { PrintModalComponent } from '../../../act-contract/components/print-modal/print-modal.component';
 import { OnlyAlphanumericsDirective } from '../../../../shared/directives/only-alphanumerics.directive';
+import { ConfirmDeleteModalComponent } from '../../../../shared/components/modals/confirm-delete-modal/confirm-delete-modal.component';
 import { AuthService } from '../../../../@core/services/auth.service';
 
 /**
@@ -90,6 +91,73 @@ export class PaymentsComponent implements OnInit {
 
   get hayReciboTabla(): boolean {
     return this.reciboDeTabla === 'tabla';
+  }
+
+  // ----------------------------------------------------------------
+  //  Anulación de recibos
+  // ----------------------------------------------------------------
+
+  /**
+   * Estado de un recibo de la tabla (columna `Anulado` del backend, que llega
+   * como texto: '0' / '1').
+   */
+  esReciboAnulado(recibo: any): boolean {
+    return String(recibo?.Anulado ?? '') === '1';
+  }
+
+  /** Recibo seleccionado tal como está guardado en BD (no uno en memoria). */
+  private get reciboSeleccionadoEnTabla(): any | null {
+    return this.recibosBD.find(r => Number(r.NoRecibo) === Number(this.selectedRecibo)) ?? null;
+  }
+
+  /** Lo que refleja el checkbox ANULADO. */
+  get reciboAnulado(): boolean {
+    return this.esReciboAnulado(this.reciboSeleccionadoEnTabla);
+  }
+
+  /**
+   * Un recibo con NoCierre o FechaCierre ya pertenece a un cierre diario y no
+   * se puede anular.
+   */
+  private get reciboCerrado(): boolean {
+    const r = this.reciboSeleccionadoEnTabla;
+    if (!r) return false;
+
+    const cierre = r.NoCierre;
+    if (cierre !== null && cierre !== undefined && cierre !== '' && Number(cierre) !== 0) return true;
+
+    return r.FechaCierre !== null && r.FechaCierre !== undefined && r.FechaCierre !== '';
+  }
+
+  /**
+   * Último recibo aún activo. Los recibos se anulan del más reciente al más
+   * antiguo, así que este es el único que toca anular en cada paso.
+   *
+   * Se busca el de mayor NoRecibo en lugar de confiar en la posición del array:
+   * el orden de la tabla lo decide el backend (ahora descendente).
+   */
+  private get reciboMasRecienteActivo(): any | null {
+    return this.recibosBD
+      .filter(r => !this.esReciboAnulado(r))
+      .reduce<any>(
+        (masReciente, r) =>
+          !masReciente || Number(r.NoRecibo) > Number(masReciente.NoRecibo) ? r : masReciente,
+        null
+      );
+  }
+
+  /** El recibo seleccionado es el que sigue en el orden de anulación. */
+  private get respetaOrdenAnulacion(): boolean {
+    const recibo = this.reciboSeleccionadoEnTabla;
+    if (!recibo) return false;
+
+    const ultimo = this.reciboMasRecienteActivo;
+    return !!ultimo && Number(recibo.NoRecibo) === Number(ultimo.NoRecibo);
+  }
+
+  /** Botón Anular: recibos guardados en BD, no anulados, fuera de un cierre y en orden. */
+  get puedeAnularRecibo(): boolean {
+    return this.hayReciboTabla && !this.reciboAnulado && !this.reciboCerrado && this.respetaOrdenAnulacion;
   }
 
   /**
@@ -245,7 +313,9 @@ export class PaymentsComponent implements OnInit {
   }
 
   private emitRecibos() {
-    const todosLosRecibos = [...this.recibosBD, ...this.pendingRecibos];
+    // La tabla va de más reciente a más antiguo: los pendientes (correlativo
+    // todavía más alto) encima de los que ya están en BD.
+    const todosLosRecibos = [...this.pendingRecibos, ...this.recibosBD];
     this.recibosSubject.next(todosLosRecibos);
   }
 
@@ -644,6 +714,134 @@ export class PaymentsComponent implements OnInit {
 
   get bloquearAcciones(): boolean {
     return this.tieneReciboPendiente;
+  }
+
+  /**
+   * Botón "Anular": antes de tocar nada pregunta con el mismo modal de
+   * confirmación que usan los clientes
+   * (shared/components/modals/confirm-delete-modal). Los casos que no se pueden
+   * anular se contestan aquí, sin abrir el modal.
+   */
+  anularRecibo() {
+    const recibo = this.reciboSeleccionadoEnTabla;
+
+    if (!this.hayReciboTabla || !recibo) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Recibo requerido',
+        detail: 'Selecciona un recibo de la tabla para poder anularlo.'
+      });
+      return;
+    }
+
+    if (this.reciboAnulado) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Ya anulado',
+        detail: `El recibo N° ${recibo.NoRecibo} ya fue anulado.`
+      });
+      return;
+    }
+
+    if (this.reciboCerrado) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Recibo cerrado',
+        detail: `No se puede anular: el recibo N° ${recibo.NoRecibo} ya pertenece a un cierre.`
+      });
+      return;
+    }
+
+    if (!this.respetaOrdenAnulacion) {
+      const ultimo = this.reciboMasRecienteActivo;
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Fuera de orden',
+        detail: `Los recibos se anulan del último al primero: antes debe anularse el recibo N° ${ultimo?.NoRecibo}.`
+      });
+      return;
+    }
+
+    const montoTexto = Number(recibo.mnrecibo ?? 0).toLocaleString('es-VE', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+
+    const confirmRef = this.dialogService.open(ConfirmDeleteModalComponent, {
+      header: 'Confirmar Anulación',
+      width: '40vw',
+      modal: true,
+      data: {
+        message: `¿Anular el recibo N° ${recibo.NoRecibo} por Bs. ${montoTexto}?`,
+        recibo
+      }
+    });
+
+    confirmRef.onClose.subscribe((confirmed: boolean) => {
+      if (confirmed) this.ejecutarAnulacion(recibo);
+    });
+  }
+
+  /** Confirmado por el usuario: marca Anulado = '1' y devuelve el monto al saldo. */
+  private ejecutarAnulacion(recibo: any) {
+    this.ringContractService.anularRecibo(this.contractId, {
+      NoRecibo: Number(recibo.NoRecibo),
+      CodUser: this.CodUser()
+    }).subscribe({
+      next: (res: any) => {
+        const data = res?.data ?? {};
+
+        recibo.Anulado = '1';
+
+        if (data.mninicial !== undefined) this.MnInicial = this.monto(data.mninicial);
+        if (data.mnpagado !== undefined) this.montoPagadoBase = this.monto(data.mnpagado);
+        if (data.mnsaldo !== undefined) this.montoSaldoBase = this.monto(data.mnsaldo);
+
+        this.montoPagado = this.montoPagadoBase;
+        this.montoSaldo = this.montoSaldoBase;
+
+        this.emitRecibos();
+
+        // La selección queda sobre el recibo que acaba de anularse y ese ya no
+        // sirve; se salta al siguiente para que el botón Anular quede listo.
+        this.seleccionarSiguienteRecibo();
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Recibo anulado',
+          detail: `El recibo N° ${recibo.NoRecibo} fue anulado y su monto volvió al saldo.`
+        });
+      },
+      error: (err: any) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'No se pudo anular',
+          detail: err?.error?.message || 'Ocurrió un error al anular el recibo.'
+        });
+      }
+    });
+  }
+
+  /**
+   * Después de anular, enfoca el recibo que sigue en el orden de anulación.
+   * Si no queda ninguno, deja la tabla sin selección.
+   */
+  private seleccionarSiguienteRecibo() {
+    const siguiente = this.reciboMasRecienteActivo;
+
+    if (!siguiente) {
+      this.selectedRecibo = 0;
+      this.NoRecibo = 0;
+      this.reciboDeTabla = null;
+      this.montoSelectedRecibo = null;
+      this.fechaSelectedRecibo = '';
+      this.observacion = '';
+      this.abonosBD = [];
+      this.abonosSubject.next([]);
+      return;
+    }
+
+    this.selectRecibo(siguiente);
   }
 
   print(NoRecibo: number) {

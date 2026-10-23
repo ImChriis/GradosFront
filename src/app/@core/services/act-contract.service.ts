@@ -118,6 +118,15 @@ getRecibosByUserContract(NoContrato: any, CodigoActo: any, NuCedula: any): Obser
     return this.http.put<any>(`${this.api}/actContracts/updateTotals/${CodigoActo}/${NuCedula}`, body);
   }
 
+  /**
+   * PUT /actContracts/anularRecibo -> botón "Anular" del modal de pagos.
+   * Marca `Anulado = '1'` y devuelve el monto del recibo al saldo; se niega (409)
+   * si el recibo ya pertenece a un cierre.
+   */
+  anularRecibo(body: any){
+    return this.http.put<any>(`${this.api}/actContracts/anularRecibo`, body);
+  }
+
   printReciboPdf(NoRecibo: number, usuarioReporte: string, body: any){
     return this.http.post(`${this.api}/actContracts/printReciboPdfOnePage/${NoRecibo}/${usuarioReporte}`, body, { responseType: 'blob' });
   }

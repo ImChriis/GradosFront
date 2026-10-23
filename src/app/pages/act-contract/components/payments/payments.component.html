@@ -48,6 +48,7 @@
             <tr class="table-content"
             (click)="selectRecibo(recibo)"
             [class.selected]="!recibo.isPlaceholder && NoRecibo && NoRecibo === recibo.NoRecibo"
+            [class.reciboAnulado]="esReciboAnulado(recibo)"
             > 
               <td>
                 @if(!recibo.isPlaceholder) {
@@ -110,17 +111,19 @@
             <div class="selects">
                 <div class="selectGroup">
                     <label for="anulado">ANULADO</label>
-                    <input type="checkbox" name="anulado" id="anulado">
+                    <!-- Indicador: queda marcado cuando el recibo seleccionado está anulado -->
+                    <input type="checkbox" name="anulado" id="anulado" [checked]="reciboAnulado" disabled>
                 </div>
 
                 <div class="selectGroup">
                     <label for="preview">PREVIEW</label>
-                    <input type="checkbox" name="preview" id="preview" checked>
+                    <!-- Marcado mientras el recibo seleccionado NO esté anulado -->
+                    <input type="checkbox" name="preview" id="preview" [checked]="!reciboAnulado" disabled>
                 </div>
-
+<!-- 
                 <button>
                     ELIMINAR RECIBO
-                </button>
+                </button> -->
             </div>
         </div>
     </div>
@@ -168,10 +171,15 @@
             <button type="button" class="icon" title="Imprimir" [disabled]="!hayReciboTabla" (click)="print(NoRecibo)">
                 <i class="pi pi-print print"></i>
             </button>
+            
+            <button type="button" class="icon" title="Anular" [disabled]="!puedeAnularRecibo" (click)="anularRecibo()">
+                <i class="pi pi-times-circle times"></i>
+            </button>
 
             <button type="button" class="icon" title="Actualizar" [disabled]="!hayReciboTabla">
                 <i class="pi pi-refresh refresh"></i>
             </button>
+            
 
             <button type="button" class="icon" title="Cancelar" (click)="cancel()">
                 <i class="pi pi-times times"></i>
