@@ -1,0 +1,36 @@
+<form [formGroup]="reportForm">
+    <div class="container">
+        <fieldset class="group">
+            <legend class="title">Estado del contrato</legend>
+
+            <div class="selects">
+                <div class="inputGroup3">
+                    <select id="estadoContrato" formControlName="estado">
+                        <option *ngFor="let e of estados" [value]="e.valor">{{ e.etiqueta }}</option>
+                    </select>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="group">
+            <legend class="title">Destino</legend>
+
+            <div class="selects">
+                <div class="inputGroup">
+                    <input type="radio" id="pantalla" name="reportOption" value="pantalla" checked #optPantalla>
+                    <label for="pantalla">En pantalla</label>
+                </div>
+
+                <div class="inputGroup">
+                    <input type="radio" id="imprimir" name="reportOption" value="imprimir" #optImprimir>
+                    <label for="imprimir">Imprimir (Descargar)</label>
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="btns">
+            <button type="button" class="pdf" (click)="onSubmit('PDF', optPantalla.checked)">PDF</button>
+            <button type="button" class="excel" (click)="onSubmit('EXCEL', optPantalla.checked)">EXCEL</button>
+        </div>
+    </div>
+</form>

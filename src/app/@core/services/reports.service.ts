@@ -56,4 +56,22 @@ export class ReportsService {
   generateClosingPdf(body: any){
     return this.http.post(`${this.api}/reports/generateClosingPdf`, body, {responseType: 'blob'});
   }
+
+  /** Contratos de anillo en un estado (1..7) */
+  getContractsByStatusPdf(body: any){
+    return this.http.post(`${this.api}/reports/contractsByStatusPdf`, body, {responseType: 'blob'});
+  }
+
+  getContractsByStatusExcel(body: any){
+    return this.http.post(`${this.api}/reports/contractsByStatusExcel`, body, {responseType: 'blob'});
+  }
+
+  /** Contratos cuyo "Requerido el" vence en los próximos 30 días */
+  getRingExpiringPdf(body: any){
+    return this.http.post(`${this.api}/reports/ringExpiringPdf`, body, {responseType: 'blob'});
+  }
+
+  getRingExpiringExcel(body: any){
+    return this.http.post(`${this.api}/reports/ringExpiringExcel`, body, {responseType: 'blob'});
+  }
 }

@@ -7,6 +7,8 @@ import { ReportInstitutionsComponent } from '../../shared/components/modals/repo
 import { ReportSpecialitiesComponent } from '../../shared/components/modals/report-specialities/report-specialities.component';
 import { ReportActPlacesComponent } from '../../shared/components/modals/report-act-places/report-act-places.component';
 import { ReportClientsComponent } from '../../shared/components/modals/report-clients/report-clients.component';
+import { ReportContractsStatusComponent } from '../../shared/components/modals/report-contracts-status/report-contracts-status.component';
+import { ReportRingExpiringComponent } from '../../shared/components/modals/report-ring-expiring/report-ring-expiring.component';
 import { AboutUsComponent } from '../../shared/components/modals/about-us/about-us.component';
 import { ReportActListComponent } from '../../shared/components/modals/report-act-list/report-act-list.component';
 import { GenerateClosingComponent } from '../../shared/components/modals/generate-closing/generate-closing.component';
@@ -145,7 +147,15 @@ export class LayoutComponent implements OnInit{
           // },
           {
             label: 'Generar Cierre',
-            command: () => this.openModal(GenerateClosingComponent, 'Generar Cierre', '30%')
+            itens: [
+              {
+                label: 'Cierre X',
+                command: () => this.openModal(GenerateClosingComponent, 'Generar Cierre', '30%')
+              },
+              {
+                label: 'Cierre Z'
+              }
+            ]
           }
         ]
       },
@@ -180,13 +190,15 @@ export class LayoutComponent implements OnInit{
             label: 'Contratos',
             items: [
               {
-                label: 'Por Estatus'
+                label: 'Por Estatus',
+                command: () => this.openModal(ReportContractsStatusComponent, 'Reporte de Contratos por Estatus', '30%')
               },
               {
                 label: 'Datos de un contrato'
               },
               {
-                label: 'Lista de Anillos Prox. a Vencer Solicitud'
+                label: 'Lista de Anillos Prox. a Vencer Solicitud',
+                command: () => this.openModal(ReportRingExpiringComponent, 'Anillos Próximos a Vencer Solicitud', '30%')
               }
             ]
           },

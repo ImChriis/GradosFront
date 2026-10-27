@@ -1,0 +1,32 @@
+<div class="container">
+    <fieldset class="group">
+        <legend class="title">Criterio del reporte</legend>
+
+        <p class="info">
+            Lista los contratos de anillo cuyo campo <strong>Requerido el</strong>
+            vence dentro de los próximos <strong>{{ diasVentana }} días</strong>.
+            Los contratos cuya fecha ya venció no se incluyen.
+        </p>
+    </fieldset>
+
+    <fieldset class="group">
+        <legend class="title">Destino</legend>
+
+        <div class="selects">
+            <div class="inputGroup">
+                <input type="radio" id="pantalla" name="reportOption" value="pantalla" checked #optPantalla>
+                <label for="pantalla">En pantalla</label>
+            </div>
+
+            <div class="inputGroup">
+                <input type="radio" id="imprimir" name="reportOption" value="imprimir" #optImprimir>
+                <label for="imprimir">Imprimir (Descargar)</label>
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="btns">
+        <button type="button" class="pdf" (click)="onSubmit('PDF', optPantalla.checked)">PDF</button>
+        <button type="button" class="excel" (click)="onSubmit('EXCEL', optPantalla.checked)">EXCEL</button>
+    </div>
+</div>
