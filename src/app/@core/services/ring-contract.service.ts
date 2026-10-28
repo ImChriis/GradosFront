@@ -41,7 +41,9 @@ export class RingContractService {
       }
     });
 
-    return this.http.get(`${this.api}/ringContracts`, { params });
+    return this.http.get(`${this.api}/ringContracts`, { params }).pipe(
+      tap((res) => console.log('Contracts loaded:', res))
+    );
   }
 
   /** GET /ringContracts/:id -> contrato completo + datos del cliente */

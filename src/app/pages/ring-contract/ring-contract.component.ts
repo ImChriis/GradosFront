@@ -127,6 +127,7 @@ export class RingContractComponent implements OnInit {
     // mncontrato se digita al crear; mninicial solo se digita sobre un contrato existente
     mncontrato: [''],
     mndescuento: [''],
+    descuentoPorcentaje: [0, [Validators.min(0), Validators.max(100)]],
     mninicial: [''],
     mnpagado: [{ value: '', disabled: true }],
     mnsaldo: [{ value: '', disabled: true }],
@@ -157,6 +158,8 @@ export class RingContractComponent implements OnInit {
 
   onSelectContract(contract: any) {
     this.isLoading.set(true);
+
+    console.log('Selected contract:', contract);
 
     this.ringContractService.getContractById(contract.id).subscribe({
       next: (res: any) => {
@@ -190,6 +193,7 @@ export class RingContractComponent implements OnInit {
           this.ringForm.patchValue({
             mncontrato: s.mncontrato ?? '',
             mndescuento: s.mndescuento ?? '',
+            descuentoPorcentaje: this.calcularPorcentajeDescuento(s.mndescuento, s.mncontrato),
             mninicial: s.mninicial ?? '',
             mnpagado: s.pagado,
             mnsaldo: s.saldo,
@@ -258,6 +262,7 @@ export class RingContractComponent implements OnInit {
 
       mncontrato: c.mncontrato ?? '',
       mndescuento: c.mndescuento ?? '',
+      descuentoPorcentaje: this.calcularPorcentajeDescuento(c.mndescuento, c.mncontrato),
       mninicial: c.mninicial ?? '',
     });
   }
@@ -278,6 +283,7 @@ export class RingContractComponent implements OnInit {
       MnCostoAnillo: 0,
       mncontrato: '',
       mndescuento: '',
+      descuentoPorcentaje: 0,
       mninicial: '',
       mnpagado: '',
       mnsaldo: '',
@@ -351,6 +357,7 @@ export class RingContractComponent implements OnInit {
         CodUser: this.auth.CodUser(),
         // Único monto que se digita al crear; el backend calcula el resto
         mncontrato: f.mncontrato,
+        mndescuento: this.calcularMontoDescuento(f.mncontrato, f.descuentoPorcentaje),
         ...this.detallesRegaliasPayload(),
       })
       .subscribe({
@@ -401,7 +408,7 @@ export class RingContractComponent implements OnInit {
     this.ringContractService
       .updateTotals(id, {
         mncontrato: f.mncontrato,
-        mndescuento: f.mndescuento,
+        mndescuento: this.calcularMontoDescuento(f.mncontrato, f.descuentoPorcentaje),
         mninicial: f.mninicial,
       })
       .subscribe({
@@ -411,6 +418,7 @@ export class RingContractComponent implements OnInit {
             this.ringForm.patchValue({
               mncontrato: d.mncontrato,
               mndescuento: d.mndescuento,
+              descuentoPorcentaje: this.calcularPorcentajeDescuento(d.mndescuento, d.mncontrato),
               mninicial: d.mninicial,
               mnpagado: d.mnpagado,
               mnsaldo: d.mnsaldo,
@@ -420,6 +428,37 @@ export class RingContractComponent implements OnInit {
         },
         error: (err) => this.showError(err, 'No se pudieron actualizar los montos.'),
       });
+  }
+
+  private calcularMontoDescuento(montoContrato: any, porcentaje: any): number {
+    const monto = this.convertirMonto(montoContrato);
+    const porcentajeSeguro = Math.min(100, Math.max(0, this.convertirMonto(porcentaje)));
+    return Math.round(monto * porcentajeSeguro) / 100;
+  }
+
+  private calcularPorcentajeDescuento(descuento: any, montoContrato: any): number {
+    const monto = this.convertirMonto(montoContrato);
+    if (!monto) return 0;
+
+    return Math.round((this.convertirMonto(descuento) / monto) * 10000) / 100;
+  }
+
+  private convertirMonto(valor: any): number {
+    if (valor === null || valor === undefined || valor === '') return 0;
+    if (typeof valor === 'number') return Number.isFinite(valor) ? valor : 0;
+
+    const texto = String(valor).trim().replace(/\s/g, '');
+    const puntos = (texto.match(/\./g) ?? []).length;
+
+    let normalizado = texto;
+    if (texto.includes(',')) {
+      normalizado = texto.replace(/\./g, '').replace(',', '.');
+    } else if (puntos > 1 || (puntos === 1 && texto.split('.')[1].length === 3)) {
+      normalizado = texto.replace(/\./g, '');
+    }
+
+    const monto = Number(normalizado);
+    return Number.isFinite(monto) ? monto : 0;
   }
 
   /** Detalles y Regalías viajan juntos: el backend los guarda en el mismo PUT */

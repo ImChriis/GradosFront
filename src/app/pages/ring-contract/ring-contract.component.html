@@ -44,8 +44,11 @@
               <th style="min-width: 1rem">
                 <div class="flex thstyles">NO. CEDULA</div>
               </th>
-              <th style="min-width: 18rem">
+              <th style="min-width: 1rem">
                 <div class="flex thstyles">CLIENTE</div>
+              </th>
+              <th style="min-width: 1rem">
+                <div class="flex thstyles">Fecha</div>
               </th>
             </tr>
           </ng-template>
@@ -61,6 +64,9 @@
               </td>
               <td>
                 {{ contract.txnombre }}
+              </td>
+              <td>
+                {{ contract.feinicio | date: 'dd/MM/yyyy' }}
               </td>
             </tr>
           </ng-template>
@@ -430,8 +436,9 @@
                             </div>
 
                             <div class="saldoRow">
-                              <label for="descuento">Descuento:</label>
-                              <input type="text" id="descuento" formControlName="mndescuento" readonly />
+                              <label for="descuento">Descuento (%):</label>
+                              <input type="number" id="descuento" formControlName="descuentoPorcentaje"
+                                  min="0" max="100" step="1" [readonly]="!isAdding || !!selectedContract" />
                             </div>
 
                             <div class="saldoRow">
@@ -486,7 +493,7 @@
           </div>
           
           <div class="icon cancel" title="Cancelar" (click)="onCancel()">
-            <span class="emoji-icon cancel">✖️</span>
+            <span class="emoji-icon cancel">✖️z</span>
           </div>
         </div>
     </div>
