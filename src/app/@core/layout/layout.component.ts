@@ -52,7 +52,7 @@ export class LayoutComponent implements OnInit{
           {
             label: 'Inicio',
             routerLink: '/home',
-            icon: 'pi pi-home'
+            icon: 'emoji-menu emoji-home'
           },
           {
             separator: true
@@ -60,32 +60,32 @@ export class LayoutComponent implements OnInit{
           {
             label: 'Clientes',
             routerLink: '/clients',
-            icon: 'pi pi-user'
+            icon: 'emoji-menu emoji-user'
           },
           {
             label: 'Especialidades',
             routerLink: '/specialties',
-            icon: 'pi pi-briefcase'
+            icon: 'emoji-menu emoji-briefcase'
           },
           {
             label: 'Instituciones',
             routerLink: '/institutions',
-            icon: 'pi pi-building'
+            icon: 'emoji-menu emoji-building'
           },
           {
             label: 'Lugar de Actos',
             routerLink: '/actPlaces',
-            icon: 'pi pi-map-marker'
+            icon: 'emoji-menu emoji-marker'
           },
           {
             label: 'Bancos',
             routerLink: '/banks',
-            icon: 'pi pi-money-bill'
+            icon: 'emoji-menu emoji-bank'
           },
           {
             label: 'Métodos de Pago',
             routerLink: '/paymentMethods',
-            icon: 'pi pi-credit-card'
+            icon: 'emoji-menu emoji-card'
           },
           {
             separator: true
@@ -93,7 +93,7 @@ export class LayoutComponent implements OnInit{
           {
             label: 'Cerrar Sesión',
             command: () => this.logout(),
-            icon: 'pi pi-sign-out',
+            icon: 'emoji-menu emoji-exit',
           }
         ]
       },
@@ -106,19 +106,7 @@ export class LayoutComponent implements OnInit{
               {
                 label: 'Anillos',
                 routerLink: '/ringContracts',
-                // Mismo icono que el atajo de la barra inferior. `icon` en PrimeNG
-                // es una clase CSS, así que la imagen se pinta por iconStyle
-                // (la URL se resuelve contra <base href="/">).
-                icon: 'miAnilloIcon',
-                iconStyle: {
-                  width: '1em',
-                  height: '1em',
-                  display: 'inline-block',
-                  backgroundImage: "url('assets/img/anillo.png')",
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center',
-                  backgroundSize: 'contain'
-                }
+                icon: 'emoji-menu emoji-ring'
               },
               {
                 separator: true
@@ -126,7 +114,7 @@ export class LayoutComponent implements OnInit{
               {
                 label: 'Actos de Grado',
                 routerLink: '/actContracts',
-                icon: 'pi pi-graduation-cap'
+                icon: 'emoji-menu emoji-graduation'
               }
             ]
           },
@@ -235,7 +223,7 @@ export class LayoutComponent implements OnInit{
           {
             label: 'Usuarios',
             routerLink: '/users',
-            icon: 'pi pi-users'
+            icon: 'emoji-menu emoji-users'
           },
           {
             separator: true
@@ -243,7 +231,7 @@ export class LayoutComponent implements OnInit{
           {
             label: 'Auditoría',
             routerLink: '/audit',
-            icon: 'pi pi-clipboard',
+            icon: 'emoji-menu emoji-clipboard',
             visible: this.role === 'Master'
           },
           {
@@ -253,7 +241,7 @@ export class LayoutComponent implements OnInit{
           {
             label: 'Opciones',
             routerLink: '/settings',
-            icon: 'pi pi-cog'
+            icon: 'emoji-menu emoji-settings'
           }
         ]
       },

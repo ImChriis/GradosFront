@@ -1,69 +1,69 @@
 <div class="container">
     <nav>
         <p-menubar [model]="items" />
-        <div class="icons">
-            <button routerLink="/home" title="Inicio">
-                <i class="pi pi-home"></i>
-            </button>
+<div class="icons">
+    <button routerLink="/home" title="Inicio">
+        <span class="emoji-icon">🏠</span>
+    </button>
 
-            <div class="separator"></div>
+    <div class="separator"></div>
 
-            <button routerLink="/clients" title="Clientes">
-                <i class="pi pi-user"></i>
-            </button>
+    <button routerLink="/clients" title="Clientes">
+        <span class="emoji-icon">👤</span>
+    </button>
 
-            <button routerLink="/specialties" title="Especialidades">
-                <i class="pi pi-briefcase"></i>
-            </button>
+    <button routerLink="/specialties" title="Especialidades">
+        <span class="emoji-icon">💼</span>
+    </button>
 
-            <button routerLink="/institutions" title="Instituciones">
-                <i class="pi pi-building"></i>
-            </button>
+    <button routerLink="/institutions" title="Instituciones">
+        <span class="emoji-icon">🏛️</span>
+    </button>
 
-            <button routerLink="/actPlaces" title="Lugares de Acto">
-                <i class="pi pi-map-marker"></i>
-            </button>
+    <button routerLink="/actPlaces" title="Lugares de Acto">
+        <span class="emoji-icon">📍</span>
+    </button>
 
-            <button routerLink="/banks" title="Bancos">
-                <i class="pi pi-money-bill"></i>
-            </button>
+    <button routerLink="/banks" title="Bancos">
+        <span class="emoji-icon">🏦</span>
+    </button>
 
-            <button routerLink="/paymentMethods" title="Métodos de Pago">
-                <i class="pi pi-credit-card"></i>
-            </button>
+    <button routerLink="/paymentMethods" title="Métodos de Pago">
+        <span class="emoji-icon">💳</span>
+    </button>
 
-            <div class="separator"></div>
+    <div class="separator"></div>
 
-            <button routerLink="/ringContracts" title="Contratos de anillos">
-                <img class="iconImg" src="assets/img/anillo.png" alt="Contratos de anillos" />
-            </button>
+    <button routerLink="/ringContracts" title="Contratos de anillos">
+        <span class="emoji-icon">💍</span>
+    </button>
 
-            <button routerLink="/actContracts" title="Contratos de Acto">
-                <i class="pi pi-graduation-cap"></i>
-            </button>
+    <button routerLink="/actContracts" title="Contratos de Acto">
+        <span class="emoji-icon">🎓</span>
+    </button>
 
-            <div class="separator"></div>
+    <div class="separator"></div>
 
-            <button routerLink="/users" title="Usuarios">
-                <i class="pi pi-users"></i>
-            </button>
+    <button routerLink="/users" title="Usuarios">
+        <span class="emoji-icon">👥</span>
+    </button>
 
-            @if(this.role === 'Master') {
-                <button routerLink="/audit" title="Auditoría">
-                    <i class="pi pi-clipboard"></i>
-                </button>
-            }
+    @if(this.role === 'Master') {
+        <button routerLink="/audit" title="Auditoría">
+            <span class="emoji-icon">📋</span>
+        </button>
+    }
 
-            <button routerLink="/settings" title="Configuración">
-                <i class="pi pi-cog"></i>
-            </button>
+    <button routerLink="/settings" title="Configuración">
+        <span class="emoji-icon">⚙️</span>
+    </button>
 
-            <div class="separator"></div>
+    <div class="separator"></div>
 
-            <button (click)="logout()" title="Cerrar sesión">
-                <i class="pi pi-sign-out"></i>
-            </button>
-        </div>
+    <button (click)="logout()" title="Cerrar sesión">
+        <span class="emoji-icon">🚪</span>
+    </button>
+</div>
     </nav>
 
     <div class="content">

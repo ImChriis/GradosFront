@@ -149,7 +149,7 @@
 
             <div class="detailsTableBtn">
                 <!-- <div class="icon2">
-                    <i class="pi pi-file-excel"></i>
+                    <span class="emoji-icon">📊</span>
                 </div> -->
 
                 <div class="detailsTable">
@@ -161,31 +161,31 @@
 
         <div class="buttons">
             <button type="button" class="icon" title="Nueva Operación" [class.disabled]="bloquearAcciones" (click)="add()">
-                <i class="pi pi-file new"></i>
+                <span class="emoji-icon new">📄</span>
             </button>
 
             <button type="button" class="icon" title="Caja" [disabled]="!hayReciboNuevo" (click)="facturar()">
-                <i class="pi pi-money-bill pay"></i>
+                <span class="emoji-icon pay">💵</span>
             </button>
 
             <button type="button" class="icon" title="Imprimir" [disabled]="!hayReciboTabla" (click)="print(NoRecibo)">
-                <i class="pi pi-print print"></i>
+                <span class="emoji-icon print">🖨️</span>
             </button>
 
             <button type="button" class="icon" title="Anular" [disabled]="!puedeAnularRecibo" (click)="anularRecibo()">
-                <i class="pi pi-times-circle times"></i>
+                <span class="emoji-icon times">🚫</span>
             </button>
 
             <button type="button" class="icon" title="Actualizar" [disabled]="!hayReciboTabla">
-                <i class="pi pi-refresh refresh"></i>
+                <span class="emoji-icon refresh">🔄</span>
             </button>
 
             <button type="button" class="icon" title="Cancelar" (click)="cancel()">
-                <i class="pi pi-times times"></i>
+                <span class="emoji-icon times">✖️</span>
             </button>
 
             <button type="button" class="icon" title="Salida" [disabled]="bloquearAcciones" (click)="close()">
-                <i class="pi pi-sign-out exit"></i>
+                <span class="emoji-icon exit">🚪</span>
             </button>
         </div>
     </div>
@@ -291,8 +291,8 @@
                 </div>
 
                 <div class="icons-col">
-                    <button type="button" class="icon" title="Agregar" [disabled]="!hayReciboNuevo" (click)="onSubmit()"><i class="pi pi-plus add"></i></button>
-                    <button type="button" class="icon" title="Eliminar" [disabled]="!hayReciboNuevo"><i class="pi pi-minus minus"></i></button>
+                    <button type="button" class="icon" title="Agregar" [disabled]="!hayReciboNuevo" (click)="onSubmit()"><span class="emoji-icon add">➕</span></button>
+                    <button type="button" class="icon" title="Eliminar" [disabled]="!hayReciboNuevo"><span class="emoji-icon minus">➖</span></button>
                 </div>
             </div>
         </div>

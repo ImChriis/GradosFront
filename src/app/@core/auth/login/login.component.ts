@@ -6,7 +6,7 @@ import { AuthService } from '../../services/auth.service';
 import { LoginForm } from '../../models/forms/login-form';
 import { MessageService } from 'primeng/api';
 import { Router, RouterLink } from '@angular/router';
-import { DOCUMENT, UpperCasePipe } from '@angular/common';
+import { CommonModule, DOCUMENT, UpperCasePipe } from '@angular/common';
 import { UppercaseDirective } from "../../directives/uppercase.directive";
 import { User } from '../../models/user.mode';
 import { LoaderComponent } from '../../components/loader/loader.component';
@@ -14,6 +14,7 @@ import { LoaderComponent } from '../../components/loader/loader.component';
 @Component({
   selector: 'app-login',
   imports: [
+    CommonModule,
     InputTextModule,
     ButtonModule,
     ReactiveFormsModule,

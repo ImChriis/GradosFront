@@ -32,11 +32,30 @@ nav{
     opacity: 0.8;
 }
 
+.icons button{
+    background-color: transparent;
+    border: none;
+    color: #1E293B;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.icons .emoji-icon {
+    font-size: 1.5rem;
+    padding-bottom: 5px;
+    line-height: 1;
+    display: inline-block;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 1));
+}
+
 .icons i{
     font-size: 1.5rem !important;
 }
 
-/* anillo.png: mismo tamaño que los iconos de PrimeNG (1.5rem) */
+/* Mantiene los iconos auxiliares del layout con un tamaño uniforme. */
 .icons img{
     width: 1.5rem;
     height: 1.5rem;
@@ -80,6 +99,28 @@ footer{
 }
 
 ::ng-deep{
+    .p-menubar .emoji-menu::before{
+        display: inline-block;
+        font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+        font-size: 1.15rem;
+        line-height: 1;
+        filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.42));
+    }
+
+    .p-menubar .emoji-home::before{ content: '🏠'; }
+    .p-menubar .emoji-user::before{ content: '👤'; }
+    .p-menubar .emoji-briefcase::before{ content: '💼'; }
+    .p-menubar .emoji-building::before{ content: '🏛️'; }
+    .p-menubar .emoji-marker::before{ content: '📍'; }
+    .p-menubar .emoji-bank::before{ content: '🏦'; }
+    .p-menubar .emoji-card::before{ content: '💳'; }
+    .p-menubar .emoji-exit::before{ content: '🚪'; }
+    .p-menubar .emoji-ring::before{ content: '💍'; }
+    .p-menubar .emoji-graduation::before{ content: '🎓'; }
+    .p-menubar .emoji-users::before{ content: '👥'; }
+    .p-menubar .emoji-clipboard::before{ content: '📋'; }
+    .p-menubar .emoji-settings::before{ content: '⚙️'; }
+
     .p-menubar{
         background-color: white !important;
         color: #1E293B;

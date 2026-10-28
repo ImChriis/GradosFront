@@ -20,6 +20,15 @@ p, label, h1, h2, h3, h4, h5, h6, th, td, button, legend, input, textarea, .p-in
     color: #1E293B;
 }
 
+.emoji-icon{
+    display: inline-block;
+    font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+    font-size: 1.65rem;
+    line-height: 1;
+    vertical-align: middle;
+    filter: drop-shadow(0 2px 1px rgba(0, 0, 0, 0.42));
+}
+
 app-root{
     display: flex;
     flex-direction: column;
