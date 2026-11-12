@@ -4,12 +4,19 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { OnlyNumbersDirective } from '../../../../@core/directives/only-numbers.directive';
 import { ReportsService } from '../../../../@core/services/reports.service';
 import { MessageService } from 'primeng/api';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { PdfViewerComponent } from '../../../../@core/components/pdf-viewer/pdf-viewer.component';
 import { SettingsService } from '../../../../@core/services/settings.service';
 import { LoaderComponent } from '../../../../@core/components/loader/loader.component';
+import { AuthService } from '../../../../@core/services/auth.service';
 
 
+/**
+ * Modal de cierres.
+ *  - Cierre X (data.tipo = 'X'): parcial del cajero logueado, acumulado del día hasta ahora.
+ *  - Cierre Z (data.tipo = 'Z', por defecto): uno solo por día para todos los cajeros.
+ * El número a generar lo asigna el backend; aquí solo se muestra el correlativo actual.
+ */
 @Component({
   selector: 'app-generate-closing',
   imports: [
@@ -26,12 +33,22 @@ export class GenerateClosingComponent implements OnInit, OnDestroy{
   private messageService = inject(MessageService);
   private dialogService = inject(DialogService);
   private settingsService = inject(SettingsService);
+  private authService = inject(AuthService);
+  private dialogConfig = inject(DynamicDialogConfig);
   private fb = inject(FormBuilder);
   private currentBlobUrl: string | null = null;
   ref!: DynamicDialogRef;
   nombre!: string;
-  NoCierre!: string;
+  tipo: 'X' | 'Z' = this.dialogConfig.data?.tipo === 'X' ? 'X' : 'Z';
   isLoading = signal(false);
+
+  // Solo lectura: el X es de hoy y el Z de la fecha que indique el backend
+  generateClosingForm = this.fb.group({
+    ferecibo: [''],
+    fechaVista: [''],
+    hora: [''],
+    NoCierre: ['']
+  })
 
   ngOnInit(){
     const user = localStorage.getItem('User');
@@ -43,130 +60,119 @@ export class GenerateClosingComponent implements OnInit, OnDestroy{
 
     this.settingsService.getSettings().subscribe({
       next: (res: any) => {
-        this.NoCierre = res.NoCierre;
-        this.generateClosingForm.patchValue({ NoCierre: this.NoCierre });
+        this.generateClosingForm.patchValue({ NoCierre: this.tipo === 'X' ? res.NoCierreX : res.NoCierreZ });
       }
     })
 
-    console.log('Número de cierre actual:', this.NoCierre);
+    this.generateClosingForm.patchValue({
+      hora: new Date().toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit', hour12: true })
+    });
+    this.setFecha(new Date().toLocaleDateString('en-CA'));
 
-    this.generateClosingForm.patchValue({ ferecibo: new Date().toISOString().split('T')[0] });
+    if (this.tipo === 'Z') {
+      this.reportsService.getClosingZFecha().subscribe({
+        next: (res) => this.setFecha(res.fecha)
+      });
+    }
   }
 
-  generateClosingForm = this.fb.group({
-    ferecibo: [''],
-    NoCierre: [''],
-    usuarioReporte: this.nombre
-  })
+  private setFecha(fecha: string) {
+    this.generateClosingForm.patchValue({ ferecibo: fecha, fechaVista: fecha.split('-').reverse().join('/') });
+  }
 
- onSubmit(format: string, optPantalla: boolean) {
-    // 1. Obtener valores del formulario de Cierre
+  onSubmit(formato: 'PDF' | 'EXCEL', optPantalla: boolean) {
     const formValues = this.generateClosingForm.value;
-    console.log('Valores del formulario:', formValues);
 
-    // 2. Validaciones iniciales
-    if (!formValues.ferecibo || !formValues.NoCierre) {
-        this.messageService.add({ 
-            severity: 'warn', 
-            summary: 'Atención', 
-            detail: 'Debe ingresar la Fecha de Recibo y el Número de Cierre.' 
-        });
-        return;
+    if (!formValues.ferecibo) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Atención',
+        detail: 'No se pudo obtener la Fecha del Cierre.'
+      });
+      return;
+    }
+
+    if (this.tipo === 'X' && !this.authService.CodUser()) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Atención',
+        detail: 'No se encontró el cajero de la sesión. Vuelva a iniciar sesión.'
+      });
+      return;
     }
 
     this.isLoading.set(true);
 
-    // 3. Preparar el Payload exacto que espera la API Backend
-    const payload = {
-        ferecibo: formValues.ferecibo,     // Ej: '2026-05-20'
-        NoCierre: formValues.NoCierre,     // Ej: 'C-2026-001'
-        usuarioReporte: this.nombre // Nombre/Cédula del usuario autenticado
-    };
-
-    // 4. Determinar la llamada al servicio según el formato ('PDF' o 'EXCEL')
-    const serviceCall = format.toUpperCase() === 'PDF' 
-      ? this.reportsService.generateClosingPdf(payload)
-      : this.reportsService.generateClosingPdf(payload);
-
-    // Indicador visual de carga (opcional)
-    // this.cargandoReporte = true;
+    const serviceCall = this.tipo === 'X'
+      ? this.reportsService.generateClosingXPdf({ CodUser: this.authService.CodUser(), usuarioReporte: this.nombre, formato, NoCierre: formValues.NoCierre })
+      : this.reportsService.generateClosingPdf({ ferecibo: formValues.ferecibo, CodUser: this.authService.CodUser(), usuarioReporte: this.nombre, formato, NoCierre: formValues.NoCierre });
 
     serviceCall.subscribe({
       next: (res: Blob) => {
-        // this.cargandoReporte = false;
-        
-        this.messageService.add({ 
-            severity: 'success', 
-            summary: 'Reporte generado', 
-            detail: 'Procesando archivo...' 
+        this.messageService.add({
+          severity: 'success',
+          summary: `Cierre ${this.tipo} generado`,
+          detail: 'Procesando archivo...'
         });
 
-        const isPdf = format.toUpperCase() === 'PDF';
-        const mimeType = isPdf 
-          ? 'application/pdf' 
-          : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-
-        // Crear objeto Blob a partir de la respuesta binaria
-        const blob = new Blob([res], { type: mimeType });
+        const isPdf = formato === 'PDF';
+        const blob = new Blob([res], {
+          type: isPdf ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        });
         const url = window.URL.createObjectURL(blob);
         this.currentBlobUrl = url;
+        const titulo = `Cierre ${this.tipo} N° ${formValues.NoCierre}`;
 
-        // 5A. Caso: Vista Previa en Pantalla (Solo disponible para PDF)
+        // Excel siempre se descarga; la vista previa es solo para PDF
         if (optPantalla && isPdf) {
           this.ref = this.dialogService.open(PdfViewerComponent, {
-            header: `Vista Previa - Cierre N° ${payload.NoCierre}`,
+            header: `Vista Previa - ${titulo}`,
             width: '85%',
             height: '90vh',
             closable: true,
             contentStyle: { overflow: 'auto' },
             baseZIndex: 10000,
-            data: { url: url } 
+            data: { url: url }
           });
 
           this.ref.onClose.subscribe(() => {
             this.isLoading.set(false);
             this.cleanupBlob();
           });
-        } 
-        // 5B. Caso: Descarga directa (Excel siempre descarga o PDF si optPantalla es false)
-        else {
-          const extension = isPdf ? 'pdf' : 'xlsx';
-          const filename = `Cierre_${payload.NoCierre}_${new Date().getTime()}.${extension}`;
-
+        } else {
           const a = document.createElement('a');
           a.href = url;
-          a.download = filename;
+          a.download = `Cierre_${this.tipo}_${formValues.NoCierre}_${new Date().getTime()}.${isPdf ? 'pdf' : 'xlsx'}`;
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
 
-          // Liberar recursos de memoria tras descargar
           setTimeout(() => {
             this.isLoading.set(false);
             this.cleanupBlob()
           }, 1000);
         }
       },
-      error: (err) => {
-        // this.cargandoReporte = false;
-        console.error('Error al generar el reporte de cierre:', err);
-        
-        if(err.status === 404){
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'No se encontraron registros para la fecha indicada'
-          });
-        } else {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Ocurrió un error al generar el reporte. Por favor, inténtelo de nuevo.'
-          });
+      error: async (err) => {
+        this.isLoading.set(false);
+        console.error(`Error al generar el cierre ${this.tipo}:`, err);
+
+        // Con responseType 'blob' el JSON de error del backend llega como Blob
+        let detail = 'Ocurrió un error al generar el reporte. Por favor, inténtelo de nuevo.';
+        if (err.error instanceof Blob) {
+          try {
+            detail = JSON.parse(await err.error.text()).message || detail;
+          } catch { }
         }
+
+        this.messageService.add({
+          severity: err.status === 404 || err.status === 409 ? 'warn' : 'error',
+          summary: `Cierre ${this.tipo}`,
+          detail
+        });
       }
     });
-}
+  }
 
   private cleanupBlob() {
     if (this.currentBlobUrl) {

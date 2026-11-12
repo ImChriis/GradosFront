@@ -12,6 +12,9 @@ import { ReportRingExpiringComponent } from '../../shared/components/modals/repo
 import { AboutUsComponent } from '../../shared/components/modals/about-us/about-us.component';
 import { ReportActListComponent } from '../../shared/components/modals/report-act-list/report-act-list.component';
 import { GenerateClosingComponent } from '../../shared/components/modals/generate-closing/generate-closing.component';
+import { ReportReceiptsComponent } from '../../shared/components/modals/report-receipts/report-receipts.component';
+import { ReportGraduatesActComponent } from '../../shared/components/modals/report-graduates-act/report-graduates-act.component';
+import { ReportContractDataComponent } from '../../shared/components/modals/report-contract-data/report-contract-data.component';
 import { AuthService } from '../services/auth.service';
 import { ConfirmLogOutComponent } from '../../shared/components/modals/confirm-log-out/confirm-log-out.component';
 
@@ -121,6 +124,19 @@ export class LayoutComponent implements OnInit{
           {
             separator: true
           },
+          {
+            label: 'Generar Cierre',
+            items: [
+              {
+                label: 'Cierre X',
+                command: () => this.openModal(GenerateClosingComponent, 'Generar Cierre X', '30%', { tipo: 'X' })
+              },
+              {
+                label: 'Cierre Z',
+                command: () => this.openModal(GenerateClosingComponent, 'Generar Cierre Z', '30%', { tipo: 'Z' })
+              }
+            ]
+          },
           // {
           //   label: 'Anular Recibos',
           //   items: [
@@ -133,18 +149,7 @@ export class LayoutComponent implements OnInit{
           // {
           //   separator: true
           // },
-          {
-            label: 'Generar Cierre',
-            itens: [
-              {
-                label: 'Cierre X',
-                command: () => this.openModal(GenerateClosingComponent, 'Generar Cierre', '30%')
-              },
-              {
-                label: 'Cierre Z'
-              }
-            ]
-          }
+      
         ]
       },
       {
@@ -182,7 +187,8 @@ export class LayoutComponent implements OnInit{
                 command: () => this.openModal(ReportContractsStatusComponent, 'Reporte de Contratos por Estatus', '30%')
               },
               {
-                label: 'Datos de un contrato'
+                label: 'Datos de un contrato',
+                command: () => this.openModal(ReportContractDataComponent, 'Datos de un Contrato', '30%')
               },
               {
                 label: 'Lista de Anillos Prox. a Vencer Solicitud',
@@ -194,25 +200,28 @@ export class LayoutComponent implements OnInit{
             label: 'Recibos',
             items: [
               {
-                label: 'En Rango de fechas'
+                label: 'En Rango de fechas',
+                command: () => this.openModal(ReportReceiptsComponent, 'Recibos en Rango de Fechas', '60%', { tipo: 'RANGO' })
               },
               {
-                label: 'Impresión de Recibos'
+                label: 'Impresión de Recibos',
+                command: () => this.openModal(ReportReceiptsComponent, 'Impresión de Recibos', '30%', { tipo: 'NUMERO' })
               }
             ]
           },
           {
             separator: true
           },
-          {
-            label: 'Cierre Diario'
-          },
+          // {
+          //   label: 'Cierre Diario'
+          // },
           {
             label: 'Exportar Lista Acto',
             command:  () => this.openModal(ReportActListComponent, 'Reporte Exportar Lista Acto', '30%')
           },
           {
-            label: 'Graduandos para Acto'
+            label: 'Graduandos para Acto',
+            command: () => this.openModal(ReportGraduatesActComponent, 'Reporte de Graduandos por Acto', '30%')
           }
         ],
 
@@ -263,10 +272,11 @@ export class LayoutComponent implements OnInit{
     ]
   }
 
-  openModal(component: any, title: string, width: string){
+  openModal(component: any, title: string, width: string, data?: any){
     this.ref = this.dialogService.open(component, {
             header: title,
             width: width,
+            data,
             modal: true,
             closable: true,
             breakpoints: {

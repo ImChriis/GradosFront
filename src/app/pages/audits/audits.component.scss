@@ -170,9 +170,22 @@ td {
     background-color: lightgray;
     color: black;
     border: none;
-    width: 103.5%;
-    margin-left: -15px;
+    width: 100%;
+    box-sizing: border-box;
     text-transform: uppercase;
+}
+
+/* El buscador ocupa justo el ancho de la tabla, sin salirse a ninguna resolución */
+.flex-row,
+.p-toolbar-group-end,
+.p-input-icon-left {
+    display: block;
+    width: 100%;
+}
+
+:host ::ng-deep .p-datatable-header {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
 .search::placeholder {

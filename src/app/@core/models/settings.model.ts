@@ -13,7 +13,8 @@ export interface Settings {
   NoRecibo: number;
   NoContrato: number;
   NoActo: number;
-  NoCierre: number;
+  NoCierreZ: number;
+  NoCierreX: number;
   CaDiasFab: number;
   CaDiasEngaste: number;
   MaFormRec: number;

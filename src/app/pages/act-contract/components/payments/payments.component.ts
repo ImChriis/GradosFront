@@ -107,17 +107,17 @@ export class PaymentsComponent implements OnInit {
   }
 
   /**
-   * Un recibo con NoCierre o FechaCierre ya pertenece a un cierre diario y no
+   * Un recibo con NoCierreZ o FechaCierreZ ya pertenece a un cierre diario y no
    * se puede anular.
    */
   private get reciboCerrado(): boolean {
     const r = this.reciboSeleccionadoEnTabla;
     if (!r) return false;
 
-    const cierre = r.NoCierre;
+    const cierre = r.NoCierreZ;
     if (cierre !== null && cierre !== undefined && cierre !== '' && Number(cierre) !== 0) return true;
 
-    return r.FechaCierre !== null && r.FechaCierre !== undefined && r.FechaCierre !== '';
+    return r.FechaCierreZ !== null && r.FechaCierreZ !== undefined && r.FechaCierreZ !== '';
   }
 
   /**

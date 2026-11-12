@@ -17,6 +17,11 @@ export class OnlyNumbersDirective {
       return;
     }
 
+    // Permitir atajos (Ctrl/Cmd + V, C, X, A, Z)
+    if (event.ctrlKey || event.metaKey) {
+      return;
+    }
+
     // 2. Bloquear si no es un número (0-9)
     // Usamos una expresión regular simple para solo dígitos
     const isNumber = /^[0-9]$/.test(event.key);
@@ -28,12 +33,16 @@ export class OnlyNumbersDirective {
 
   @HostListener('paste', ['$event'])
   onPaste(event: ClipboardEvent) {
-    // 3. Bloquear también si intentan pegar algo que no sean números
+    // 3. Si lo pegado trae algo que no sean números (espacios, puntos, saltos
+    // de línea al copiar de una tabla), se pegan solo los dígitos
     const clipboardData = event.clipboardData;
-    const pastedText = clipboardData?.getData('text');
-    
-    if (pastedText && !/^\d+$/.test(pastedText)) {
+    const pastedText = clipboardData?.getData('text') ?? '';
+    const digits = pastedText.replace(/\D/g, '');
+
+    if (digits !== pastedText) {
       event.preventDefault();
+      // insertText dispara el evento input, así el formulario reactivo se entera
+      if (digits) document.execCommand('insertText', false, digits);
     }
   }
 }

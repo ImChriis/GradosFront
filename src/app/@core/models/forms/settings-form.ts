@@ -15,7 +15,8 @@ export interface SettingsForm {
     NoRecibo: FormControl<number | null>;
     NoContrato: FormControl<number | null>;
     NoActo: FormControl<number | null>;
-    NoCierre: FormControl<number | null>;
+    NoCierreZ: FormControl<number | null>;
+    NoCierreX: FormControl<number | null>;
     CaDiasFab: FormControl<number | null>;
     CaDiasEngaste: FormControl<number | null>;
     MaFormRec: FormControl<number | null>;

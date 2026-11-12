@@ -1,0 +1,93 @@
+<form [formGroup]="receiptsForm">
+    @if(isLoading()) {
+        <app-loader [isLoading]="isLoading()"></app-loader>
+    }
+
+    <div class="container">
+        @if (tipo === 'RANGO') {
+            <fieldset class="group">
+                <legend class="title">Rango de Fechas</legend>
+
+                <div class="selects">
+                    <div class="inputGroup2">
+                        <label for="desde">Desde</label>
+                        <input type="date" id="desde" formControlName="desde">
+                    </div>
+                    <div class="inputGroup2">
+                        <label for="hasta">Hasta</label>
+                        <input type="date" id="hasta" formControlName="hasta">
+                    </div>
+                    <button type="button" class="buscar" (click)="buscarPorRango()">BUSCAR</button>
+                </div>
+            </fieldset>
+
+            <p-table
+                [value]="recibos()"
+                [rows]="10"
+                [paginator]="true"
+                styleClass="ml-3 mr-3"
+                class="tableRecibos"
+                >
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="min-width: 1rem" class="border">
+                            <div class="flex thstyles">NO. RECIBO</div>
+                        </th>
+                        <th style="min-width: 7rem">
+                            <div class="flex thstyles">FECHA</div>
+                        </th>
+                        <th style="min-width: 7rem">
+                            <div class="flex thstyles">CÉDULA</div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex thstyles">NOMBRE</div>
+                        </th>
+                        <th style="min-width: 6rem">
+                            <div class="flex thstyles">CONTRATO</div>
+                        </th>
+                        <th style="min-width: 5rem">
+                            <div class="flex thstyles">TIPO</div>
+                        </th>
+                        <th style="min-width: 6rem">
+                            <div class="flex thstyles">MONTO</div>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-recibo class="p-table">
+                    <tr class="table-content"
+                        (click)="seleccionado.set(recibo)"
+                        (dblclick)="imprimir(recibo)"
+                        [class.selected]="seleccionado() === recibo"
+                        [class.reciboAnulado]="esAnulado(recibo)">
+                        <td>{{ recibo.NoRecibo }}</td>
+                        <td>{{ recibo.FeRecibo | date:'dd/MM/yyyy' }}</td>
+                        <td>{{ recibo.NuCedula }}</td>
+                        <td>{{ recibo.Nombre }}</td>
+                        <td>{{ recibo.NoContrato }}</td>
+                        <td>{{ recibo.tipo }}</td>
+                        <td class="monto">{{ recibo.MnRecibo | number:'1.2-2' }}</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr><td colspan="7" class="vacio">Sin recibos. Elija las fechas y pulse BUSCAR.</td></tr>
+                </ng-template>
+            </p-table>
+
+            <div class="btns">
+                <button type="button" class="imprimir" [disabled]="!seleccionado()" (click)="imprimir(seleccionado())">IMPRIMIR</button>
+            </div>
+        } @else {
+            <fieldset class="group">
+                <legend class="title">No. de Recibo</legend>
+
+                <div class="selects">
+                    <div class="inputGroup2">
+                        <input type="text" id="NoRecibo" formControlName="NoRecibo" appOnlyNumbers
+                            (keydown.enter)="buscarPorNumero()">
+                    </div>
+                    <button type="button" class="buscar" (click)="buscarPorNumero()">BUSCAR</button>
+                </div>
+            </fieldset>
+        }
+    </div>
+</form>

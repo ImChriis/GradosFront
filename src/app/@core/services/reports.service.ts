@@ -53,8 +53,18 @@ export class ReportsService {
     return this.http.post(`${this.api}/reports/actListTxt`, body, {responseType: 'blob'});
   }
 
+  /** Cierre Z */
   generateClosingPdf(body: any){
     return this.http.post(`${this.api}/reports/generateClosingPdf`, body, {responseType: 'blob'});
+  }
+
+  /** Fecha que le toca al próximo Cierre Z (día pendiente o hoy) */
+  getClosingZFecha(){
+    return this.http.get<{ fecha: string }>(`${this.api}/reports/closingZFecha`);
+  }
+
+  generateClosingXPdf(body: any){
+    return this.http.post(`${this.api}/reports/generateClosingXPdf`, body, {responseType: 'blob'});
   }
 
   /** Contratos de anillo en un estado (1..7) */
@@ -73,5 +83,28 @@ export class ReportsService {
 
   getRingExpiringExcel(body: any){
     return this.http.post(`${this.api}/reports/ringExpiringExcel`, body, {responseType: 'blob'});
+  }
+
+  /** Recibos entre dos fechas (YYYY-MM-DD) */
+  getRecibosPorRango(desde: string, hasta: string){
+    return this.http.get<any[]>(`${this.api}/reports/recibos`, { params: { desde, hasta } });
+  }
+
+  /** Un recibo por su número (404 si no existe) */
+  getReciboPorNumero(NoRecibo: number){
+    return this.http.get<any>(`${this.api}/reports/recibos/${NoRecibo}`);
+  }
+
+  getGraduatesByActPdf(usuarioReporte: string){
+    return this.http.get(`${this.api}/reports/graduatesByActPdf/${usuarioReporte}`, {responseType: 'blob'});
+  }
+
+  getGraduatesByActExcel(usuarioReporte: string){
+    return this.http.get(`${this.api}/reports/graduatesByActExcel/${usuarioReporte}`, {responseType: 'blob'});
+  }
+
+  /** Datos completos de un contrato (acto o anillo) con recibos y depósitos */
+  getContractData(body: any){
+    return this.http.post(`${this.api}/reports/contractData`, body, {responseType: 'blob'});
   }
 }
