@@ -132,6 +132,9 @@ export class LayoutComponent implements OnInit{
                 command: () => this.openModal(GenerateClosingComponent, 'Generar Cierre X', '30%', { tipo: 'X' })
               },
               {
+              separator: true
+              },
+              {
                 label: 'Cierre Z',
                 command: () => this.openModal(GenerateClosingComponent, 'Generar Cierre Z', '30%', { tipo: 'Z' })
               }
