@@ -4,7 +4,7 @@
         </div>
 
     <div class="buttons">
-        <button label="Cancelar" class="p-button-text cancel" (click)="cancel()">Cancelar</button>
-        <button label="Eliminar" class="p-button-danger confirm" (click)="confirm()">Eliminar</button>
+        <button label="Cancelar" class="p-button-text cancel" (click)="cancel()">{{ data.cancelLabel || 'Cancelar' }}</button>
+        <button label="Eliminar" class="p-button-danger confirm" (click)="confirm()">{{ data.confirmLabel || 'Eliminar' }}</button>
     </div>
 </div>

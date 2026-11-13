@@ -16,6 +16,7 @@ import { PrintModalComponent } from '../../../act-contract/components/print-moda
 import { OnlyAlphanumericsDirective } from '../../../../shared/directives/only-alphanumerics.directive';
 import { ConfirmDeleteModalComponent } from '../../../../shared/components/modals/confirm-delete-modal/confirm-delete-modal.component';
 import { AuthService } from '../../../../@core/services/auth.service';
+import { GenerateClosingComponent } from '../../../../shared/components/modals/generate-closing/generate-closing.component';
 
 /**
  * Modal de pagos de los contratos de anillo.
@@ -597,10 +598,47 @@ export class PaymentsComponent implements OnInit {
           }
         }
 
+        if (err.status === 409 && err.error?.code === 'CIERRE_Z_PENDIENTE') {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Cierre Z pendiente',
+            detail: err.error.message
+          });
+          this.ofrecerCierreZ(err.error.message);
+          return;
+        }
+
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
           detail: err.error?.message || 'Ocurrió un error al procesar la facturación'
+        });
+      }
+    });
+  }
+
+  /** Falta el Cierre Z del último día con movimientos: pregunta si generarlo ya. */
+  private ofrecerCierreZ(message: string) {
+    const confirmRef = this.dialogService.open(ConfirmDeleteModalComponent, {
+      header: 'Cierre Z pendiente',
+      width: '40vw',
+      modal: true,
+      data: {
+        message: `${message} ¿Le gustaría hacer el Cierre Z?`,
+        confirmLabel: 'Sí',
+        cancelLabel: 'No'
+      }
+    });
+
+    // El modal de Cierre Z pide al backend la fecha pendiente
+    confirmRef.onClose.subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.dialogService.open(GenerateClosingComponent, {
+          header: 'Generar Cierre Z',
+          width: '30%',
+          modal: true,
+          closable: true,
+          data: { tipo: 'Z' }
         });
       }
     });
